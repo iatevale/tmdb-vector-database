@@ -1,5 +1,3 @@
-# Colección del dataset con la información
-
 Utilizaremos toda la información de películas disponible con la API de themoviedb.org. Los limitaremos a aquellas películas con nota superior a 7 para reducir el dataset de más de un millón de registros a 100.000.
 
 ## 1. Descargar la lista de IDs de películas
