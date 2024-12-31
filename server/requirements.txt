@@ -1,0 +1,6 @@
+pandas
+pymilvus
+flask
+flask_cors
+fastparquet
+pyarrow
