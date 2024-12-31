@@ -34,6 +34,6 @@ find . -type f -exec sh -c 'cat "$1" | jq ".vote_average < 7" | grep -q true && 
 
 Utilizaremos el script de creación del CSV que posteriormente alimentará a la base de datos vectorial.
 
-````
+```
 to_csv.py
 ```
