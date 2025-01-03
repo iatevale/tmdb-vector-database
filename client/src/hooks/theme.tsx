@@ -1,0 +1,13 @@
+"use client";
+
+import { useContext } from "react";
+import { ThemeProviderContext, ThemeProviderState } from "../contexts/theme";
+
+export function useTheme(): ThemeProviderState {
+  const context = useContext(ThemeProviderContext);
+
+  if (context === undefined)
+    throw new Error("useTheme must be used within a ThemeProvider");
+
+  return context;
+}
