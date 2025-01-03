@@ -31,3 +31,23 @@ export type MovieResponseData = {
     data: MovieType[];
 } | none;
 
+export type MovieListProps = {
+    page: number;
+    movies: MovieType[];
+    orderBy: {
+        [key: string]: string;
+    };
+    totalMovies: number;
+};
+
+export type MovieListPropsProviderProps = {
+    children: React.ReactNode;
+    movieListprops?: MovieListProps;
+    storageKey?: string;
+};
+
+export type MovieListPropsProviderState = {
+    movieListProps: MovieListProps;
+    setMovieListProps: (movieListprops: MovieListProps) => void;
+};
+

@@ -4,7 +4,6 @@ import { MovieResponseData } from "@/types";
 import { NextResponse } from 'next/server';
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { prisma } from "@/lib/prisma";
-import { skip } from "node:test";
 
 // DOC: https://github.com/milvus-io/milvus-sdk-node
 // DOC: https://milvus.io/api-reference/node/v2.5.x/About.md
@@ -15,12 +14,17 @@ export const GET = async (
     const { searchParams } = new URL(req.url ?? "");
     const page = parseInt(searchParams?.get("page") ?? "1")
 
-    const result = await prisma.movie.findMany({
+    console.log("page", page);
+    const total = await prisma.movie.count();
+    const data = await prisma.movie.findMany({
         take: 12,
         skip: (page - 1) * 12,
     });
 
-    return NextResponse.json(result);
+    return NextResponse.json({
+        total,
+        data
+    });
 
     /*try {
         await milvus.init();

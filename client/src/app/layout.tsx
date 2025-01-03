@@ -3,6 +3,8 @@ import { Poppins } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/header";
 import { ThemeProvider } from "@/contexts/theme";
+import MovieList from "@/components/movie-list";
+import { MovieListPropsProvider } from "@/contexts/movie-list-props";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -21,14 +23,16 @@ export default function RootLayout({
 }>) {
   return (
     <ThemeProvider>
-      <html lang="en">
-        <body className={`${poppins.className} antialiased`}>
-          <div className="flex flex-col pt-4 w-full">
-            <Header />
-            <div className="flex flex-col">{children}</div>
-          </div>
-        </body>
-      </html>
+      <MovieListPropsProvider>
+        <html lang="en">
+          <body className={`${poppins.className} antialiased`}>
+            <div className="flex flex-col pt-4 w-full">
+              <Header />
+              <div className="flex flex-col">{children}</div>
+            </div>
+          </body>
+        </html>
+      </MovieListPropsProvider>
     </ThemeProvider>
   );
 }
