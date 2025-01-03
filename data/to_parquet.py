@@ -1,7 +1,7 @@
 import pandas as pd
 
 # Leer el archivo CSV
-csv_file = "../data/movies.csv"  # Ruta del archivo CSV
+csv_file = "./movies.csv"  # Ruta del archivo CSV
 df = pd.read_csv(csv_file)
 
 # Guardar como archivo Parquet

@@ -5,7 +5,7 @@ import csv
 # Ruta donde se encuentran los archivos JSON
 input_folder = './movies'
 # Ruta para guardar el archivo CSV resultante
-output_csv = 'output.csv'
+output_csv = 'movies.csv'
 
 # Campos que te interesan
 fields = [

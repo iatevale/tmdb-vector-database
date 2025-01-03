@@ -20,12 +20,18 @@ download_db.py
 
 Tarda unas 11 horas en descargar toda la información.
 
-# 3. Filtrado de películas con nota igual o superior a 7
+# 3. Filtrado de películas con nota igual o superior a 7, o pocos votos
 
 En el directorio donde ha descargado los miles de JSONs, ejecutamos este comando, que borrará el JSON de todas aquellas películas cuya nota se inferior a 7.
 
 ```
 find . -type f -exec sh -c 'cat "$1" | jq ".vote_average < 7" | grep -q true && rm -f "$1"' _ {} \;
+```
+
+Borramos ahora todas las películas que hayan obtenido la nota superior a 7 con menos de 500 votos
+
+```
+find . -type f -exec sh -c 'cat "$1" | jq ".vote_count < 7" | grep -q true && rm -f "$1"' _ {} \;
 ```
 
 # Creación del CSV
