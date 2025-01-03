@@ -1,11 +1,12 @@
-DROP DATABASE IF EXISTS movies;
-CREATE DATABASE movies;
+-- comando: /opt/homebrew/Cellar/postgresql@17/17.2/bin/psql -U postgres -h localhost -f pg_import.sql
+-- DROP DATABASE IF EXISTS movies;
+CREATE DATABASE "movies";
 
 \connect movies;
 
 CREATE SCHEMA IF NOT EXISTS public;
 
-CREATE TABLE IF NOT EXISTS public.peliculas (
+CREATE TABLE IF NOT EXISTS "Movie" (
     id SERIAL PRIMARY KEY,
     imdb_id TEXT,
     backdrop_path TEXT,
@@ -26,4 +27,4 @@ CREATE TABLE IF NOT EXISTS public.peliculas (
     genres TEXT
 );
 
-\COPY public.peliculas(id,imdb_id,backdrop_path,budget,original_title,overview,popularity,poster_path,release_date,revenue,runtime,status,tagline,title,vote_average,vote_count,spoken_languages,genres) FROM '/Users/dave/dev/tmdb-vector-database/data/movies.csv' WITH (FORMAT csv, HEADER true);
+\COPY "Movie"(id,imdb_id,backdrop_path,budget,original_title,overview,popularity,poster_path,release_date,revenue,runtime,status,tagline,title,vote_average,vote_count,spoken_languages,genres) FROM '/Users/dave/dev/tmdb-vector-database/data/movies.csv' WITH (FORMAT csv, HEADER true);

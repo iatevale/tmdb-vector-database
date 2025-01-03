@@ -28,7 +28,6 @@ const MovieList = ({ page: actualPage }: { page: number }) => {
   const [hasMore, setHasMore] = React.useState(true);
   const [movies, setMovies] = React.useState<MovieType[]>([]);
 
-  console.log(page);
   const next = async () => {
     setLoading(true);
 
