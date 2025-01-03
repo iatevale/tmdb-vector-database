@@ -1,6 +1,7 @@
 import numpy as np
 from pymilvus import connections, FieldSchema, CollectionSchema, DataType, Collection, utility
 import pandas as pd
+import sys
 
 # Conectar a Milvus
 # Cambia host y puerto si es necesario.
@@ -48,6 +49,15 @@ schema = CollectionSchema(fields, description="Colección para películas")
 collection = Collection(name=collection_name, schema=schema)
 print(f"Colección '{collection_name}' creada.")
 
+# Crear un índice si no existe
+index_params = {
+    # Tipo de índice (puedes usar otros como HNSW, etc.)
+    "index_type": "IVF_FLAT",
+    "metric_type": "L2",  # Usualmente L2 para distancias Euclidianas
+    "params": {"nlist": 128}  # Parámetros específicos del índice
+}
+collection.create_index(field_name="embedding", index_params=index_params)
+
 # Leer el archivo CSV con pandas
 csv_file = "../data/movies.csv"
 df = pd.read_csv(csv_file)
@@ -68,6 +78,42 @@ df["genres"] = df["genres"].fillna("").astype(str)
 
 # Generar vectores ficticios (sustituye esto con embeddings reales si los tienes)
 df["embedding"] = [np.random.rand(128).tolist() for _ in range(len(df))]
+
+
+# Preparar los datos para la inserción (cada columna será una lista de valores)
+data = [
+    df["id"].tolist(),
+    df["imdb_id"].tolist(),
+    df["backdrop_path"].tolist(),
+    df["budget"].tolist(),
+    df["original_title"].tolist(),
+    df["overview"].tolist(),
+    df["popularity"].tolist(),
+    df["poster_path"].tolist(),
+    df["release_date"].tolist(),
+    df["revenue"].tolist(),
+    df["runtime"].tolist(),
+    df["status"].tolist(),
+    df["tagline"].tolist(),
+    df["title"].tolist(),
+    df["vote_average"].tolist(),
+    df["vote_count"].tolist(),
+    df["spoken_languages"].tolist(),
+    df["genres"].tolist(),
+    df["embedding"].tolist()
+    # Si tienes vectores, agrega los datos de los embeddings aquí
+]
+
+# Insertar los datos en la colección
+collection.insert(data)
+
+print(f"Datos insertados en la colección '{collection_name}'.")
+
+# Verificar el número de registros
+print(f"Número de registros en la colección: {collection.num_entities}")
+
+sys.exit()
+
 
 # Dividir los datos en lotes
 batch_size = 1000  # Ajusta según sea necesario
