@@ -34,10 +34,14 @@ export type MovieResponseData = {
 export type MovieListProps = {
     page: number;
     movies: MovieType[];
-    orderBy: {
-        [key: string]: string;
-    };
+    orderBy: string;
+    orderDirection: enum;
     totalMovies: number;
+    voteAverageMin: number;
+    voteAverageMax: number;
+    decadeMax: number;
+    decadeMin: number;
+    genres?: string[];
 };
 
 export type MovieListPropsProviderProps = {

@@ -29,7 +29,7 @@ const logo = () => {
       </svg>
       <div className="flex flex-col">
         <h1 className="font-bold tracking-tight text-2xl h-6">Movie</h1>
-        <h2 className="text-xs font-light self-center">discovery</h2>
+        <h2 className="text-xs font-light self-center">discoverer</h2>
       </div>
     </Link>
   );

@@ -26,15 +26,20 @@ const MovieList = ({ page: actualPage }: { page: number }) => {
   }, []);
 
   const getMoviePage = async (page: number) => {
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/api/movies?page=${page}`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
+    const stringParams = Object.fromEntries(
+      Object.entries(movieListProps).map(([key, value]) => [key, String(value)])
     );
+
+    const params = new URLSearchParams(stringParams);
+
+    const url = new URL(`${process.env.NEXT_PUBLIC_API_URL}/api/movies`);
+    url.search = params.toString();
+    const response = await fetch(url.toString(), {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
     const data = await response.json();
 
     return data;

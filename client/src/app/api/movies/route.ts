@@ -5,6 +5,7 @@ import { NextResponse } from 'next/server';
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { prisma } from "@/lib/prisma";
 
+const take = 12;
 // DOC: https://github.com/milvus-io/milvus-sdk-node
 // DOC: https://milvus.io/api-reference/node/v2.5.x/About.md
 export const GET = async (
@@ -14,12 +15,15 @@ export const GET = async (
     const { searchParams } = new URL(req.url ?? "");
     const page = parseInt(searchParams?.get("page") ?? "1")
 
-    console.log("page", page);
-    const total = await prisma.movie.count();
-    const data = await prisma.movie.findMany({
-        take: 12,
+    const query = {
+        take,
         skip: (page - 1) * 12,
-    });
+        orderBy: {
+            [searchParams?.get("orderBy") || "release_date"]: searchParams?.get("orderDirection") ?? "desc",
+        }
+    }
+    const total = await prisma.movie.count();
+    const data = await prisma.movie.findMany(query);
 
     return NextResponse.json({
         total,
