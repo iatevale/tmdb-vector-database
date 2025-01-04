@@ -12,7 +12,7 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: "Movie discoverer",
+  title: "Movie Finder",
   description: "Find your next favorite movie",
 };
 

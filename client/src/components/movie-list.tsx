@@ -7,31 +7,81 @@ import InfiniteScroll from "./ui/infinite-scroll";
 import { Skeleton } from "./ui/skeleton";
 import { cx } from "class-variance-authority";
 import { MovieListPropsProviderContext } from "@/contexts/movie-list-props";
+import { PaginationWithLinks } from "./ui/pagination-with-links";
+import { useContext } from "use-context-selector";
+import { usePathname, useRouter } from "next/navigation";
 
-const MovieList = ({ page: actualPage }: { page: number }) => {
+const MovieList = () => {
+  const [movies, setMovies] = React.useState<MovieType[]>([]);
   const [loading, setLoading] = React.useState(false);
-  const [infiniteListPage, setInfiniteListPage] = React.useState(actualPage);
+  const pathname = usePathname();
+  const { replace } = useRouter();
 
-  const { movieListProps, setMovieListProps } = React.useContext(
+  const { movieListProps, setMovieListProps } = useContext(
     MovieListPropsProviderContext
   );
 
   React.useEffect(() => {
-    setMovieListProps(
-      Object.assign({}, movieListProps, {
-        page: actualPage,
-        movies: [],
-      }) as MovieListProps
-    );
-  }, []);
+    const initialFetchMovies = async () => {
+      let total = 0;
 
-  const getMoviePage = async (page: number) => {
-    const stringParams = Object.fromEntries(
-      Object.entries(movieListProps).map(([key, value]) => [key, String(value)])
+      if (movies.length === 0) {
+        const m = await fetchMovies(movieListProps.page);
+        setMovies(m.data as MovieType[]);
+        total = m.total;
+      }
+
+      setMovieListProps(
+        Object.assign({}, movieListProps, {
+          totalMovies: total,
+        }) as MovieListProps
+      );
+    };
+
+    initialFetchMovies();
+
+    const stringParams = Object.assign(
+      Object.fromEntries(
+        Object.entries(movieListProps).map(([key, value]) => [
+          key,
+          String(value),
+        ])
+      )
     );
 
     const params = new URLSearchParams(stringParams);
 
+    replace(`${pathname}?${params.toString()}`);
+  }, [movieListProps.page]);
+
+  if (movieListProps.page === null) {
+    return (
+      <Skeleton
+        className={cx(
+          "block",
+          "w-full",
+          "h-30",
+          "rounded-[20px]",
+          "border",
+          "border-gray-100",
+          "dark:border-gray-600"
+        )}
+      />
+    );
+  }
+
+  const fetchMovies = async (page: number) => {
+    const stringParams = Object.assign(
+      Object.fromEntries(
+        Object.entries(movieListProps).map(([key, value]) => [
+          key,
+          String(value),
+        ])
+      ),
+      { page: String(page) }
+    );
+
+    const params = new URLSearchParams(stringParams);
     const url = new URL(`${process.env.NEXT_PUBLIC_API_URL}/api/movies`);
     url.search = params.toString();
     const response = await fetch(url.toString(), {
@@ -46,54 +96,75 @@ const MovieList = ({ page: actualPage }: { page: number }) => {
   };
 
   const next = async () => {
-    setLoading(true);
-    setInfiniteListPage(infiniteListPage + 1);
+    if (movies.length === 0 || loading) {
+      return;
+    }
 
-    const m = await getMoviePage(infiniteListPage);
+    setLoading(true);
+    const m = await fetchMovies(movieListProps.page + 1);
     setMovieListProps(
       Object.assign({}, movieListProps, {
-        movies: [...movieListProps.movies, ...m.data],
-        page: infiniteListPage + 1,
+        page: movieListProps.page + 1,
         totalMovies: m.total,
       }) as MovieListProps
     );
 
+    const unionSinDuplicados = [
+      ...new Map([...movies, ...m.data].map((obj) => [obj.id, obj])).values(),
+    ];
+    setMovies(unionSinDuplicados);
     setLoading(false);
   };
 
   return (
-    <div className="w-full max-[900px]:grid-cols-4 max-[600px]:grid-cols-3 max-[300px]:grid-cols-2 grid mx-auto mb-10 w-3/4 max-w-6xl grid-cols-5 gap-2 pb-10">
-      {movieListProps.movies.map((movie: MovieType) => (
-        <Image
-          key={movie.id}
-          src={`https://image.tmdb.org/t/p/w1280${movie.poster_path}`}
-          alt={movie.title}
-          width={200}
-          height={300}
-          className="rounded-[20px] border border-gray-100 dark:border-gray-600"
-        />
-      ))}
-      <InfiniteScroll
-        hasMore={true}
-        isLoading={loading}
-        next={next}
-        threshold={1}
-      >
-        {Array.from({ length: 1 }).map((_, i) => (
-          <Skeleton
-            key={i}
-            className={cx(
-              "block",
-              "w-[calc(100%-18px)]",
-              "h-30",
-              "rounded-[20px]",
-              "border",
-              "border-gray-100",
-              "dark:border-gray-600"
-            )}
+    <div className="flex flex-col pt-4 w-full px-8">
+      <div className="bg-yellow-100 dark:bg-yellow-900 p-2 flex justify-center items-center text-xs flex gap-4 w-full">
+        {Object.entries(movieListProps).map(([key, value]) => (
+          <div key={key} className="text-center flex flex-col">
+            <strong>{key}</strong> {JSON.stringify(value)}
+          </div>
+        ))}
+      </div>
+      <div className="flex items-center justify-between">
+        <div className="flex-1"></div>
+        <div className="mb-2">
+          <PaginationWithLinks
+            page={movieListProps.page}
+            pageSize={16}
+            totalCount={movieListProps.totalMovies}
+          />
+        </div>
+      </div>
+
+      <div className="w-full max-[900px]:grid-cols-4 max-[600px]:grid-cols-3 max-[300px]:grid-cols-2 grid mx-auto mb-10 w-3/4 max-w-6xl grid-cols-5 gap-2 pb-10">
+        {movies.map((movie: MovieType) => (
+          <Image
+            key={movie.id}
+            src={`https://image.tmdb.org/t/p/w1280${movie.poster_path}`}
+            alt={movie.title}
+            width={200}
+            height={300}
+            priority
+            className="rounded-[20px] border border-gray-100 dark:border-gray-600"
           />
         ))}
-      </InfiniteScroll>
+        <InfiniteScroll hasMore={true} isLoading={loading} next={next}>
+          {Array.from({ length: 1 }).map((_, i) => (
+            <Skeleton
+              key={i}
+              className={cx(
+                "block",
+                "w-[calc(100%-18px)]",
+                "h-30",
+                "rounded-[20px]",
+                "border",
+                "border-gray-100",
+                "dark:border-gray-600"
+              )}
+            />
+          ))}
+        </InfiniteScroll>
+      </div>
     </div>
   );
 };

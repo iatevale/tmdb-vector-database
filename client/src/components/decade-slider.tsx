@@ -2,9 +2,24 @@
 
 import React from "react";
 import { DualRangeSlider } from "./ui/dual-range-slider";
+import { useDebouncedCallback } from "use-debounce";
 
-const DecadeSlider = () => {
-  const [values, setValues] = React.useState([1930, 2020]);
+const DecadeSlider = ({
+  range,
+  setDecade,
+}: {
+  range: number[];
+  setDecade: (values: number[]) => void;
+}) => {
+  const [values, setValues] = React.useState([range[0], range[1]]);
+  const debounced = useDebouncedCallback((values) => {
+    setDecade(values);
+  }, 1000);
+
+  const handleValuesChange = (values: number[]) => {
+    setValues(values);
+    setDecade(values);
+  };
 
   return (
     <div className="flex flex-col gap-4 items-center w-full">
@@ -13,7 +28,7 @@ const DecadeSlider = () => {
         <DualRangeSlider
           label={(value) => value}
           value={values}
-          onValueChange={setValues}
+          onValueChange={handleValuesChange}
           min={1930}
           max={2020}
           step={10}

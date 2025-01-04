@@ -9,7 +9,7 @@ const logo = () => {
         "ml-6",
         "title-font",
         "flex",
-        "gap-2",
+        "gap-1",
         "items-center",
         "text-gray-900",
         "dark:text-white",
@@ -29,7 +29,7 @@ const logo = () => {
       </svg>
       <div className="flex flex-col">
         <h1 className="font-bold tracking-tight text-2xl h-6">Movie</h1>
-        <h2 className="text-xs font-light self-center">discoverer</h2>
+        <h2 className="text-xs font-light">Finder</h2>
       </div>
     </Link>
   );

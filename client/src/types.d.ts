@@ -33,7 +33,6 @@ export type MovieResponseData = {
 
 export type MovieListProps = {
     page: number;
-    movies: MovieType[];
     orderBy: string;
     orderDirection: enum;
     totalMovies: number;

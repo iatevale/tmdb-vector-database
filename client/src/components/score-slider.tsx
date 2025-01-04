@@ -2,24 +2,23 @@
 
 import React from "react";
 import { DualRangeSlider } from "./ui/dual-range-slider";
-import { MovieListPropsProviderContext } from "@/contexts/movie-list-props";
+import { useDebouncedCallback } from "use-debounce";
 
-const ScoreSlider = () => {
-  const [values, setValues] = React.useState([7, 10]);
-  const { movieListProps, setMovieListProps } = React.useContext(
-    MovieListPropsProviderContext
-  );
+const ScoreSlider = ({
+  range,
+  setScore,
+}: {
+  range: number[];
+  setScore: (values: number[]) => void;
+}) => {
+  const [values, setValues] = React.useState([range[0], range[1]]);
+  const debounced = useDebouncedCallback((values) => {
+    setScore(values);
+  }, 1000);
 
   const handleValuesChange = (values: number[]) => {
     setValues(values);
-    setMovieListProps(
-      Object.assign({}, movieListProps, {
-        movies: [],
-        page: 1,
-        voteAverageMin: values[0],
-        voteAverageMax: values[1],
-      })
-    );
+    debounced(values);
   };
 
   return (
@@ -32,7 +31,7 @@ const ScoreSlider = () => {
           onValueChange={handleValuesChange}
           min={7}
           max={10}
-          step={1}
+          step={0.5}
         />
       </div>
     </div>
