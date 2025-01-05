@@ -32,7 +32,7 @@ export type MovieResponseData = {
 } | none;
 
 export type MovieResultsType = {
-    data: MovieType[];
+    movies: MovieType[];
     total: number;
 };
 
@@ -56,7 +56,7 @@ export type MovieProviderProps = {
 export type MovieProviderState = {
     movieFilters: MovieFiltersType;
     setMovieFilters: (movieFilters: MovieFiltersType) => void;
-    results: MovieResultsType;
-    setMovieResults: (results: MovieResultsType) => void;
+    movieResults: MovieResultsType;
+    setMovieResults: (movieResults: MovieResultsType) => void;
 };
 

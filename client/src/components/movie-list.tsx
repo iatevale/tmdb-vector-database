@@ -10,9 +10,8 @@ import { MovieProviderContext } from "@/contexts/movie-list-props";
 import { PaginationWithLinks } from "./ui/pagination-with-links";
 
 const MovieList = () => {
-  const [movies, setMovies] = React.useState<MovieType[]>([]);
   const [loading, setLoading] = React.useState(false);
-  const { movieFilters, setMovieFilters, results, setMovieResults } =
+  const { movieFilters, setMovieFilters, movieResults, setMovieResults } =
     React.useContext(MovieProviderContext);
 
   React.useEffect(() => {
@@ -21,13 +20,7 @@ const MovieList = () => {
       setLoading(true);
 
       const m = await fetchMovies(movieFilters.page);
-      setMovies(m.data as MovieType[]);
-
-      setMovieResults(
-        Object.assign({}, results, {
-          total: m.total,
-        }) as MovieResultsType
-      );
+      setMovieResults(m);
       setLoading(false);
     };
 
@@ -81,7 +74,7 @@ const MovieList = () => {
   };
 
   const next = async () => {
-    if (movies.length === 0 || loading) {
+    if (movieResults.movies.length === 0 || loading) {
       return;
     }
 
@@ -94,11 +87,13 @@ const MovieList = () => {
     );
 
     const unionSinDuplicados = [
-      ...new Map([...movies, ...m.data].map((obj) => [obj.id, obj])).values(),
+      ...new Map(
+        [...movieResults.movies, ...m.movies].map((obj) => [obj.id, obj])
+      ).values(),
     ];
-    setMovies(unionSinDuplicados);
     setMovieResults(
-      Object.assign({}, results, {
+      Object.assign({}, movieResults, {
+        movies: unionSinDuplicados,
         total: m.total,
       }) as MovieResultsType
     );
@@ -111,7 +106,13 @@ const MovieList = () => {
       <div className="bg-yellow-100 dark:bg-yellow-900 p-2 flex justify-center items-center text-xs flex gap-4 w-full">
         {Object.entries(movieFilters).map(([key, value]) => (
           <div key={key} className="text-center flex flex-col">
-            <strong>{key}</strong> {JSON.stringify(value)}
+            <strong>{key}</strong> {value}
+          </div>
+        ))}
+        {Object.entries(movieResults).map(([key, value]) => (
+          <div key={key} className="text-center flex flex-col">
+            <strong>{key}</strong>{" "}
+            {typeof value === "object" ? value.length : JSON.stringify(value)}
           </div>
         ))}
       </div>
@@ -121,13 +122,13 @@ const MovieList = () => {
           <PaginationWithLinks
             page={movieFilters.page}
             pageSize={16}
-            totalCount={results.total}
+            totalCount={movieResults.total}
           />
         </div>
       </div>
 
       <div className="w-full max-[900px]:grid-cols-4 max-[600px]:grid-cols-3 max-[300px]:grid-cols-2 grid mx-auto mb-10 w-3/4 max-w-6xl grid-cols-5 gap-2 pb-10">
-        {movies.map((movie: MovieType) => (
+        {movieResults.movies.map((movie: MovieType) => (
           <Image
             key={movie.id}
             src={`https://image.tmdb.org/t/p/w1280${movie.poster_path}`}

@@ -12,7 +12,7 @@ import { defaultFilters, defaultResults } from "@/lib/utils";
 
 const initialState = {
   movieFilters: defaultFilters,
-  results: defaultResults,
+  movieResults: defaultResults,
   setMovieFilters: () => null,
   setMovieResults: () => null,
 };
@@ -26,8 +26,8 @@ export function MovieProvider({
   ...props
 }: MovieProviderProps) {
   const params = useSearchParams();
-  const [results, setMovieResults] = useState<MovieResultsType>(
-    initialState.results
+  const [movieResults, setMovieResults] = useState<MovieResultsType>(
+    initialState.movieResults
   );
   const [movieFilters, setMovieFilters] = useState<MovieFiltersType>(
     Object.assign({}, initialState.movieFilters, {
@@ -60,7 +60,7 @@ export function MovieProvider({
       value={{
         movieFilters,
         setMovieFilters,
-        results,
+        movieResults,
         setMovieResults,
       }}
     >

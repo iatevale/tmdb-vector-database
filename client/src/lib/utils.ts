@@ -7,7 +7,7 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export const defaultResults = {
-  data: [],
+  movies: [],
   total: 0,
 };
 

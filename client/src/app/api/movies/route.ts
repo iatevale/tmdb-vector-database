@@ -50,12 +50,12 @@ export const GET = async (
     }
 
     console.log(query);
-    const total = await prisma.movie.count();
-    const data = await prisma.movie.findMany(query);
+    const total = await prisma.movie.count(query);
+    const movies = await prisma.movie.findMany(query);
 
     return NextResponse.json({
         total,
-        data
+        movies
     });
 
     /*try {

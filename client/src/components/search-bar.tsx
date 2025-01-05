@@ -68,7 +68,7 @@ const SearchBar = () => {
         />
         {isFocused && (
           <CommandList className="bg-white border border-gray-100 absolute w-full top-[calc(100%-2px)] left-0 z-10">
-            <CommandEmpty>No results found.</CommandEmpty>
+            <CommandEmpty>No movieResults found.</CommandEmpty>
             <CommandGroup heading="Suggestions">
               <CommandItem>Calculator</CommandItem>
             </CommandGroup>
