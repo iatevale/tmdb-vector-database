@@ -31,6 +31,11 @@ export type MovieResponseData = {
     data: MovieType[];
 } | none;
 
+export type ResultsType = {
+    data: MovieType[];
+    total: number;
+};
+
 export type FiltersType = {
     page: number;
     orderBy: string;
@@ -51,6 +56,8 @@ export type MovieProviderProps = {
 
 export type MovieProviderState = {
     filters: FiltersType;
-    setFiltersType: (filters: FiltersType) => void;
+    setFilters: (filters: FiltersType) => void;
+    results: ResultsType;
+    setResults: (results: ResultsType) => void;
 };
 

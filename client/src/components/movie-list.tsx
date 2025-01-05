@@ -12,7 +12,7 @@ import { PaginationWithLinks } from "./ui/pagination-with-links";
 const MovieList = () => {
   const [movies, setMovies] = React.useState<MovieType[]>([]);
   const [loading, setLoading] = React.useState(false);
-  const { filters, setFiltersType } = React.useContext(MovieProviderContext);
+  const { filters, setFilters } = React.useContext(MovieProviderContext);
 
   React.useEffect(() => {
     const initialFetchMovies = async () => {
@@ -24,7 +24,7 @@ const MovieList = () => {
       setMovies(m.data as MovieType[]);
       total = m.total;
 
-      setFiltersType(
+      setFilters(
         Object.assign({}, filters, {
           totalMovies: total,
         }) as FiltersType
@@ -88,7 +88,7 @@ const MovieList = () => {
 
     setLoading(true);
     const m = await fetchMovies(filters.page + 1);
-    setFiltersType(
+    setFilters(
       Object.assign({}, filters, {
         page: filters.page + 1,
         totalMovies: m.total,
@@ -113,7 +113,7 @@ const MovieList = () => {
       </div>
       <div className="flex items-center justify-between">
         <div className="flex-1"></div>
-        <div className="mb-2">
+        <div className="my-1">
           <PaginationWithLinks
             page={filters.page}
             pageSize={16}

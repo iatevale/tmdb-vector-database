@@ -6,7 +6,12 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-export const defaultFiltersType: FiltersType = {
+export const defaultResults = {
+  data: [],
+  total: 0,
+};
+
+export const defaultFilters: FiltersType = {
   page: 1,
   orderBy: "release_date",
   orderDirection: "desc",

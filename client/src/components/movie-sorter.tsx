@@ -19,13 +19,13 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { MovieProviderContext } from "@/contexts/movie-list-props";
-import { filters } from "@/types";
+import { FiltersType } from "@/types";
 
 const MovieSorter = () => {
-  const { filters, setFiltersType } = React.useContext(MovieProviderContext);
+  const { filters, setFilters } = React.useContext(MovieProviderContext);
 
   const handleSort = (orderBy: string, orderDirection: string) => {
-    setFiltersType(
+    setFilters(
       Object.assign({}, filters, {
         page: 1,
         orderBy,
@@ -34,7 +34,7 @@ const MovieSorter = () => {
     );
   };
 
-  const getSortDescription = (filters: filters) => {
+  const getSortDescription = (filters: FiltersType) => {
     switch (filters.orderBy) {
       case "title":
         if (filters.orderDirection === "asc") {
@@ -56,7 +56,7 @@ const MovieSorter = () => {
     }
   };
 
-  const getSortIcon = (filters: filters) => {
+  const getSortIcon = (filters: FiltersType) => {
     switch (filters.orderBy) {
       case "title":
         return <ArrowUpAZ className="w-6 h-6 text-gray-500" />;

@@ -8,7 +8,7 @@ import DecadeSlider from "./decade-slider";
 import ScoreSlider from "./score-slider";
 import { Paintbrush } from "lucide-react";
 import { MovieProviderContext } from "@/contexts/movie-list-props";
-import { defaultFiltersType } from "@/lib/utils";
+import { defaultFilters } from "@/lib/utils";
 
 const Sidebar = ({
   page,
@@ -23,10 +23,10 @@ const Sidebar = ({
   voteAverageMax: number;
   voteAverageMin: number;
 }) => {
-  const { filters, setFiltersType } = React.useContext(MovieProviderContext);
+  const { filters, setFilters } = React.useContext(MovieProviderContext);
 
   React.useEffect(() => {
-    setFiltersType(
+    setFilters(
       Object.assign({}, filters, {
         page,
         decadeMax,
@@ -38,11 +38,11 @@ const Sidebar = ({
   }, [page, decadeMax, decadeMin, voteAverageMax, voteAverageMin]);
 
   const handleReset = () => {
-    setFiltersType(defaultFiltersType);
+    setFilters(defaultFilters);
   };
 
   const handleDecadeValuesChange = (values: number[]) => {
-    setFiltersType(
+    setFilters(
       Object.assign({}, filters, {
         page: 1,
         decadeMin: values[0],
@@ -52,7 +52,7 @@ const Sidebar = ({
   };
 
   const handleScoreValuesChange = (values: number[]) => {
-    setFiltersType(
+    setFilters(
       Object.assign({}, filters, {
         page: 1,
         voteAverageMin: values[0],
