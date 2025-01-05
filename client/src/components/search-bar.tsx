@@ -7,7 +7,6 @@ import {
   CommandInput,
   CommandItem,
   CommandList,
-  CommandSeparator,
 } from "@/components/ui/command";
 import { cx } from "class-variance-authority";
 
@@ -45,13 +44,14 @@ const SearchBar = ({ className }: { className: string }) => {
       className={cx(
         "flex",
         "items-center",
-        "justify-center",
+        "justify-start",
+        "flex-1",
         "w-full",
         className
       )}
     >
       <Command
-        className="max-w-96 relative overflow-visible"
+        className="relative overflow-visible"
         value={search}
         onValueChange={setSearch}
       >
@@ -82,6 +82,7 @@ const SearchBar = ({ className }: { className: string }) => {
         <CommandInput
           onFocus={handleOnFocus}
           onBlur={handleBlur}
+          placeholder="Búsqueda por nombre..."
           value={search}
           onValueChange={setSearch}
           ref={ref}

@@ -1,17 +1,20 @@
 "use client";
 
 import {
-  MovieFiltersType,
   MovieProviderProps,
   MovieProviderState,
   MovieResultsType,
 } from "@/types";
 import { useSearchParams } from "next/navigation";
 import { createContext, useState } from "react";
-import { defaultFilters, defaultResults } from "@/lib/utils";
+import { defaultResults, FiltersSchema } from "@/lib/utils";
+import { z } from "zod";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 const initialState = {
-  movieFilters: defaultFilters,
+  form: null,
+  movieFilters: FiltersSchema.parse({}),
   movieResults: defaultResults,
   setMovieFilters: () => null,
   setMovieResults: () => null,
@@ -29,35 +32,19 @@ export function MovieProvider({
   const [movieResults, setMovieResults] = useState<MovieResultsType>(
     initialState.movieResults
   );
-  const [movieFilters, setMovieFilters] = useState<MovieFiltersType>(
-    Object.assign({}, initialState.movieFilters, {
-      page: params.get("page")
-        ? parseInt(params.get("page") as string)
-        : initialState.movieFilters.page,
-      orderBy:
-        (params.get("orderBy") as string) ?? initialState.movieFilters.orderBy,
-      orderDirection:
-        (params.get("orderDirection") as string) ??
-        initialState.movieFilters.orderDirection,
-      scoreMin: params.get("scoreMin")
-        ? parseFloat(params.get("scoreMin") as string)
-        : initialState.movieFilters.scoreMin,
-      scoreMax: params.get("scoreMax")
-        ? parseFloat(params.get("scoreMax") as string)
-        : initialState.movieFilters.scoreMax,
-      decadeMin: params.get("decadeMin")
-        ? parseInt(params.get("decadeMin") as string)
-        : initialState.movieFilters.decadeMin,
-      decadeMax: params.get("decadeMax")
-        ? parseInt(params.get("decadeMax") as string)
-        : initialState.movieFilters.decadeMax,
-    })
-  );
+  const [movieFilters, setMovieFilters] = useState<
+    z.infer<typeof FiltersSchema>
+  >(FiltersSchema.parse({}));
+
+  const form = useForm<z.infer<typeof FiltersSchema>>({
+    resolver: zodResolver(FiltersSchema),
+  });
 
   return (
     <MovieProviderContext.Provider
       {...props}
       value={{
+        form,
         movieFilters,
         setMovieFilters,
         movieResults,

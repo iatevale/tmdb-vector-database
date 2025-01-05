@@ -36,18 +36,6 @@ export type MovieResultsType = {
     total: number;
 };
 
-export type MovieFiltersType = {
-    page: number;
-    search: string;
-    orderBy: string;
-    orderDirection: enum;
-    scoreMin: number;
-    scoreMax: number;
-    decadeMax: number;
-    decadeMin: number;
-    genres?: string[];
-};
-
 export type MovieProviderProps = {
     children: React.ReactNode;
     movieFilters?: MovieFiltersType;
@@ -55,8 +43,9 @@ export type MovieProviderProps = {
 };
 
 export type MovieProviderState = {
-    movieFilters: MovieFiltersType;
-    setMovieFilters: (movieFilters: MovieFiltersType) => void;
+    form: ReturnType<typeof useForm<z.infer<typeof FiltersSchema>>>;
+    movieFilters: z.infer<typeof FiltersSchema>;
+    setMovieFilters: (movieFilters: z.infer<typeof FiltersSchema>) => void;
     movieResults: MovieResultsType;
     setMovieResults: (movieResults: MovieResultsType) => void;
 };

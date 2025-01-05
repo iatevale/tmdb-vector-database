@@ -105,19 +105,6 @@ const MovieList = ({ className }: { className: string }) => {
     <div
       className={cx("flex", "flex-col", "pt-4", "w-full", "px-8", className)}
     >
-      <div className="bg-yellow-100 dark:bg-yellow-900 p-2 flex flex-wrap justify-center items-start text-xs flex gap-4 w-full">
-        {Object.entries(movieFilters).map(([key, value]) => (
-          <div key={key} className="text-center flex flex-col">
-            <strong>{key}</strong> {value}
-          </div>
-        ))}
-        {Object.entries(movieResults).map(([key, value]) => (
-          <div key={key} className="text-center flex flex-col">
-            <strong>{key}</strong>{" "}
-            {typeof value === "object" ? value.length : JSON.stringify(value)}
-          </div>
-        ))}
-      </div>
       <div className="flex items-center justify-between">
         <div className="flex-1"></div>
         <div className="my-1">
