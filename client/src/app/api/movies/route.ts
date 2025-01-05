@@ -33,10 +33,10 @@ export const GET = async (
         }
     }
 
-    if (searchParams?.get("releaseDateMin") && searchParams?.get("releaseDateMax")) {
+    if (searchParams?.get("decadeMin") && searchParams?.get("decadeMax")) {
         where["release_date"] = {
-            gte: new Date(searchParams.get("releaseDateMin") ?? ""),
-            lte: new Date(searchParams.get("releaseDateMax") ?? "")
+            gte: new Date(searchParams.get("decadeMin") ?? ""),
+            lte: new Date(searchParams.get("decadeMax") ?? "")
         }
     }
 
@@ -48,6 +48,8 @@ export const GET = async (
         },
         where
     }
+
+    console.log(query);
     const total = await prisma.movie.count();
     const data = await prisma.movie.findMany(query);
 

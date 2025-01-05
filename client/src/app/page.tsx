@@ -22,8 +22,8 @@ const Home = async ({
         page={parseInt(page as string)}
         decadeMin={parseInt(decadeMin as string)}
         decadeMax={parseInt(decadeMax as string)}
-        voteAverageMax={parseInt(voteAverageMax as string)}
-        voteAverageMin={parseInt(voteAverageMin as string)}
+        voteAverageMax={parseFloat(voteAverageMax as string)}
+        voteAverageMin={parseFloat(voteAverageMin as string)}
       />
       <MovieList />
       <UpdateQueryParams />

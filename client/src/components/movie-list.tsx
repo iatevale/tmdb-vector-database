@@ -8,37 +8,42 @@ import { Skeleton } from "./ui/skeleton";
 import { cx } from "class-variance-authority";
 import { MovieListPropsProviderContext } from "@/contexts/movie-list-props";
 import { PaginationWithLinks } from "./ui/pagination-with-links";
-import { usePathname, useRouter } from "next/navigation";
 
 const MovieList = () => {
   const [movies, setMovies] = React.useState<MovieType[]>([]);
   const [loading, setLoading] = React.useState(false);
-  const pathname = usePathname();
-  const { replace } = useRouter();
-
   const { movieListProps, setMovieListProps } = React.useContext(
     MovieListPropsProviderContext
   );
 
   React.useEffect(() => {
     const initialFetchMovies = async () => {
+      if (loading) return;
+      setLoading(true);
       let total = 0;
 
-      if (movies.length === 0) {
-        const m = await fetchMovies(movieListProps.page);
-        setMovies(m.data as MovieType[]);
-        total = m.total;
-      }
+      const m = await fetchMovies(movieListProps.page);
+      setMovies(m.data as MovieType[]);
+      total = m.total;
 
       setMovieListProps(
         Object.assign({}, movieListProps, {
           totalMovies: total,
         }) as MovieListProps
       );
+      setLoading(false);
     };
 
     initialFetchMovies();
-  }, [movieListProps.page]);
+  }, [
+    movieListProps.page,
+    movieListProps.decadeMax,
+    movieListProps.decadeMin,
+    movieListProps.orderBy,
+    movieListProps.orderDirection,
+    movieListProps.voteAverageMax,
+    movieListProps.voteAverageMin,
+  ]);
 
   if (movieListProps.page === null) {
     return (

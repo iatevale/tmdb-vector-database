@@ -18,7 +18,7 @@ const DecadeSlider = ({
 
   const handleValuesChange = (values: number[]) => {
     setValues(values);
-    setDecade(values);
+    debounced(values);
   };
 
   return (
