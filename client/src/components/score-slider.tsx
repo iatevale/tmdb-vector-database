@@ -21,6 +21,10 @@ const ScoreSlider = ({
     debounced(values);
   };
 
+  React.useEffect(() => {
+    setValues([range[0], range[1]]);
+  }, [range]);
+
   return (
     <div className="flex flex-col gap-4 items-center w-full">
       <p className="self-start mb-4">Nota</p>

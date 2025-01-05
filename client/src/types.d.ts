@@ -41,8 +41,8 @@ export type MovieFiltersType = {
     search: string;
     orderBy: string;
     orderDirection: enum;
-    voteAverageMin: number;
-    voteAverageMax: number;
+    scoreMin: number;
+    scoreMax: number;
     decadeMax: number;
     decadeMin: number;
     genres?: string[];

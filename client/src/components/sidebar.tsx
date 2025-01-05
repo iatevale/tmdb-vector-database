@@ -16,18 +16,19 @@ const Sidebar = ({
   decadeMin,
   scoreMax,
   scoreMin,
+  className,
 }: {
   page: number;
   decadeMax: number;
   decadeMin: number;
   scoreMax: number;
   scoreMin: number;
+  className: string;
 }) => {
   const { movieFilters, setMovieFilters } =
     React.useContext(MovieProviderContext);
 
   React.useEffect(() => {
-    console.log("updating filters");
     setMovieFilters(
       Object.assign({}, movieFilters, {
         page,
@@ -69,12 +70,11 @@ const Sidebar = ({
         "flex",
         "flex-col",
         "justify-start",
+        "items-center",
         "rounded-lg",
         "px-4",
-        "py-1",
         "dark:bg-gray-900",
-        "mt-6",
-        "ml-2"
+        className
       )}
     >
       <div className="flex items-center  pt-3">

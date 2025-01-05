@@ -9,8 +9,10 @@ import { cx } from "class-variance-authority";
 import { MovieProviderContext } from "@/contexts/movie-list-props";
 import { PaginationWithLinks } from "./ui/pagination-with-links";
 
-const MovieList = () => {
+const MovieList = ({ className }: { className: string }) => {
   const [loading, setLoading] = React.useState(false);
+  const [infinitePage, setInfinitePage] = React.useState(1);
+
   const { movieFilters, setMovieFilters, movieResults, setMovieResults } =
     React.useContext(MovieProviderContext);
 
@@ -25,6 +27,7 @@ const MovieList = () => {
     };
 
     initialFetchMovies();
+    setInfinitePage(movieFilters.page);
   }, [
     movieFilters.page,
     movieFilters.decadeMax,
@@ -79,12 +82,9 @@ const MovieList = () => {
     }
 
     setLoading(true);
-    const m = await fetchMovies(movieFilters.page + 1);
-    setMovieFilters(
-      Object.assign({}, movieFilters, {
-        page: movieFilters.page + 1,
-      }) as MovieFiltersType
-    );
+    setInfinitePage(infinitePage + 1);
+
+    const m = await fetchMovies(infinitePage);
 
     const unionSinDuplicados = [
       ...new Map(
@@ -102,8 +102,10 @@ const MovieList = () => {
   };
 
   return (
-    <div className="flex flex-col pt-4 w-full px-8">
-      <div className="bg-yellow-100 dark:bg-yellow-900 p-2 flex justify-center items-center text-xs flex gap-4 w-full">
+    <div
+      className={cx("flex", "flex-col", "pt-4", "w-full", "px-8", className)}
+    >
+      <div className="bg-yellow-100 dark:bg-yellow-900 p-2 flex flex-wrap justify-center items-start text-xs flex gap-4 w-full">
         {Object.entries(movieFilters).map(([key, value]) => (
           <div key={key} className="text-center flex flex-col">
             <strong>{key}</strong> {value}
@@ -140,20 +142,17 @@ const MovieList = () => {
           />
         ))}
         <InfiniteScroll hasMore={true} isLoading={loading} next={next}>
-          {Array.from({ length: 1 }).map((_, i) => (
-            <Skeleton
-              key={i}
-              className={cx(
-                "block",
-                "w-[calc(100%-18px)]",
-                "h-30",
-                "rounded-[20px]",
-                "border",
-                "border-gray-100",
-                "dark:border-gray-600"
-              )}
-            />
-          ))}
+          <Skeleton
+            className={cx(
+              "block",
+              "w-full",
+              "h-[160px] md:h-[240px]",
+              "rounded-[20px]",
+              "border",
+              "border-gray-100",
+              "dark:border-gray-600"
+            )}
+          />
         </InfiniteScroll>
       </div>
     </div>

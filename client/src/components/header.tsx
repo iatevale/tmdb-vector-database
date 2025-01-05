@@ -11,15 +11,16 @@ const Header = () => {
     <header
       className={cx(
         "w-full",
-        "px-6",
+        "px-4",
+        "md:px-8",
         "flex",
         "gap-4",
-        "mb-4 ",
+        "mb-2 ",
         "items-center",
         "justify-between"
       )}
     >
-      <Logo />
+      <Logo className="w-1/4 justify-center" />
       <SearchBar />
       <Link
         href="https://github.com/iatevale/tmdb-vector-database"

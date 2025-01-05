@@ -58,7 +58,7 @@ export const GET = async (
         where
     }
 
-    const total = await prisma.movie.count(query);
+    const total = await prisma.movie.count({ where });
     const movies = await prisma.movie.findMany(query);
 
     return NextResponse.json({

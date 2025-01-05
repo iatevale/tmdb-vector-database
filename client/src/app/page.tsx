@@ -17,15 +17,16 @@ const Home = async ({
   } = (await searchParams) || {};
 
   return (
-    <main className="flex-1 flex flex-col md:flex-row gap-8">
+    <main className="flex-1 flex flex-col items-start md:flex-row">
       <Sidebar
         page={parseInt(page as string)}
         decadeMin={parseInt(decadeMin as string)}
         decadeMax={parseInt(decadeMax as string)}
         scoreMax={parseFloat(scoreMax as string)}
         scoreMin={parseFloat(scoreMin as string)}
+        className="w-full md:w-1/4"
       />
-      <MovieList />
+      <MovieList className="w-full md:w-3/4" />
       <UpdateQueryParams />
     </main>
   );

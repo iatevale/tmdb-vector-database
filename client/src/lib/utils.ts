@@ -18,6 +18,6 @@ export const defaultFilters: MovieFiltersType = {
   orderDirection: "desc",
   scoreMin: 7,
   scoreMax: 10,
-  decadeMin: 1930,
+  decadeMin: 1900,
   decadeMax: 2020,
 };

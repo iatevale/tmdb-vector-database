@@ -21,6 +21,10 @@ const DecadeSlider = ({
     debounced(values);
   };
 
+  React.useEffect(() => {
+    setValues([range[0], range[1]]);
+  }, [range]);
+
   return (
     <div className="flex flex-col gap-4 items-center w-full">
       <p className="self-start mb-4">Década</p>
@@ -29,7 +33,7 @@ const DecadeSlider = ({
           label={(value) => value}
           value={values}
           onValueChange={handleValuesChange}
-          min={1930}
+          min={1900}
           max={2020}
           step={10}
         />
