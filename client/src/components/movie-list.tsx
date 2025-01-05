@@ -8,7 +8,6 @@ import { Skeleton } from "./ui/skeleton";
 import { cx } from "class-variance-authority";
 import { MovieListPropsProviderContext } from "@/contexts/movie-list-props";
 import { PaginationWithLinks } from "./ui/pagination-with-links";
-import { useContext } from "use-context-selector";
 import { usePathname, useRouter } from "next/navigation";
 
 const MovieList = () => {
@@ -17,7 +16,7 @@ const MovieList = () => {
   const pathname = usePathname();
   const { replace } = useRouter();
 
-  const { movieListProps, setMovieListProps } = useContext(
+  const { movieListProps, setMovieListProps } = React.useContext(
     MovieListPropsProviderContext
   );
 
@@ -39,19 +38,6 @@ const MovieList = () => {
     };
 
     initialFetchMovies();
-
-    const stringParams = Object.assign(
-      Object.fromEntries(
-        Object.entries(movieListProps).map(([key, value]) => [
-          key,
-          String(value),
-        ])
-      )
-    );
-
-    const params = new URLSearchParams(stringParams);
-
-    replace(`${pathname}?${params.toString()}`);
   }, [movieListProps.page]);
 
   if (movieListProps.page === null) {

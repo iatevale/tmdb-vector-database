@@ -20,14 +20,11 @@ import {
 import { Button } from "@/components/ui/button";
 import { MovieListPropsProviderContext } from "@/contexts/movie-list-props";
 import { MovieListProps } from "@/types";
-import { useRouter } from "next/navigation";
-import { useContext } from "use-context-selector";
 
 const MovieSorter = () => {
-  const { movieListProps, setMovieListProps } = useContext(
+  const { movieListProps, setMovieListProps } = React.useContext(
     MovieListPropsProviderContext
   );
-  const router = useRouter();
 
   const handleSort = (orderBy: string, orderDirection: string) => {
     setMovieListProps(
@@ -37,7 +34,6 @@ const MovieSorter = () => {
         orderDirection,
       })
     );
-    router.push("/?page=1");
   };
 
   const getSortDescription = (movieListProps: MovieListProps) => {

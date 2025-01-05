@@ -8,7 +8,7 @@ import DecadeSlider from "./decade-slider";
 import ScoreSlider from "./score-slider";
 import { Paintbrush } from "lucide-react";
 import { MovieListPropsProviderContext } from "@/contexts/movie-list-props";
-import { useContext } from "use-context-selector";
+import { defaultMovieListProps } from "@/lib/utils";
 
 const Sidebar = ({
   page,
@@ -23,7 +23,7 @@ const Sidebar = ({
   voteAverageMax: number;
   voteAverageMin: number;
 }) => {
-  const { movieListProps, setMovieListProps } = useContext(
+  const { movieListProps, setMovieListProps } = React.useContext(
     MovieListPropsProviderContext
   );
 
@@ -40,16 +40,7 @@ const Sidebar = ({
   }, [page, decadeMax, decadeMin, voteAverageMax, voteAverageMin]);
 
   const handleReset = () => {
-    setMovieListProps({
-      page: 1,
-      orderBy: "release_date",
-      orderDirection: "desc",
-      totalMovies: 0,
-      voteAverageMin: 7,
-      voteAverageMax: 10,
-      decadeMin: 1930,
-      decadeMax: 2020,
-    });
+    setMovieListProps(defaultMovieListProps);
   };
 
   const handleDecadeValuesChange = (values: number[]) => {

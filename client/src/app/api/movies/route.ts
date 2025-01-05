@@ -40,8 +40,6 @@ export const GET = async (
         }
     }
 
-    console.log(where);
-
     const query = {
         take,
         skip: (page - 1) * take,

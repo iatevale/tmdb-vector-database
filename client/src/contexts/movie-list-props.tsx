@@ -6,19 +6,8 @@ import {
   MovieListPropsProviderState,
 } from "@/types";
 import { useSearchParams } from "next/navigation";
-import { useState } from "react";
-import { createContext } from "use-context-selector";
-
-export const defaultMovieListProps: MovieListProps = {
-  page: 1,
-  orderBy: "release_date",
-  orderDirection: "desc",
-  totalMovies: 0,
-  voteAverageMin: 7,
-  voteAverageMax: 10,
-  decadeMin: 1930,
-  decadeMax: 2020,
-};
+import { createContext, useState } from "react";
+import { defaultMovieListProps } from "@/lib/utils";
 
 const initialState = {
   movieListProps: defaultMovieListProps,
@@ -34,6 +23,7 @@ export function MovieListPropsProvider({
   ...props
 }: MovieListPropsProviderProps) {
   const params = useSearchParams();
+
   const [movieListProps, setMovieListProps] = useState<MovieListProps>(
     Object.assign({}, initialState.movieListProps, {
       page: params.get("page")

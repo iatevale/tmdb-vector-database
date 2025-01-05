@@ -1,5 +1,6 @@
 import MovieList from "@/components/movie-list";
 import Sidebar from "@/components/sidebar";
+import UpdateQueryParams from "@/components/update-query-params";
 import { defaultMovieListProps } from "@/lib/utils";
 
 const Home = async ({
@@ -25,6 +26,7 @@ const Home = async ({
         voteAverageMin={parseInt(voteAverageMin as string)}
       />
       <MovieList />
+      <UpdateQueryParams />
     </main>
   );
 };
