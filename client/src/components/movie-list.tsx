@@ -12,7 +12,7 @@ import { PaginationWithLinks } from "./ui/pagination-with-links";
 const MovieList = () => {
   const [movies, setMovies] = React.useState<MovieType[]>([]);
   const [loading, setLoading] = React.useState(false);
-  const { filters, setMovieFilters, results, setMovieResults } =
+  const { movieFilters, setMovieFilters, results, setMovieResults } =
     React.useContext(MovieProviderContext);
 
   React.useEffect(() => {
@@ -20,7 +20,7 @@ const MovieList = () => {
       if (loading) return;
       setLoading(true);
 
-      const m = await fetchMovies(filters.page);
+      const m = await fetchMovies(movieFilters.page);
       setMovies(m.data as MovieType[]);
 
       setMovieResults(
@@ -33,16 +33,16 @@ const MovieList = () => {
 
     initialFetchMovies();
   }, [
-    filters.page,
-    filters.decadeMax,
-    filters.decadeMin,
-    filters.orderBy,
-    filters.orderDirection,
-    filters.voteAverageMax,
-    filters.voteAverageMin,
+    movieFilters.page,
+    movieFilters.decadeMax,
+    movieFilters.decadeMin,
+    movieFilters.orderBy,
+    movieFilters.orderDirection,
+    movieFilters.voteAverageMax,
+    movieFilters.voteAverageMin,
   ]);
 
-  if (filters.page === null) {
+  if (movieFilters.page === null) {
     return (
       <Skeleton
         className={cx(
@@ -61,7 +61,7 @@ const MovieList = () => {
   const fetchMovies = async (page: number) => {
     const stringParams = Object.assign(
       Object.fromEntries(
-        Object.entries(filters).map(([key, value]) => [key, String(value)])
+        Object.entries(movieFilters).map(([key, value]) => [key, String(value)])
       ),
       { page: String(page) }
     );
@@ -86,10 +86,10 @@ const MovieList = () => {
     }
 
     setLoading(true);
-    const m = await fetchMovies(filters.page + 1);
+    const m = await fetchMovies(movieFilters.page + 1);
     setMovieFilters(
-      Object.assign({}, filters, {
-        page: filters.page + 1,
+      Object.assign({}, movieFilters, {
+        page: movieFilters.page + 1,
       }) as MovieFiltersType
     );
 
@@ -109,7 +109,7 @@ const MovieList = () => {
   return (
     <div className="flex flex-col pt-4 w-full px-8">
       <div className="bg-yellow-100 dark:bg-yellow-900 p-2 flex justify-center items-center text-xs flex gap-4 w-full">
-        {Object.entries(filters).map(([key, value]) => (
+        {Object.entries(movieFilters).map(([key, value]) => (
           <div key={key} className="text-center flex flex-col">
             <strong>{key}</strong> {JSON.stringify(value)}
           </div>
@@ -119,7 +119,7 @@ const MovieList = () => {
         <div className="flex-1"></div>
         <div className="my-1">
           <PaginationWithLinks
-            page={filters.page}
+            page={movieFilters.page}
             pageSize={16}
             totalCount={results.total}
           />

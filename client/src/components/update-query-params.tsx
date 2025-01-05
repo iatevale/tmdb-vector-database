@@ -4,7 +4,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import React from "react";
 
 const UpdateQueryParams = () => {
-  const { filters } = React.useContext(MovieProviderContext);
+  const { movieFilters } = React.useContext(MovieProviderContext);
 
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -13,7 +13,7 @@ const UpdateQueryParams = () => {
   React.useEffect(() => {
     const stringParams = Object.assign(
       Object.fromEntries(
-        Object.entries(filters).map(([key, value]) => [key, String(value)])
+        Object.entries(movieFilters).map(([key, value]) => [key, String(value)])
       )
     );
     const params = new URLSearchParams(stringParams);
@@ -21,13 +21,13 @@ const UpdateQueryParams = () => {
     replace(`${pathname}?${params.toString()}`);
   }, [
     searchParams,
-    filters.decadeMin,
-    filters.decadeMax,
-    filters.orderBy,
-    filters.orderDirection,
-    filters.page,
-    filters.voteAverageMax,
-    filters.voteAverageMin,
+    movieFilters.decadeMin,
+    movieFilters.decadeMax,
+    movieFilters.orderBy,
+    movieFilters.orderDirection,
+    movieFilters.page,
+    movieFilters.voteAverageMax,
+    movieFilters.voteAverageMin,
   ]);
   return null;
 };

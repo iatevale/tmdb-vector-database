@@ -22,11 +22,12 @@ import { MovieProviderContext } from "@/contexts/movie-list-props";
 import { MovieFiltersType } from "@/types";
 
 const MovieSorter = () => {
-  const { filters, setMovieFilters } = React.useContext(MovieProviderContext);
+  const { movieFilters, setMovieFilters } =
+    React.useContext(MovieProviderContext);
 
   const handleSort = (orderBy: string, orderDirection: string) => {
     setMovieFilters(
-      Object.assign({}, filters, {
+      Object.assign({}, movieFilters, {
         page: 1,
         orderBy,
         orderDirection,
@@ -34,20 +35,20 @@ const MovieSorter = () => {
     );
   };
 
-  const getSortDescription = (filters: MovieFiltersType) => {
-    switch (filters.orderBy) {
+  const getSortDescription = (movieFilters: MovieFiltersType) => {
+    switch (movieFilters.orderBy) {
       case "title":
-        if (filters.orderDirection === "asc") {
+        if (movieFilters.orderDirection === "asc") {
           return "Alfabética ascendente";
         }
         return "Alfabética descendente";
       case "vote_average":
-        if (filters.orderDirection === "asc") {
+        if (movieFilters.orderDirection === "asc") {
           return "Por nota ascendente";
         }
         return "Por nota descendente";
       case "release_date":
-        if (filters.orderDirection === "asc") {
+        if (movieFilters.orderDirection === "asc") {
           return "Por fecha de estreno ascendente";
         }
         return "Por fecha de estreno descendente";
@@ -56,8 +57,8 @@ const MovieSorter = () => {
     }
   };
 
-  const getSortIcon = (filters: MovieFiltersType) => {
-    switch (filters.orderBy) {
+  const getSortIcon = (movieFilters: MovieFiltersType) => {
+    switch (movieFilters.orderBy) {
       case "title":
         return <ArrowUpAZ className="w-6 h-6 text-gray-500" />;
       case "vote_average":
@@ -74,11 +75,11 @@ const MovieSorter = () => {
       <DropdownMenuTrigger asChild>
         <Button variant="outline" className="h-12">
           <div className="flex justify-between gap-4 items-center w-full py-2">
-            {getSortIcon(filters)}
+            {getSortIcon(movieFilters)}
             <div className="flex flex-col items-start">
               <h2>Ordenación</h2>
               <p className="text-xs font-light">
-                {getSortDescription(filters)}
+                {getSortDescription(movieFilters)}
               </p>
             </div>
             <ChevronsUpDown />

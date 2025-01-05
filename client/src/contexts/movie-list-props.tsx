@@ -11,7 +11,7 @@ import { createContext, useState } from "react";
 import { defaultFilters, defaultResults } from "@/lib/utils";
 
 const initialState = {
-  filters: defaultFilters,
+  movieFilters: defaultFilters,
   results: defaultResults,
   setMovieFilters: () => null,
   setMovieResults: () => null,
@@ -29,28 +29,28 @@ export function MovieProvider({
   const [results, setMovieResults] = useState<MovieResultsType>(
     initialState.results
   );
-  const [filters, setMovieFilters] = useState<MovieFiltersType>(
-    Object.assign({}, initialState.filters, {
+  const [movieFilters, setMovieFilters] = useState<MovieFiltersType>(
+    Object.assign({}, initialState.movieFilters, {
       page: params.get("page")
         ? parseInt(params.get("page") as string)
-        : initialState.filters.page,
+        : initialState.movieFilters.page,
       orderBy:
-        (params.get("orderBy") as string) ?? initialState.filters.orderBy,
+        (params.get("orderBy") as string) ?? initialState.movieFilters.orderBy,
       orderDirection:
         (params.get("orderDirection") as string) ??
-        initialState.filters.orderDirection,
+        initialState.movieFilters.orderDirection,
       voteAverageMin: params.get("voteAverageMin")
         ? parseFloat(params.get("voteAverageMin") as string)
-        : initialState.filters.voteAverageMin,
+        : initialState.movieFilters.voteAverageMin,
       voteAverageMax: params.get("voteAverageMax")
         ? parseFloat(params.get("voteAverageMax") as string)
-        : initialState.filters.voteAverageMax,
+        : initialState.movieFilters.voteAverageMax,
       decadeMin: params.get("decadeMin")
         ? parseInt(params.get("decadeMin") as string)
-        : initialState.filters.decadeMin,
+        : initialState.movieFilters.decadeMin,
       decadeMax: params.get("decadeMax")
         ? parseInt(params.get("decadeMax") as string)
-        : initialState.filters.decadeMax,
+        : initialState.movieFilters.decadeMax,
     })
   );
 
@@ -58,7 +58,7 @@ export function MovieProvider({
     <MovieProviderContext.Provider
       {...props}
       value={{
-        filters,
+        movieFilters,
         setMovieFilters,
         results,
         setMovieResults,

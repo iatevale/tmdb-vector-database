@@ -49,13 +49,13 @@ export type MovieFiltersType = {
 
 export type MovieProviderProps = {
     children: React.ReactNode;
-    filters?: MovieFiltersType;
+    movieFilters?: MovieFiltersType;
     storageKey?: string;
 };
 
 export type MovieProviderState = {
-    filters: MovieFiltersType;
-    setMovieFilters: (filters: MovieFiltersType) => void;
+    movieFilters: MovieFiltersType;
+    setMovieFilters: (movieFilters: MovieFiltersType) => void;
     results: MovieResultsType;
     setMovieResults: (results: MovieResultsType) => void;
 };
