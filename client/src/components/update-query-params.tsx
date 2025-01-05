@@ -26,8 +26,8 @@ const UpdateQueryParams = () => {
     movieFilters.orderBy,
     movieFilters.orderDirection,
     movieFilters.page,
-    movieFilters.voteAverageMax,
-    movieFilters.voteAverageMin,
+    movieFilters.scoreMax,
+    movieFilters.scoreMin,
   ]);
   return null;
 };

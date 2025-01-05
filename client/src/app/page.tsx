@@ -12,8 +12,8 @@ const Home = async ({
     page = defaultFilters.page,
     decadeMin = defaultFilters.decadeMin,
     decadeMax = defaultFilters.decadeMax,
-    voteAverageMax = defaultFilters.voteAverageMax,
-    voteAverageMin = defaultFilters.voteAverageMin,
+    scoreMax = defaultFilters.scoreMax,
+    scoreMin = defaultFilters.scoreMin,
   } = (await searchParams) || {};
 
   return (
@@ -22,8 +22,8 @@ const Home = async ({
         page={parseInt(page as string)}
         decadeMin={parseInt(decadeMin as string)}
         decadeMax={parseInt(decadeMax as string)}
-        voteAverageMax={parseFloat(voteAverageMax as string)}
-        voteAverageMin={parseFloat(voteAverageMin as string)}
+        scoreMax={parseFloat(scoreMax as string)}
+        scoreMin={parseFloat(scoreMin as string)}
       />
       <MovieList />
       <UpdateQueryParams />

@@ -31,8 +31,8 @@ const MovieList = () => {
     movieFilters.decadeMin,
     movieFilters.orderBy,
     movieFilters.orderDirection,
-    movieFilters.voteAverageMax,
-    movieFilters.voteAverageMin,
+    movieFilters.scoreMax,
+    movieFilters.scoreMin,
   ]);
 
   if (movieFilters.page === null) {

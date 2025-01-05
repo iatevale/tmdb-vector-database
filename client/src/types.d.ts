@@ -38,6 +38,7 @@ export type MovieResultsType = {
 
 export type MovieFiltersType = {
     page: number;
+    search: string;
     orderBy: string;
     orderDirection: enum;
     voteAverageMin: number;

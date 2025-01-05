@@ -13,12 +13,17 @@ import { cx } from "class-variance-authority";
 
 const SearchBar = () => {
   const [isFocused, setIsFocused] = React.useState(false);
+  const ref = React.useRef<HTMLInputElement>(null);
 
   React.useEffect(() => {
     const down = (e: KeyboardEvent) => {
-      if (e.key === "j" && (e.metaKey || e.ctrlKey)) {
+      if (e.key === "b" && (e.metaKey || e.ctrlKey)) {
         e.preventDefault();
-        setIsFocused((isFocused) => !isFocused);
+        if (ref.current) {
+          setTimeout(() => {
+            ref?.current?.focus();
+          }, 50);
+        }
       }
     };
 
@@ -65,18 +70,13 @@ const SearchBar = () => {
           onFocus={handleOnFocus}
           onBlur={handleBlur}
           placeholder="Busca una película por título..."
+          ref={ref}
         />
         {isFocused && (
           <CommandList className="bg-white border border-gray-100 absolute w-full top-[calc(100%-2px)] left-0 z-10">
-            <CommandEmpty>No movieResults found.</CommandEmpty>
-            <CommandGroup heading="Suggestions">
-              <CommandItem>Calculator</CommandItem>
-            </CommandGroup>
-            <CommandSeparator />
-            <CommandGroup heading="Settings">
-              <CommandItem>Profile</CommandItem>
-              <CommandItem>Billing</CommandItem>
-              <CommandItem>Settings</CommandItem>
+            <CommandEmpty>No se han encontrado películas.</CommandEmpty>
+            <CommandGroup heading="Sugerencias">
+              <CommandItem className="cursor-pointer">Calculator</CommandItem>
             </CommandGroup>
           </CommandList>
         )}

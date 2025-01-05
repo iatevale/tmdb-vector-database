@@ -39,12 +39,12 @@ export function MovieProvider({
       orderDirection:
         (params.get("orderDirection") as string) ??
         initialState.movieFilters.orderDirection,
-      voteAverageMin: params.get("voteAverageMin")
-        ? parseFloat(params.get("voteAverageMin") as string)
-        : initialState.movieFilters.voteAverageMin,
-      voteAverageMax: params.get("voteAverageMax")
-        ? parseFloat(params.get("voteAverageMax") as string)
-        : initialState.movieFilters.voteAverageMax,
+      scoreMin: params.get("scoreMin")
+        ? parseFloat(params.get("scoreMin") as string)
+        : initialState.movieFilters.scoreMin,
+      scoreMax: params.get("scoreMax")
+        ? parseFloat(params.get("scoreMax") as string)
+        : initialState.movieFilters.scoreMax,
       decadeMin: params.get("decadeMin")
         ? parseInt(params.get("decadeMin") as string)
         : initialState.movieFilters.decadeMin,

@@ -14,29 +14,30 @@ const Sidebar = ({
   page,
   decadeMax,
   decadeMin,
-  voteAverageMax,
-  voteAverageMin,
+  scoreMax,
+  scoreMin,
 }: {
   page: number;
   decadeMax: number;
   decadeMin: number;
-  voteAverageMax: number;
-  voteAverageMin: number;
+  scoreMax: number;
+  scoreMin: number;
 }) => {
   const { movieFilters, setMovieFilters } =
     React.useContext(MovieProviderContext);
 
   React.useEffect(() => {
+    console.log("updating filters");
     setMovieFilters(
       Object.assign({}, movieFilters, {
         page,
         decadeMax,
         decadeMin,
-        voteAverageMax,
-        voteAverageMin,
+        scoreMax,
+        scoreMin,
       })
     );
-  }, [page, decadeMax, decadeMin, voteAverageMax, voteAverageMin]);
+  }, [page, decadeMax, decadeMin, scoreMin, scoreMax]);
 
   const handleReset = () => {
     setMovieFilters(defaultFilters);
@@ -56,8 +57,8 @@ const Sidebar = ({
     setMovieFilters(
       Object.assign({}, movieFilters, {
         page: 1,
-        voteAverageMin: values[0],
-        voteAverageMax: values[1],
+        scoreMin: values[0],
+        scoreMax: values[1],
       })
     );
   };
@@ -90,11 +91,11 @@ const Sidebar = ({
         <MovieSorter />
         <DecadeSlider
           setDecade={handleDecadeValuesChange}
-          range={[decadeMin, decadeMax]}
+          range={[movieFilters.decadeMin, movieFilters.decadeMax]}
         />
         <ScoreSlider
           setScore={handleScoreValuesChange}
-          range={[voteAverageMin, voteAverageMax]}
+          range={[movieFilters.scoreMin, movieFilters.scoreMax]}
         />
       </div>
     </aside>

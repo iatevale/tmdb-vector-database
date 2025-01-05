@@ -13,6 +13,9 @@ type WhereType = {
     release_date?: {
         gte: Date;
         lte: Date;
+    },
+    title?: {
+        contains: string;
     }
 }
 const take = 16;
@@ -26,10 +29,10 @@ export const GET = async (
     const page = parseInt(searchParams?.get("page") ?? "1")
     const where: WhereType = {}
 
-    if (searchParams?.get("voteAverageMin") && searchParams?.get("voteAverageMax")) {
+    if (searchParams?.get("scoreMin") && searchParams?.get("scoreMax")) {
         where["vote_average"] = {
-            gte: parseFloat(searchParams.get("voteAverageMin") ?? "0"),
-            lte: parseFloat(searchParams.get("voteAverageMax") ?? "10")
+            gte: parseFloat(searchParams.get("scoreMin") ?? "0"),
+            lte: parseFloat(searchParams.get("scoreMax") ?? "10")
         }
     }
 
@@ -37,6 +40,12 @@ export const GET = async (
         where["release_date"] = {
             gte: new Date(searchParams.get("decadeMin") ?? ""),
             lte: new Date(searchParams.get("decadeMax") ?? "")
+        }
+    }
+
+    if (searchParams?.get("search")) {
+        where["title"] = {
+            contains: searchParams.get("search") ?? ""
         }
     }
 
@@ -49,7 +58,6 @@ export const GET = async (
         where
     }
 
-    console.log(query);
     const total = await prisma.movie.count(query);
     const movies = await prisma.movie.findMany(query);
 

@@ -13,10 +13,11 @@ export const defaultResults = {
 
 export const defaultFilters: MovieFiltersType = {
   page: 1,
+  search: "",
   orderBy: "release_date",
   orderDirection: "desc",
-  voteAverageMin: 7,
-  voteAverageMax: 10,
+  scoreMin: 7,
+  scoreMax: 10,
   decadeMin: 1930,
   decadeMax: 2020,
 };
