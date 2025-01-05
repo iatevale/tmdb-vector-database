@@ -1,7 +1,7 @@
 import MovieList from "@/components/movie-list";
 import Sidebar from "@/components/sidebar";
 import UpdateQueryParams from "@/components/update-query-params";
-import { defaultfilters } from "@/lib/utils";
+import { defaultFiltersType } from "@/lib/utils";
 
 const Home = async ({
   searchParams,
@@ -9,11 +9,11 @@ const Home = async ({
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) => {
   const {
-    page = defaultfilters.page,
-    decadeMin = defaultfilters.decadeMin,
-    decadeMax = defaultfilters.decadeMax,
-    voteAverageMax = defaultfilters.voteAverageMax,
-    voteAverageMin = defaultfilters.voteAverageMin,
+    page = defaultFiltersType.page,
+    decadeMin = defaultFiltersType.decadeMin,
+    decadeMax = defaultFiltersType.decadeMax,
+    voteAverageMax = defaultFiltersType.voteAverageMax,
+    voteAverageMin = defaultFiltersType.voteAverageMin,
   } = (await searchParams) || {};
 
   return (

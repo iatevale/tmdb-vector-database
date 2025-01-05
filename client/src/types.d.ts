@@ -31,7 +31,7 @@ export type MovieResponseData = {
     data: MovieType[];
 } | none;
 
-export type filters = {
+export type FiltersType = {
     page: number;
     orderBy: string;
     orderDirection: enum;
@@ -45,12 +45,12 @@ export type filters = {
 
 export type MovieProviderProps = {
     children: React.ReactNode;
-    filters?: filters;
+    filters?: FiltersType;
     storageKey?: string;
 };
 
 export type MovieProviderState = {
-    filters: filters;
-    setFilters: (filters: filters) => void;
+    filters: FiltersType;
+    setFiltersType: (filters: FiltersType) => void;
 };
 

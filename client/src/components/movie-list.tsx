@@ -1,6 +1,6 @@
 "use client";
 
-import { filters, MovieType } from "@/types";
+import { FiltersType, MovieType } from "@/types";
 import React from "react";
 import Image from "next/image";
 import InfiniteScroll from "./ui/infinite-scroll";
@@ -12,7 +12,7 @@ import { PaginationWithLinks } from "./ui/pagination-with-links";
 const MovieList = () => {
   const [movies, setMovies] = React.useState<MovieType[]>([]);
   const [loading, setLoading] = React.useState(false);
-  const { filters, setFilters } = React.useContext(MovieProviderContext);
+  const { filters, setFiltersType } = React.useContext(MovieProviderContext);
 
   React.useEffect(() => {
     const initialFetchMovies = async () => {
@@ -24,10 +24,10 @@ const MovieList = () => {
       setMovies(m.data as MovieType[]);
       total = m.total;
 
-      setFilters(
+      setFiltersType(
         Object.assign({}, filters, {
           totalMovies: total,
-        }) as filters
+        }) as FiltersType
       );
       setLoading(false);
     };
@@ -88,11 +88,11 @@ const MovieList = () => {
 
     setLoading(true);
     const m = await fetchMovies(filters.page + 1);
-    setFilters(
+    setFiltersType(
       Object.assign({}, filters, {
         page: filters.page + 1,
         totalMovies: m.total,
-      }) as filters
+      }) as FiltersType
     );
 
     const unionSinDuplicados = [

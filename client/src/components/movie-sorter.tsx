@@ -22,10 +22,10 @@ import { MovieProviderContext } from "@/contexts/movie-list-props";
 import { filters } from "@/types";
 
 const MovieSorter = () => {
-  const { filters, setFilters } = React.useContext(MovieProviderContext);
+  const { filters, setFiltersType } = React.useContext(MovieProviderContext);
 
   const handleSort = (orderBy: string, orderDirection: string) => {
-    setFilters(
+    setFiltersType(
       Object.assign({}, filters, {
         page: 1,
         orderBy,
