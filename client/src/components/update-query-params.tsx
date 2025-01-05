@@ -1,10 +1,10 @@
 "use client";
-import { MovieListPropsProviderContext } from "@/contexts/movie-list-props";
+import { MovieProviderContext } from "@/contexts/movie-list-props";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import React from "react";
 
 const UpdateQueryParams = () => {
-  const { movieListProps } = React.useContext(MovieListPropsProviderContext);
+  const { filters } = React.useContext(MovieProviderContext);
 
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -13,10 +13,7 @@ const UpdateQueryParams = () => {
   React.useEffect(() => {
     const stringParams = Object.assign(
       Object.fromEntries(
-        Object.entries(movieListProps).map(([key, value]) => [
-          key,
-          String(value),
-        ])
+        Object.entries(filters).map(([key, value]) => [key, String(value)])
       )
     );
     const params = new URLSearchParams(stringParams);
@@ -24,13 +21,13 @@ const UpdateQueryParams = () => {
     replace(`${pathname}?${params.toString()}`);
   }, [
     searchParams,
-    movieListProps.decadeMin,
-    movieListProps.decadeMax,
-    movieListProps.orderBy,
-    movieListProps.orderDirection,
-    movieListProps.page,
-    movieListProps.voteAverageMax,
-    movieListProps.voteAverageMin,
+    filters.decadeMin,
+    filters.decadeMax,
+    filters.orderBy,
+    filters.orderDirection,
+    filters.page,
+    filters.voteAverageMax,
+    filters.voteAverageMin,
   ]);
   return null;
 };

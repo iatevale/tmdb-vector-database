@@ -4,7 +4,7 @@ import "./globals.css";
 import Header from "@/components/header";
 import { ThemeProvider } from "@/contexts/theme";
 import MovieList from "@/components/movie-list";
-import { MovieListPropsProvider } from "@/contexts/movie-list-props";
+import { MovieProvider } from "@/contexts/movie-list-props";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -23,7 +23,7 @@ export default function RootLayout({
 }>) {
   return (
     <ThemeProvider>
-      <MovieListPropsProvider>
+      <MovieProvider>
         <html lang="en">
           <body className={`${poppins.className} antialiased`}>
             <div className="flex flex-col pt-4 w-full">
@@ -32,7 +32,7 @@ export default function RootLayout({
             </div>
           </body>
         </html>
-      </MovieListPropsProvider>
+      </MovieProvider>
     </ThemeProvider>
   );
 }

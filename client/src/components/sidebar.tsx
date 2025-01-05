@@ -7,8 +7,8 @@ import MovieSorter from "./movie-sorter";
 import DecadeSlider from "./decade-slider";
 import ScoreSlider from "./score-slider";
 import { Paintbrush } from "lucide-react";
-import { MovieListPropsProviderContext } from "@/contexts/movie-list-props";
-import { defaultMovieListProps } from "@/lib/utils";
+import { MovieProviderContext } from "@/contexts/movie-list-props";
+import { defaultfilters } from "@/lib/utils";
 
 const Sidebar = ({
   page,
@@ -23,13 +23,11 @@ const Sidebar = ({
   voteAverageMax: number;
   voteAverageMin: number;
 }) => {
-  const { movieListProps, setMovieListProps } = React.useContext(
-    MovieListPropsProviderContext
-  );
+  const { filters, setFilters } = React.useContext(MovieProviderContext);
 
   React.useEffect(() => {
-    setMovieListProps(
-      Object.assign({}, movieListProps, {
+    setFilters(
+      Object.assign({}, filters, {
         page,
         decadeMax,
         decadeMin,
@@ -40,12 +38,12 @@ const Sidebar = ({
   }, [page, decadeMax, decadeMin, voteAverageMax, voteAverageMin]);
 
   const handleReset = () => {
-    setMovieListProps(defaultMovieListProps);
+    setFilters(defaultfilters);
   };
 
   const handleDecadeValuesChange = (values: number[]) => {
-    setMovieListProps(
-      Object.assign({}, movieListProps, {
+    setFilters(
+      Object.assign({}, filters, {
         page: 1,
         decadeMin: values[0],
         decadeMax: values[1],
@@ -54,8 +52,8 @@ const Sidebar = ({
   };
 
   const handleScoreValuesChange = (values: number[]) => {
-    setMovieListProps(
-      Object.assign({}, movieListProps, {
+    setFilters(
+      Object.assign({}, filters, {
         page: 1,
         voteAverageMin: values[0],
         voteAverageMax: values[1],

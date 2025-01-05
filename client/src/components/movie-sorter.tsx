@@ -18,17 +18,15 @@ import {
   ChevronsUpDown,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { MovieListPropsProviderContext } from "@/contexts/movie-list-props";
-import { MovieListProps } from "@/types";
+import { MovieProviderContext } from "@/contexts/movie-list-props";
+import { filters } from "@/types";
 
 const MovieSorter = () => {
-  const { movieListProps, setMovieListProps } = React.useContext(
-    MovieListPropsProviderContext
-  );
+  const { filters, setFilters } = React.useContext(MovieProviderContext);
 
   const handleSort = (orderBy: string, orderDirection: string) => {
-    setMovieListProps(
-      Object.assign({}, movieListProps, {
+    setFilters(
+      Object.assign({}, filters, {
         page: 1,
         orderBy,
         orderDirection,
@@ -36,20 +34,20 @@ const MovieSorter = () => {
     );
   };
 
-  const getSortDescription = (movieListProps: MovieListProps) => {
-    switch (movieListProps.orderBy) {
+  const getSortDescription = (filters: filters) => {
+    switch (filters.orderBy) {
       case "title":
-        if (movieListProps.orderDirection === "asc") {
+        if (filters.orderDirection === "asc") {
           return "Alfabética ascendente";
         }
         return "Alfabética descendente";
       case "vote_average":
-        if (movieListProps.orderDirection === "asc") {
+        if (filters.orderDirection === "asc") {
           return "Por nota ascendente";
         }
         return "Por nota descendente";
       case "release_date":
-        if (movieListProps.orderDirection === "asc") {
+        if (filters.orderDirection === "asc") {
           return "Por fecha de estreno ascendente";
         }
         return "Por fecha de estreno descendente";
@@ -58,8 +56,8 @@ const MovieSorter = () => {
     }
   };
 
-  const getSortIcon = (movieListProps: MovieListProps) => {
-    switch (movieListProps.orderBy) {
+  const getSortIcon = (filters: filters) => {
+    switch (filters.orderBy) {
       case "title":
         return <ArrowUpAZ className="w-6 h-6 text-gray-500" />;
       case "vote_average":
@@ -76,11 +74,11 @@ const MovieSorter = () => {
       <DropdownMenuTrigger asChild>
         <Button variant="outline" className="h-12">
           <div className="flex justify-between gap-4 items-center w-full py-2">
-            {getSortIcon(movieListProps)}
+            {getSortIcon(filters)}
             <div className="flex flex-col items-start">
               <h2>Ordenación</h2>
               <p className="text-xs font-light">
-                {getSortDescription(movieListProps)}
+                {getSortDescription(filters)}
               </p>
             </div>
             <ChevronsUpDown />

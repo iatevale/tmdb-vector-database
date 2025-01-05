@@ -1,20 +1,18 @@
 "use client";
 
-import { MovieListProps, MovieType } from "@/types";
+import { filters, MovieType } from "@/types";
 import React from "react";
 import Image from "next/image";
 import InfiniteScroll from "./ui/infinite-scroll";
 import { Skeleton } from "./ui/skeleton";
 import { cx } from "class-variance-authority";
-import { MovieListPropsProviderContext } from "@/contexts/movie-list-props";
+import { MovieProviderContext } from "@/contexts/movie-list-props";
 import { PaginationWithLinks } from "./ui/pagination-with-links";
 
 const MovieList = () => {
   const [movies, setMovies] = React.useState<MovieType[]>([]);
   const [loading, setLoading] = React.useState(false);
-  const { movieListProps, setMovieListProps } = React.useContext(
-    MovieListPropsProviderContext
-  );
+  const { filters, setFilters } = React.useContext(MovieProviderContext);
 
   React.useEffect(() => {
     const initialFetchMovies = async () => {
@@ -22,30 +20,30 @@ const MovieList = () => {
       setLoading(true);
       let total = 0;
 
-      const m = await fetchMovies(movieListProps.page);
+      const m = await fetchMovies(filters.page);
       setMovies(m.data as MovieType[]);
       total = m.total;
 
-      setMovieListProps(
-        Object.assign({}, movieListProps, {
+      setFilters(
+        Object.assign({}, filters, {
           totalMovies: total,
-        }) as MovieListProps
+        }) as filters
       );
       setLoading(false);
     };
 
     initialFetchMovies();
   }, [
-    movieListProps.page,
-    movieListProps.decadeMax,
-    movieListProps.decadeMin,
-    movieListProps.orderBy,
-    movieListProps.orderDirection,
-    movieListProps.voteAverageMax,
-    movieListProps.voteAverageMin,
+    filters.page,
+    filters.decadeMax,
+    filters.decadeMin,
+    filters.orderBy,
+    filters.orderDirection,
+    filters.voteAverageMax,
+    filters.voteAverageMin,
   ]);
 
-  if (movieListProps.page === null) {
+  if (filters.page === null) {
     return (
       <Skeleton
         className={cx(
@@ -64,10 +62,7 @@ const MovieList = () => {
   const fetchMovies = async (page: number) => {
     const stringParams = Object.assign(
       Object.fromEntries(
-        Object.entries(movieListProps).map(([key, value]) => [
-          key,
-          String(value),
-        ])
+        Object.entries(filters).map(([key, value]) => [key, String(value)])
       ),
       { page: String(page) }
     );
@@ -92,12 +87,12 @@ const MovieList = () => {
     }
 
     setLoading(true);
-    const m = await fetchMovies(movieListProps.page + 1);
-    setMovieListProps(
-      Object.assign({}, movieListProps, {
-        page: movieListProps.page + 1,
+    const m = await fetchMovies(filters.page + 1);
+    setFilters(
+      Object.assign({}, filters, {
+        page: filters.page + 1,
         totalMovies: m.total,
-      }) as MovieListProps
+      }) as filters
     );
 
     const unionSinDuplicados = [
@@ -110,7 +105,7 @@ const MovieList = () => {
   return (
     <div className="flex flex-col pt-4 w-full px-8">
       <div className="bg-yellow-100 dark:bg-yellow-900 p-2 flex justify-center items-center text-xs flex gap-4 w-full">
-        {Object.entries(movieListProps).map(([key, value]) => (
+        {Object.entries(filters).map(([key, value]) => (
           <div key={key} className="text-center flex flex-col">
             <strong>{key}</strong> {JSON.stringify(value)}
           </div>
@@ -120,9 +115,9 @@ const MovieList = () => {
         <div className="flex-1"></div>
         <div className="mb-2">
           <PaginationWithLinks
-            page={movieListProps.page}
+            page={filters.page}
             pageSize={16}
-            totalCount={movieListProps.totalMovies}
+            totalCount={filters.totalMovies}
           />
         </div>
       </div>

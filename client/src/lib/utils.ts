@@ -1,4 +1,4 @@
-import { MovieListProps } from "@/types";
+import { filters } from "@/types";
 import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
 
@@ -6,7 +6,7 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-export const defaultMovieListProps: MovieListProps = {
+export const defaultfilters: filters = {
   page: 1,
   orderBy: "release_date",
   orderDirection: "desc",

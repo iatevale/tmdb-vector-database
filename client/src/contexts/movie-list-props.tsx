@@ -1,64 +1,59 @@
 "use client";
 
-import {
-  MovieListProps,
-  MovieListPropsProviderProps,
-  MovieListPropsProviderState,
-} from "@/types";
+import { filters, MovieProviderProps, MovieProviderState } from "@/types";
 import { useSearchParams } from "next/navigation";
 import { createContext, useState } from "react";
-import { defaultMovieListProps } from "@/lib/utils";
+import { defaultfilters } from "@/lib/utils";
 
 const initialState = {
-  movieListProps: defaultMovieListProps,
-  setMovieListProps: () => null,
+  filters: defaultfilters,
+  setFilters: () => null,
 };
 
-export const MovieListPropsProviderContext =
-  createContext<MovieListPropsProviderState>(initialState);
+export const MovieProviderContext =
+  createContext<MovieProviderState>(initialState);
 
-export function MovieListPropsProvider({
+export function MovieProvider({
   children,
   storageKey = "movies",
   ...props
-}: MovieListPropsProviderProps) {
+}: MovieProviderProps) {
   const params = useSearchParams();
 
-  const [movieListProps, setMovieListProps] = useState<MovieListProps>(
-    Object.assign({}, initialState.movieListProps, {
+  const [filters, setFilters] = useState<filters>(
+    Object.assign({}, initialState.filters, {
       page: params.get("page")
         ? parseInt(params.get("page") as string)
-        : initialState.movieListProps.page,
+        : initialState.filters.page,
       orderBy:
-        (params.get("orderBy") as string) ??
-        initialState.movieListProps.orderBy,
+        (params.get("orderBy") as string) ?? initialState.filters.orderBy,
       orderDirection:
         (params.get("orderDirection") as string) ??
-        initialState.movieListProps.orderDirection,
+        initialState.filters.orderDirection,
       voteAverageMin: params.get("voteAverageMin")
         ? parseFloat(params.get("voteAverageMin") as string)
-        : initialState.movieListProps.voteAverageMin,
+        : initialState.filters.voteAverageMin,
       voteAverageMax: params.get("voteAverageMax")
         ? parseFloat(params.get("voteAverageMax") as string)
-        : initialState.movieListProps.voteAverageMax,
+        : initialState.filters.voteAverageMax,
       decadeMin: params.get("decadeMin")
         ? parseInt(params.get("decadeMin") as string)
-        : initialState.movieListProps.decadeMin,
+        : initialState.filters.decadeMin,
       decadeMax: params.get("decadeMax")
         ? parseInt(params.get("decadeMax") as string)
-        : initialState.movieListProps.decadeMax,
+        : initialState.filters.decadeMax,
     })
   );
 
   return (
-    <MovieListPropsProviderContext.Provider
+    <MovieProviderContext.Provider
       {...props}
       value={{
-        movieListProps,
-        setMovieListProps,
+        filters,
+        setFilters,
       }}
     >
       {children}
-    </MovieListPropsProviderContext.Provider>
+    </MovieProviderContext.Provider>
   );
 }

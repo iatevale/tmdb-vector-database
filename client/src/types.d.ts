@@ -31,7 +31,7 @@ export type MovieResponseData = {
     data: MovieType[];
 } | none;
 
-export type MovieListProps = {
+export type filters = {
     page: number;
     orderBy: string;
     orderDirection: enum;
@@ -43,14 +43,14 @@ export type MovieListProps = {
     genres?: string[];
 };
 
-export type MovieListPropsProviderProps = {
+export type MovieProviderProps = {
     children: React.ReactNode;
-    movieListprops?: MovieListProps;
+    filters?: filters;
     storageKey?: string;
 };
 
-export type MovieListPropsProviderState = {
-    movieListProps: MovieListProps;
-    setMovieListProps: (movieListprops: MovieListProps) => void;
+export type MovieProviderState = {
+    filters: filters;
+    setFilters: (filters: filters) => void;
 };
 
