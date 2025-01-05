@@ -23,10 +23,10 @@ const Sidebar = ({
   voteAverageMax: number;
   voteAverageMin: number;
 }) => {
-  const { filters, setFilters } = React.useContext(MovieProviderContext);
+  const { filters, setMovieFilters } = React.useContext(MovieProviderContext);
 
   React.useEffect(() => {
-    setFilters(
+    setMovieFilters(
       Object.assign({}, filters, {
         page,
         decadeMax,
@@ -38,11 +38,11 @@ const Sidebar = ({
   }, [page, decadeMax, decadeMin, voteAverageMax, voteAverageMin]);
 
   const handleReset = () => {
-    setFilters(defaultFilters);
+    setMovieFilters(defaultFilters);
   };
 
   const handleDecadeValuesChange = (values: number[]) => {
-    setFilters(
+    setMovieFilters(
       Object.assign({}, filters, {
         page: 1,
         decadeMin: values[0],
@@ -52,7 +52,7 @@ const Sidebar = ({
   };
 
   const handleScoreValuesChange = (values: number[]) => {
-    setFilters(
+    setMovieFilters(
       Object.assign({}, filters, {
         page: 1,
         voteAverageMin: values[0],

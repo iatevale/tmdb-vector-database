@@ -1,4 +1,4 @@
-import { FiltersType } from "@/types";
+import { MovieFiltersType } from "@/types";
 import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
 
@@ -11,11 +11,10 @@ export const defaultResults = {
   total: 0,
 };
 
-export const defaultFilters: FiltersType = {
+export const defaultFilters: MovieFiltersType = {
   page: 1,
   orderBy: "release_date",
   orderDirection: "desc",
-  totalMovies: 0,
   voteAverageMin: 7,
   voteAverageMax: 10,
   decadeMin: 1930,

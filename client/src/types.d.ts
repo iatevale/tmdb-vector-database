@@ -31,16 +31,15 @@ export type MovieResponseData = {
     data: MovieType[];
 } | none;
 
-export type ResultsType = {
+export type MovieResultsType = {
     data: MovieType[];
     total: number;
 };
 
-export type FiltersType = {
+export type MovieFiltersType = {
     page: number;
     orderBy: string;
     orderDirection: enum;
-    totalMovies: number;
     voteAverageMin: number;
     voteAverageMax: number;
     decadeMax: number;
@@ -50,14 +49,14 @@ export type FiltersType = {
 
 export type MovieProviderProps = {
     children: React.ReactNode;
-    filters?: FiltersType;
+    filters?: MovieFiltersType;
     storageKey?: string;
 };
 
 export type MovieProviderState = {
-    filters: FiltersType;
-    setFilters: (filters: FiltersType) => void;
-    results: ResultsType;
-    setResults: (results: ResultsType) => void;
+    filters: MovieFiltersType;
+    setMovieFilters: (filters: MovieFiltersType) => void;
+    results: MovieResultsType;
+    setMovieResults: (results: MovieResultsType) => void;
 };
 

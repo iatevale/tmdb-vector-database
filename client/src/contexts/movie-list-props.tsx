@@ -1,10 +1,10 @@
 "use client";
 
 import {
-  FiltersType,
+  MovieFiltersType,
   MovieProviderProps,
   MovieProviderState,
-  ResultsType,
+  MovieResultsType,
 } from "@/types";
 import { useSearchParams } from "next/navigation";
 import { createContext, useState } from "react";
@@ -13,8 +13,8 @@ import { defaultFilters, defaultResults } from "@/lib/utils";
 const initialState = {
   filters: defaultFilters,
   results: defaultResults,
-  setFilters: () => null,
-  setResults: () => null,
+  setMovieFilters: () => null,
+  setMovieResults: () => null,
 };
 
 export const MovieProviderContext =
@@ -26,8 +26,10 @@ export function MovieProvider({
   ...props
 }: MovieProviderProps) {
   const params = useSearchParams();
-  const [results, setResults] = useState<ResultsType>(initialState.results);
-  const [filters, setFilters] = useState<FiltersType>(
+  const [results, setMovieResults] = useState<MovieResultsType>(
+    initialState.results
+  );
+  const [filters, setMovieFilters] = useState<MovieFiltersType>(
     Object.assign({}, initialState.filters, {
       page: params.get("page")
         ? parseInt(params.get("page") as string)
@@ -57,9 +59,9 @@ export function MovieProvider({
       {...props}
       value={{
         filters,
-        setFilters,
+        setMovieFilters,
         results,
-        setResults,
+        setMovieResults,
       }}
     >
       {children}
