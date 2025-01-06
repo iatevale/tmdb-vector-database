@@ -11,17 +11,6 @@ import { MovieProviderContext } from "@/contexts/movie-list-props";
 import { FiltersSchema } from "@/lib/utils";
 import SemanticSearch from "./semantic-search";
 import { z } from "zod";
-import { useForm, UseFormReturn } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { toast } from "@/hooks/use-toast";
 
 const Sidebar = ({
   filters,
@@ -30,9 +19,8 @@ const Sidebar = ({
   filters: z.infer<typeof FiltersSchema>;
   className: string;
 }) => {
-  const { form, movieFilters, setMovieFilters } =
+  const { form, handleFormSubmit, movieFilters, setMovieFilters } =
     React.useContext(MovieProviderContext);
-  const ref = React.useRef<HTMLFormElement>(null!);
 
   React.useEffect(() => {
     setMovieFilters(filters);
@@ -40,18 +28,6 @@ const Sidebar = ({
 
   const handleReset = () => {
     setMovieFilters(FiltersSchema.parse({}));
-  };
-
-  const onSubmit = (data: z.infer<typeof FiltersSchema>) => {
-    toast({
-      title: "You submitted the following values:",
-      description: (
-        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-        </pre>
-      ),
-    });
-    form.reset({ semanticSearch: "" });
   };
 
   const handleDecadeValuesChange = (values: number[]) => {
@@ -89,32 +65,28 @@ const Sidebar = ({
         className
       )}
     >
-      <Form {...form}>
-        <form ref={ref} onSubmit={form.handleSubmit(onSubmit)}>
-          <div className="flex items-center w-full pt-3 px-4">
-            <h1 className="text-xl flex-1 text-gray-600 dark:text-white">
-              Filtros
-            </h1>
-            <Paintbrush
-              onClick={handleReset}
-              className="h-4 w-4 cursor-pointer hover:text-orange-700"
-            />
-          </div>
-          <Separator />
-          <div className="mt-2 flex flex-col gap-4 items-center px-4">
-            <MovieSorter />
-            <DecadeSlider
-              setDecade={handleDecadeValuesChange}
-              range={[movieFilters.decadeMin, movieFilters.decadeMax]}
-            />
-            <ScoreSlider
-              setScore={handleScoreValuesChange}
-              range={[movieFilters.scoreMin, movieFilters.scoreMax]}
-            />
-          </div>
-          <SemanticSearch onSubmit={onSubmit} form={form} formRef={ref} />
-        </form>
-      </Form>
+      <div className="flex items-center w-full pt-3 px-4">
+        <h1 className="text-xl flex-1 text-gray-600 dark:text-white">
+          Filtros
+        </h1>
+        <Paintbrush
+          onClick={handleReset}
+          className="h-4 w-4 cursor-pointer hover:text-orange-700"
+        />
+      </div>
+      <Separator />
+      <div className="mt-2 flex flex-col gap-4 items-center px-4">
+        <MovieSorter />
+        <DecadeSlider
+          setDecade={handleDecadeValuesChange}
+          range={[movieFilters.decadeMin, movieFilters.decadeMax]}
+        />
+        <ScoreSlider
+          setScore={handleScoreValuesChange}
+          range={[movieFilters.scoreMin, movieFilters.scoreMax]}
+        />
+      </div>
+      <SemanticSearch handleFormSubmit={handleFormSubmit} form={form} />
     </aside>
   );
 };

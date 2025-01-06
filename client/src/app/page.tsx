@@ -16,7 +16,6 @@ const Home = async ({
       <Sidebar filters={filters} className="w-full md:w-1/4" />
       <MovieList className="w-full md:w-3/4" />
       <UpdateQueryParams />
-      <Toaster />
     </main>
   );
 };

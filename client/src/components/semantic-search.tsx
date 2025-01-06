@@ -19,23 +19,11 @@ import { FiltersSchema } from "@/lib/utils";
 
 const SemanticSearch = ({
   form,
-  formRef,
-  onSubmit,
+  handleFormSubmit,
 }: {
   form: ReturnType<typeof useForm<z.infer<typeof FiltersSchema>>>;
-  formRef: React.RefObject<HTMLFormElement> | null;
-  onSubmit: (data: z.infer<typeof FiltersSchema>) => void;
+  handleFormSubmit: (event: React.KeyboardEvent) => void;
 }) => {
-  const handleKeyDown = (event: React.KeyboardEvent) => {
-    if (event.key === "Enter") {
-      event.preventDefault();
-
-      if (formRef?.current) {
-        form.handleSubmit(onSubmit)();
-      }
-    }
-  };
-
   return (
     <div className="mt-4 w-full flex-1 px-4 flex flex-col justify-end relative relative">
       <FormField
@@ -47,7 +35,7 @@ const SemanticSearch = ({
               <Textarea
                 placeholder="Búsqueda semántica..."
                 className="resize-none min-h-40 flex-1 bg-gray-50"
-                onKeyDown={handleKeyDown}
+                onKeyDown={handleFormSubmit}
                 {...field}
               />
             </FormControl>

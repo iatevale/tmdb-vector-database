@@ -1,6 +1,6 @@
 "use client";
 
-import { MovieFiltersType, MovieType, MovieResultsType } from "@/types";
+import { MovieType, MovieResultsType } from "@/types";
 import React from "react";
 import Image from "next/image";
 import InfiniteScroll from "./ui/infinite-scroll";
@@ -13,7 +13,7 @@ const MovieList = ({ className }: { className: string }) => {
   const [loading, setLoading] = React.useState(false);
   const [infinitePage, setInfinitePage] = React.useState(1);
 
-  const { movieFilters, setMovieFilters, movieResults, setMovieResults } =
+  const { form, movieFilters, setMovieFilters, movieResults, setMovieResults } =
     React.useContext(MovieProviderContext);
 
   React.useEffect(() => {
@@ -28,6 +28,7 @@ const MovieList = ({ className }: { className: string }) => {
 
     initialFetchMovies();
     setInfinitePage(movieFilters.page);
+    console.log(form.getValues());
   }, [
     movieFilters.page,
     movieFilters.decadeMax,
@@ -36,6 +37,7 @@ const MovieList = ({ className }: { className: string }) => {
     movieFilters.orderDirection,
     movieFilters.scoreMax,
     movieFilters.scoreMin,
+    form,
   ]);
 
   if (movieFilters.page === null) {
