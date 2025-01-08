@@ -8,39 +8,51 @@ import { Skeleton } from "./ui/skeleton";
 import { cx } from "class-variance-authority";
 import { MovieProviderContext } from "@/contexts/movie-list-props";
 import { PaginationWithLinks } from "./ui/pagination-with-links";
+import { fetchMovies, FiltersSchema } from "@/lib/utils";
+import { useSearchParams } from "next/navigation";
+import UpdateQueryParams from "./update-query-params";
 
 const MovieList = ({ className }: { className: string }) => {
-  const [loading, setLoading] = React.useState(false);
-  const [infinitePage, setInfinitePage] = React.useState(1);
-
-  const { form, movieFilters, setMovieFilters, movieResults, setMovieResults } =
+  const { form, movieResults, setMovieResults } =
     React.useContext(MovieProviderContext);
 
+  const [infiniteScrollPage, setInfiniteScrollPage] = React.useState<number>();
+
+  const params = useSearchParams();
+
   React.useEffect(() => {
-    const initialFetchMovies = async () => {
-      if (loading) return;
-      setLoading(true);
+    const fetch = async () => {
+      if (
+        movieResults.status === "loading" ||
+        params.get("page") === null ||
+        (params.get("page") === form.getValues().page.toString() &&
+          movieResults.movies.length > 0)
+      ) {
+        return;
+      }
 
-      const m = await fetchMovies(movieFilters.page);
+      form.setValue("page", Number(params.get("page")));
+      setMovieResults({
+        ...movieResults,
+        status: "loading",
+      });
+
+      const m = await fetchMovies({
+        ...FiltersSchema.parse({}),
+        page: Number(params.get("page")),
+      });
+
+      if (infiniteScrollPage === undefined) {
+        setInfiniteScrollPage(
+          params.get("page") ? Number(params.get("page")) : 1
+        );
+      }
       setMovieResults(m);
-      setLoading(false);
     };
+    fetch();
+  }, [movieResults, params]);
 
-    initialFetchMovies();
-    setInfinitePage(movieFilters.page);
-    console.log(form.getValues());
-  }, [
-    movieFilters.page,
-    movieFilters.decadeMax,
-    movieFilters.decadeMin,
-    movieFilters.orderBy,
-    movieFilters.orderDirection,
-    movieFilters.scoreMax,
-    movieFilters.scoreMin,
-    form,
-  ]);
-
-  if (movieFilters.page === null) {
+  if (form.getValues().page === null) {
     return (
       <Skeleton
         className={cx(
@@ -56,37 +68,28 @@ const MovieList = ({ className }: { className: string }) => {
     );
   }
 
-  const fetchMovies = async (page: number) => {
-    const stringParams = Object.assign(
-      Object.fromEntries(
-        Object.entries(movieFilters).map(([key, value]) => [key, String(value)])
-      ),
-      { page: String(page) }
-    );
-
-    const params = new URLSearchParams(stringParams);
-    const url = new URL(`${process.env.NEXT_PUBLIC_API_URL}/api/movies`);
-    url.search = params.toString();
-    const response = await fetch(url.toString(), {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    const data = await response.json();
-
-    return data;
-  };
-
   const next = async () => {
-    if (movieResults.movies.length === 0 || loading) {
+    if (
+      !infiniteScrollPage ||
+      movieResults.movies.length === 0 ||
+      movieResults.status === "loading"
+    ) {
       return;
     }
 
-    setLoading(true);
-    setInfinitePage(infinitePage + 1);
+    setMovieResults({
+      ...movieResults,
+      status: "loading",
+    });
 
-    const m = await fetchMovies(infinitePage);
+    if (infiniteScrollPage) {
+      setInfiniteScrollPage((infiniteScrollPage as number) + 1);
+    }
+
+    const m = await fetchMovies({
+      ...form.getValues(),
+      page: infiniteScrollPage,
+    });
 
     const unionSinDuplicados = [
       ...new Map(
@@ -97,10 +100,9 @@ const MovieList = ({ className }: { className: string }) => {
       Object.assign({}, movieResults, {
         movies: unionSinDuplicados,
         total: m.total,
+        status: "success",
       }) as MovieResultsType
     );
-
-    setLoading(false);
   };
 
   return (
@@ -111,7 +113,7 @@ const MovieList = ({ className }: { className: string }) => {
         <div className="flex-1"></div>
         <div className="my-1">
           <PaginationWithLinks
-            page={movieFilters.page}
+            page={Number(form.getValues().page)}
             pageSize={16}
             totalCount={movieResults.total}
           />
@@ -130,7 +132,11 @@ const MovieList = ({ className }: { className: string }) => {
             className="rounded-[20px] border border-gray-100 dark:border-gray-600"
           />
         ))}
-        <InfiniteScroll hasMore={true} isLoading={loading} next={next}>
+        <InfiniteScroll
+          hasMore={true}
+          isLoading={movieResults.status === "loading"}
+          next={next}
+        >
           <Skeleton
             className={cx(
               "block",
@@ -143,6 +149,7 @@ const MovieList = ({ className }: { className: string }) => {
             )}
           />
         </InfiniteScroll>
+        <UpdateQueryParams />
       </div>
     </div>
   );

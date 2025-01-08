@@ -4,9 +4,14 @@ import { cx } from "class-variance-authority";
 import { FormControl, FormField, FormItem } from "./ui/form";
 import { MovieProviderContext } from "@/contexts/movie-list-props";
 import { Input } from "./ui/input";
+import { useDebouncedCallback } from "use-debounce";
 
 const SearchBar = ({ className }: { className: string }) => {
   const { form, handleFormSubmit } = useContext(MovieProviderContext);
+
+  const debounced = useDebouncedCallback((values) => {
+    handleFormSubmit(values);
+  }, 1000);
 
   return (
     <div
@@ -28,7 +33,7 @@ const SearchBar = ({ className }: { className: string }) => {
               <Input
                 placeholder="Búsqueda por nombre..."
                 {...field}
-                onKeyDown={handleFormSubmit}
+                onKeyDown={debounced}
               />
             </FormControl>
           </FormItem>

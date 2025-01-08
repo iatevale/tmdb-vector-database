@@ -8,46 +8,23 @@ import DecadeSlider from "./decade-slider";
 import ScoreSlider from "./score-slider";
 import { Paintbrush } from "lucide-react";
 import { MovieProviderContext } from "@/contexts/movie-list-props";
-import { FiltersSchema } from "@/lib/utils";
 import SemanticSearch from "./semantic-search";
-import { z } from "zod";
 
-const Sidebar = ({
-  filters,
-  className,
-}: {
-  filters: z.infer<typeof FiltersSchema>;
-  className: string;
-}) => {
-  const { form, handleFormSubmit, movieFilters, setMovieFilters } =
-    React.useContext(MovieProviderContext);
-
-  React.useEffect(() => {
-    setMovieFilters(filters);
-  }, [filters]);
+const Sidebar = ({ className }: { className?: string }) => {
+  const { form, handleFormSubmit } = React.useContext(MovieProviderContext);
 
   const handleReset = () => {
-    setMovieFilters(FiltersSchema.parse({}));
+    form.reset();
   };
 
   const handleDecadeValuesChange = (values: number[]) => {
-    setMovieFilters(
-      Object.assign({}, movieFilters, {
-        page: 1,
-        decadeMin: values[0],
-        decadeMax: values[1],
-      })
-    );
+    form.setValue("decadeMin", values[0]);
+    form.setValue("decadeMax", values[1]);
   };
 
   const handleScoreValuesChange = (values: number[]) => {
-    setMovieFilters(
-      Object.assign({}, movieFilters, {
-        page: 1,
-        scoreMin: values[0],
-        scoreMax: values[1],
-      })
-    );
+    form.setValue("scoreMin", values[0]);
+    form.setValue("scoreMax", values[1]);
   };
 
   return (
@@ -79,11 +56,11 @@ const Sidebar = ({
         <MovieSorter />
         <DecadeSlider
           setDecade={handleDecadeValuesChange}
-          range={[movieFilters.decadeMin, movieFilters.decadeMax]}
+          range={[form.getValues().decadeMin, form.getValues().decadeMax]}
         />
         <ScoreSlider
           setScore={handleScoreValuesChange}
-          range={[movieFilters.scoreMin, movieFilters.scoreMax]}
+          range={[form.getValues().scoreMin, form.getValues().scoreMax]}
         />
       </div>
       <SemanticSearch handleFormSubmit={handleFormSubmit} form={form} />

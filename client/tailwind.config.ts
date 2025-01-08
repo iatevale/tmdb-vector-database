@@ -7,6 +7,9 @@ export default {
 		"./src/components/**/*.{js,ts,jsx,tsx,mdx}",
 		"./src/app/**/*.{js,ts,jsx,tsx,mdx}",
 	],
+	safeList: [
+		"bg-slate-950"
+	],
 	theme: {
 		extend: {
 			colors: {

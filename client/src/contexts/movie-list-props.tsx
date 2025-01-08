@@ -12,13 +12,12 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import React from "react";
 import { toast } from "@/hooks/use-toast";
+import { useSearchParams } from "next/navigation";
 
 const initialState = {
   form: null,
   formRef: null,
-  movieFilters: FiltersSchema.parse({}),
   movieResults: defaultResults,
-  setMovieFilters: () => null,
   setMovieResults: () => null,
   handleFormSubmit: () => null,
   onFormSubmit: () => null,
@@ -35,20 +34,22 @@ export function MovieProvider({
   const [movieResults, setMovieResults] = useState<MovieResultsType>(
     initialState.movieResults
   );
-  const [movieFilters, setMovieFilters] = useState<
-    z.infer<typeof FiltersSchema>
-  >(FiltersSchema.parse({}));
+
+  const searchParams = useSearchParams();
 
   const form = useForm<z.infer<typeof FiltersSchema>>({
     resolver: zodResolver(FiltersSchema),
-    defaultValues: movieFilters,
+    defaultValues: {
+      ...FiltersSchema.parse({}),
+      ...Object.fromEntries(searchParams),
+    },
   });
 
   const formRef = React.useRef<HTMLFormElement>(null!);
 
   const onFormSubmit = (data: z.infer<typeof FiltersSchema>) => {
     toast({
-      title: "You submitted the following values:",
+      title: "Valores del formulario:",
       variant: "destructive",
       description: (
         <pre className="mt-2 w-[340px] rounded-md p-4">
@@ -62,6 +63,8 @@ export function MovieProvider({
     if (event.key === "Enter") {
       event.preventDefault();
 
+      console.log("hola");
+
       if (formRef?.current) {
         form.handleSubmit(onFormSubmit)();
       }
@@ -73,8 +76,6 @@ export function MovieProvider({
       {...props}
       value={{
         form,
-        movieFilters,
-        setMovieFilters,
         movieResults,
         setMovieResults,
         handleFormSubmit,

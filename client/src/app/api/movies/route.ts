@@ -1,5 +1,5 @@
 "use server";
-import { milvus } from "@/lib/milvus";
+
 import { MovieResponseData } from "@/types";
 import { NextResponse } from 'next/server';
 import type { NextApiRequest, NextApiResponse } from 'next'
@@ -16,6 +16,7 @@ type WhereType = {
     },
     title?: {
         contains: string;
+        mode?: "insensitive";
     }
 }
 const take = 16;
@@ -25,7 +26,7 @@ export const GET = async (
     req: NextApiRequest,
     res: NextApiResponse<MovieResponseData>
 ) => {
-    const { searchParams } = new URL(req.url ?? "");
+    const { searchParams } = new URL(req.url as string, `http://${req.headers.host}`);
     const page = parseInt(searchParams?.get("page") ?? "1")
     const where: WhereType = {}
 
@@ -43,9 +44,11 @@ export const GET = async (
         }
     }
 
+    console.log("hola", req.url, searchParams);
     if (searchParams?.get("search")) {
         where["title"] = {
-            contains: searchParams.get("search") ?? ""
+            contains: searchParams.get("search") ?? "",
+            mode: "insensitive"
         }
     }
 
@@ -63,7 +66,8 @@ export const GET = async (
 
     return NextResponse.json({
         total,
-        movies
+        movies,
+        status: "success"
     });
 
     /*try {

@@ -1,6 +1,3 @@
-# Use postgres/example user/password credentials
-version: '3.9'
-
 services:
 
   db:
@@ -18,6 +15,9 @@ services:
       - 5432:5432
     environment:
       POSTGRES_PASSWORD: movies
+
+    volumes:
+      - ./data:/var/lib/postgresql/data
 
   adminer:
     image: adminer
