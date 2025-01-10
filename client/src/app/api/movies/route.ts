@@ -1,7 +1,7 @@
 "use server";
 
 import { MovieResponseData } from "@/types";
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { prisma } from "@/lib/prisma";
 
@@ -23,40 +23,38 @@ const take = 16;
 // DOC: https://github.com/milvus-io/milvus-sdk-node
 // DOC: https://milvus.io/api-reference/node/v2.5.x/About.md
 export const GET = async (
-    req: NextApiRequest,
-    res: NextApiResponse<MovieResponseData>
+    req: NextRequest,
 ) => {
-    const { searchParams } = new URL(req.url as string, `http://${req.headers.host}`);
-    const page = parseInt(searchParams?.get("page") ?? "1")
+    const searchParams = req.nextUrl.searchParams;
     const where: WhereType = {}
 
-    if (searchParams?.get("scoreMin") && searchParams?.get("scoreMax")) {
+    console.log("page", searchParams.get("page"));
+    if (searchParams.get("scoreMin") && searchParams.get("scoreMax")) {
         where["vote_average"] = {
-            gte: parseFloat(searchParams.get("scoreMin") ?? "0"),
-            lte: parseFloat(searchParams.get("scoreMax") ?? "10")
+            gte: parseFloat(searchParams.get("scoreMin") as string ?? "0"),
+            lte: parseFloat(searchParams.get("scoreMax") as string ?? "10")
         }
     }
 
-    if (searchParams?.get("decadeMin") && searchParams?.get("decadeMax")) {
+    if (searchParams.get("decadeMin") && searchParams.get("decadeMax")) {
         where["release_date"] = {
-            gte: new Date(searchParams.get("decadeMin") ?? ""),
-            lte: new Date(searchParams.get("decadeMax") ?? "")
+            gte: new Date(searchParams.get("decadeMin") as string ?? ""),
+            lte: new Date(searchParams.get("decadeMax") as string ?? "")
         }
     }
 
-    console.log("hola", req.url, searchParams);
-    if (searchParams?.get("search")) {
+    if (searchParams.get("search")) {
         where["title"] = {
-            contains: searchParams.get("search") ?? "",
+            contains: searchParams.get("search") as string ?? "",
             mode: "insensitive"
         }
     }
 
     const query = {
         take,
-        skip: (page - 1) * take,
+        skip: ((Number(searchParams.get("page") as string) || 1) - 1) * take,
         orderBy: {
-            [searchParams?.get("orderBy") || "release_date"]: searchParams?.get("orderDirection") ?? "desc",
+            [searchParams.get("orderBy") as string || "release_date"]: searchParams.get("orderDirection") as string ?? "desc",
         },
         where
     }

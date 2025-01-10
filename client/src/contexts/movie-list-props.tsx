@@ -6,13 +6,15 @@ import {
   MovieResultsType,
 } from "@/types";
 import { createContext, useState } from "react";
-import { defaultResults, FiltersSchema } from "@/lib/utils";
+import { defaultResults, fetchMovies, FiltersSchema } from "@/lib/utils";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import React from "react";
 import { toast } from "@/hooks/use-toast";
 import { useSearchParams } from "next/navigation";
+import { useDebouncedCallback } from "use-debounce";
+import Spinner from "@/components/spinner";
 
 const initialState = {
   form: null,
@@ -36,7 +38,6 @@ export function MovieProvider({
   );
 
   const searchParams = useSearchParams();
-
   const form = useForm<z.infer<typeof FiltersSchema>>({
     resolver: zodResolver(FiltersSchema),
     defaultValues: {
@@ -47,29 +48,43 @@ export function MovieProvider({
 
   const formRef = React.useRef<HTMLFormElement>(null!);
 
-  const onFormSubmit = (data: z.infer<typeof FiltersSchema>) => {
+  const onFormSubmit = async (data: z.infer<typeof FiltersSchema>) => {
     toast({
-      title: "Valores del formulario:",
-      variant: "destructive",
+      title: "Actualizando filtros",
       description: (
-        <pre className="mt-2 w-[340px] rounded-md p-4">
-          <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-        </pre>
+        <div className="flex items-center space-x-2 color-black">
+          <Spinner />
+          <div>Cargando...</div>
+        </div>
       ),
     });
-  };
 
-  const handleFormSubmit = (event: React.KeyboardEvent) => {
-    if (event.key === "Enter") {
-      event.preventDefault();
-
-      console.log("hola");
-
-      if (formRef?.current) {
-        form.handleSubmit(onFormSubmit)();
-      }
+    if (movieResults.status === "loading" || !searchParams.get("page")) {
+      return;
     }
+
+    setMovieResults({
+      ...movieResults,
+      status: "loading",
+    });
+
+    const m = await fetchMovies(Number(searchParams.get("page") ?? "1"), data);
+
+    setMovieResults(m);
   };
+
+  const handleFormSubmit = useDebouncedCallback(
+    (event: React.KeyboardEvent) => {
+      if (event.key === "Enter") {
+        event.preventDefault();
+
+        if (formRef?.current) {
+          form.handleSubmit(onFormSubmit)();
+        }
+      }
+    },
+    1000
+  );
 
   return (
     <MovieProviderContext.Provider

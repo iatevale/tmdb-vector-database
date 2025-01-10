@@ -14,34 +14,32 @@ export const defaultResults: MovieResultsType = {
 };
 
 export const FiltersSchema = z.object({
-  page: z.number().int().min(1).default(1),
   search: z.string().max(300).default(""),
   orderBy: z.string().default("release_date"),
   orderDirection: z.string().default("desc"),
-  scoreMin: z.number().min(7).max(10).default(7),
-  scoreMax: z.number().min(7).max(10).default(10),
-  decadeMin: z.number().min(1900).max(2020).default(1900),
-  decadeMax: z.number().min(1900).max(2020).default(2020),
+  scoreMin: z.string().default("7"),
+  scoreMax: z.string().default("10"),
+  decadeMin: z.string().default("1900"),
+  decadeMax: z.string().default("2020"),
   semanticSearch: z
     .string()
     .max(300, {
       message: "La búsqueda semántica no debe ser superior a 300 caracteres.",
-    })
-    .default(""),
+    }).default(""),
 });
 
-export const fetchMovies = async (filters: z.infer<typeof FiltersSchema>) => {
+export const fetchMovies = async (page: number, filters: z.infer<typeof FiltersSchema>) => {
   const stringParams = Object.assign(
     Object.fromEntries(
       Object.entries(filters).map(([key, value]) => [
         key,
         String(value),
-      ])
-    ),
+      ])),
+    { page: String(page) }
   );
 
   const params = new URLSearchParams(stringParams);
-  const url = new URL(`${process.env.NEXT_PUBLIC_API_URL}/api/movies`);
+  const url = new URL(`${process.env.NEXT_PUBLIC_API_URL}/api/movies?${params.toString()}`);
   url.search = params.toString();
   const response = await fetch(url.toString(), {
     method: "GET",

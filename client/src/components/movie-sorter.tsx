@@ -21,12 +21,13 @@ import { Button } from "@/components/ui/button";
 import { MovieProviderContext } from "@/contexts/movie-list-props";
 
 const MovieSorter = () => {
-  const { form } = React.useContext(MovieProviderContext);
+  const { form, onFormSubmit } = React.useContext(MovieProviderContext);
 
   const handleSort = (orderBy: string, orderDirection: string) => {
+    console.log("Sorting by", orderBy, orderDirection);
     form.setValue("orderBy", orderBy);
     form.setValue("orderDirection", orderDirection);
-    form.setValue("page", 1);
+    form.handleSubmit(onFormSubmit)();
   };
 
   const getSortDescription = (orderBy: string, orderDirection: string) => {

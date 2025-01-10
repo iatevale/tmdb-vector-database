@@ -1,8 +1,9 @@
 "use client";
 import { MovieProviderContext } from "@/contexts/movie-list-props";
+import isEqual from "lodash.isequal";
 import { FiltersSchema } from "@/lib/utils";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import React, { use } from "react";
+import React from "react";
 import { z } from "zod";
 
 const UpdateQueryParams = () => {
@@ -11,36 +12,20 @@ const UpdateQueryParams = () => {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const { replace } = useRouter();
-
-  const same = (
-    obj1: z.infer<typeof FiltersSchema>,
-    obj2: z.infer<typeof FiltersSchema>
-  ) => {
-    const keys1 = Object.keys(obj1);
-    const keys2 = Object.keys(obj2);
-
-    if (keys1.length !== keys2.length) return false;
-
-    return keys1
-      .filter((k) => k !== "page")
-      .every(
-        (key) =>
-          obj2.hasOwnProperty(key as keyof z.infer<typeof FiltersSchema>) &&
-          obj1[key as keyof z.infer<typeof FiltersSchema>] ==
-            obj2[key as keyof z.infer<typeof FiltersSchema>]
-      );
-  };
+  const watchValues = form.watch();
 
   React.useEffect(() => {
     if (
-      same(
-        form.getValues(),
+      isEqual(
+        watchValues,
         Object.fromEntries(searchParams) as unknown as z.infer<
           typeof FiltersSchema
         >
       )
     )
       return;
+
+    // if (Object.keys(Object.fromEntries(searchParams)).length > 0) return;
 
     const stringParams = Object.assign(
       Object.fromEntries(
@@ -54,7 +39,7 @@ const UpdateQueryParams = () => {
     const params = new URLSearchParams(stringParams);
 
     replace(`${pathname}?${params.toString()}`);
-  }, [searchParams, form.getValues()]);
+  }, [searchParams, watchValues]);
   return null;
 };
 

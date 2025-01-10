@@ -32,7 +32,7 @@ const SemanticSearch = ({
             <FormControl>
               <Textarea
                 placeholder="Búsqueda semántica..."
-                className="resize-none min-h-40 flex-1 bg-gray-50"
+                className="resize-none min-h-40 flex-1 bg-gray-50 dark:bg-gray-800"
                 onKeyDown={handleFormSubmit}
                 {...field}
               />

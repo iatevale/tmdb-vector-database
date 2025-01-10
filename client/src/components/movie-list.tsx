@@ -10,47 +10,35 @@ import { MovieProviderContext } from "@/contexts/movie-list-props";
 import { PaginationWithLinks } from "./ui/pagination-with-links";
 import { fetchMovies, FiltersSchema } from "@/lib/utils";
 import { useSearchParams } from "next/navigation";
-import UpdateQueryParams from "./update-query-params";
 
 const MovieList = ({ className }: { className: string }) => {
   const { form, movieResults, setMovieResults } =
     React.useContext(MovieProviderContext);
-
   const [infiniteScrollPage, setInfiniteScrollPage] = React.useState<number>();
 
   const params = useSearchParams();
 
   React.useEffect(() => {
     const fetch = async () => {
-      if (
-        movieResults.status === "loading" ||
-        params.get("page") === null ||
-        (params.get("page") === form.getValues().page.toString() &&
-          movieResults.movies.length > 0)
-      ) {
+      if (movieResults.status === "loading") {
         return;
       }
 
-      form.setValue("page", Number(params.get("page")));
       setMovieResults({
         ...movieResults,
         status: "loading",
       });
 
-      const m = await fetchMovies({
-        ...FiltersSchema.parse({}),
-        page: Number(params.get("page")),
-      });
+      const m = await fetchMovies(
+        Number(params.get("page") ?? "1"),
+        form.getValues()
+      );
 
-      if (infiniteScrollPage === undefined) {
-        setInfiniteScrollPage(
-          params.get("page") ? Number(params.get("page")) : 1
-        );
-      }
       setMovieResults(m);
     };
     fetch();
-  }, [movieResults, params]);
+    setInfiniteScrollPage(Number(params.get("page") ?? "1"));
+  }, [params.get("page")]);
 
   if (form.getValues().page === null) {
     return (
@@ -86,10 +74,7 @@ const MovieList = ({ className }: { className: string }) => {
       setInfiniteScrollPage((infiniteScrollPage as number) + 1);
     }
 
-    const m = await fetchMovies({
-      ...form.getValues(),
-      page: infiniteScrollPage,
-    });
+    const m = await fetchMovies(infiniteScrollPage, form.getValues());
 
     const unionSinDuplicados = [
       ...new Map(
@@ -113,7 +98,7 @@ const MovieList = ({ className }: { className: string }) => {
         <div className="flex-1"></div>
         <div className="my-1">
           <PaginationWithLinks
-            page={Number(form.getValues().page)}
+            page={Number(params.get("page") ?? "1")}
             pageSize={16}
             totalCount={movieResults.total}
           />
@@ -149,7 +134,6 @@ const MovieList = ({ className }: { className: string }) => {
             )}
           />
         </InfiniteScroll>
-        <UpdateQueryParams />
       </div>
     </div>
   );
