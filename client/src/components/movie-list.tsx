@@ -14,11 +14,12 @@ import { useSearchParams } from "next/navigation";
 const MovieList = ({ className }: { className: string }) => {
   const { form, movieResults, setMovieResults } =
     React.useContext(MovieProviderContext);
-  const [infiniteScrollPage, setInfiniteScrollPage] = React.useState<number>();
+  const [infiniteScrollPage, setInfiniteScrollPage] = React.useState<number>(1);
 
   const params = useSearchParams();
 
   React.useEffect(() => {
+    const page = Number(params.get("page") ?? "1");
     const fetch = async () => {
       if (movieResults.status === "loading") {
         return;
@@ -29,18 +30,15 @@ const MovieList = ({ className }: { className: string }) => {
         status: "loading",
       });
 
-      const m = await fetchMovies(
-        Number(params.get("page") ?? "1"),
-        form.getValues()
-      );
+      const m = await fetchMovies(page, form.getValues());
 
       setMovieResults(m);
     };
     fetch();
-    setInfiniteScrollPage(Number(params.get("page") ?? "1"));
+    setInfiniteScrollPage(page);
   }, [params.get("page")]);
 
-  if (form.getValues().page === null) {
+  if (movieResults.total === 0) {
     return (
       <Skeleton
         className={cx(
@@ -90,6 +88,11 @@ const MovieList = ({ className }: { className: string }) => {
     );
   };
 
+  console.log(
+    Number(params.get("page") ?? "1" + 1) * 16,
+    movieResults.total,
+    Number(params.get("page") ?? "1" + 1) * 16 < movieResults.total
+  );
   return (
     <div
       className={cx("flex", "flex-col", "pt-4", "w-full", "px-8", className)}
@@ -118,7 +121,7 @@ const MovieList = ({ className }: { className: string }) => {
           />
         ))}
         <InfiniteScroll
-          hasMore={true}
+          hasMore={infiniteScrollPage * 16 < movieResults.total}
           isLoading={movieResults.status === "loading"}
           next={next}
         >
@@ -126,11 +129,8 @@ const MovieList = ({ className }: { className: string }) => {
             className={cx(
               "block",
               "w-full",
-              "h-[160px] md:h-[240px]",
-              "rounded-[20px]",
-              "border",
-              "border-gray-100",
-              "dark:border-gray-600"
+              "bg-white",
+              "h-[160px] md:h-[240px]"
             )}
           />
         </InfiniteScroll>

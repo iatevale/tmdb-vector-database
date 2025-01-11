@@ -18,6 +18,7 @@ const Sidebar = ({ className }: { className?: string }) => {
 
   const handleReset = () => {
     form.reset();
+    form.handleSubmit(onFormSubmit)();
   };
 
   const handleDecadeValuesChange = async (values: number[]) => {

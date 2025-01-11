@@ -59,7 +59,7 @@ export function MovieProvider({
       ),
     });
 
-    if (movieResults.status === "loading" || !searchParams.get("page")) {
+    if (movieResults.status === "loading") {
       return;
     }
 

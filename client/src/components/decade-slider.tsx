@@ -18,7 +18,9 @@ const DecadeSlider = ({
 
   const handleValuesChange = (values: number[]) => {
     setValues(values);
-    debounced(values);
+    if (values[0] !== range[0] || values[1] !== range[1]) {
+      debounced(values);
+    }
   };
 
   React.useEffect(() => {

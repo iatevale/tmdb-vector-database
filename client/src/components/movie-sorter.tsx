@@ -24,10 +24,14 @@ const MovieSorter = () => {
   const { form, onFormSubmit } = React.useContext(MovieProviderContext);
 
   const handleSort = (orderBy: string, orderDirection: string) => {
-    console.log("Sorting by", orderBy, orderDirection);
-    form.setValue("orderBy", orderBy);
-    form.setValue("orderDirection", orderDirection);
-    form.handleSubmit(onFormSubmit)();
+    if (
+      form.getValues().orderBy !== orderBy ||
+      form.getValues().orderDirection !== orderDirection
+    ) {
+      form.setValue("orderBy", orderBy);
+      form.setValue("orderDirection", orderDirection);
+      form.handleSubmit(onFormSubmit)();
+    }
   };
 
   const getSortDescription = (orderBy: string, orderDirection: string) => {
