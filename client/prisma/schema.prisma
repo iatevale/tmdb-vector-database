@@ -14,22 +14,26 @@ datasource db {
 }
 
 model Movie {
-  id               Int       @id @default(autoincrement())
-  imdb_id          String?
-  backdrop_path    String?
-  budget           Float?
-  original_title   String?
-  overview         String?
-  popularity       Float?
-  poster_path      String?
-  release_date     DateTime?
-  revenue          Float?
-  runtime          Int?
-  status           String?
-  tagline          String?
-  title            String?
-  vote_average     Float?
-  vote_count       Int?
-  spoken_languages String?
-  genres           String?
+  id                   Int       @id
+  imdb_id              String?
+  backdrop_path        String?
+  budget               Float?
+  original_title       String?
+  original_title_slug  String?
+  overview             String?
+  popularity           Float?
+  poster_path          String?
+  release_date         DateTime?
+  revenue              Float?
+  runtime              Int?
+  status               String?
+  tagline              String?
+  title                String?
+  title_slug           String?
+  vote_average         Float?
+  vote_count           Int?
+  spoken_languages     String?
+  genres               String?
+  wikipedia_url_es     String?
+  wikipedia_content_es String?
 }

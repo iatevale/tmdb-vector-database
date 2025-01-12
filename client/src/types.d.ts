@@ -1,5 +1,6 @@
 export type MovieType = {
     original_title: string;
+    original_title_slug: string;
     vote_average: number;
     popularity: number;
     poster_path: string;
@@ -7,6 +8,7 @@ export type MovieType = {
     revenue: number;
     genres: string;
     title: string;
+    title_slug: string;
     vote_count: number;
     imdb_id: string;
     status: string;

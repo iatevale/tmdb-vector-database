@@ -1,7 +1,6 @@
 "use client";
 import React, { useContext } from "react";
 import { cx } from "class-variance-authority";
-import { FormControl, FormField, FormItem } from "./ui/form";
 import { MovieProviderContext } from "@/contexts/movie-list-props";
 import { Input } from "./ui/input";
 import { Search } from "lucide-react";

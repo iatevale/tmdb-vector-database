@@ -10,6 +10,8 @@ import { MovieProviderContext } from "@/contexts/movie-list-props";
 import { PaginationWithLinks } from "./ui/pagination-with-links";
 import { fetchMovies, FiltersSchema } from "@/lib/utils";
 import { useSearchParams } from "next/navigation";
+import Link from "next/link";
+import MovieCard from "./movie-card";
 
 const MovieList = ({ className }: { className: string }) => {
   const { form, movieResults, setMovieResults } =
@@ -110,15 +112,9 @@ const MovieList = ({ className }: { className: string }) => {
 
       <div className="w-full max-[900px]:grid-cols-4 max-[600px]:grid-cols-3 max-[300px]:grid-cols-2 grid mx-auto mb-10 w-3/4 max-w-6xl grid-cols-5 gap-2 pb-10">
         {movieResults.movies.map((movie: MovieType) => (
-          <Image
-            key={movie.id}
-            src={`https://image.tmdb.org/t/p/w1280${movie.poster_path}`}
-            alt={movie.title}
-            width={200}
-            height={300}
-            priority
-            className="rounded-[20px] border border-gray-100 dark:border-gray-600"
-          />
+          <Link key={movie.id} href={`/peli/${movie.title_slug}`}>
+            <MovieCard movie={movie} />
+          </Link>
         ))}
         <InfiniteScroll
           hasMore={infiniteScrollPage * 16 < movieResults.total}

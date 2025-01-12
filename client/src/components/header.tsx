@@ -21,11 +21,11 @@ const Header = () => {
         "justify-between"
       )}
     >
-      <Logo className="w-1/4 justify-center" />
-      <div className="w-3/4">
+      <Logo className="w-1/4" />
+      <div className="w-2/4 flex-1">
         <SearchBar className="hidden md:flex" />
       </div>
-      <div className="w-1/4 flex justify-end">
+      <div className="flex justify-end">
         <Link
           href="https://github.com/iatevale/tmdb-vector-database"
           className={cx(
