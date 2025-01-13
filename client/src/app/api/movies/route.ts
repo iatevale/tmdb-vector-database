@@ -4,6 +4,7 @@ import { MovieResponseData } from "@/types";
 import { NextRequest, NextResponse } from 'next/server';
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { prisma } from "@/lib/prisma";
+import { addYears } from "date-fns";
 
 type WhereType = {
     vote_average?: {
@@ -39,7 +40,7 @@ export const GET = async (
     if (searchParams.get("decadeMin") && searchParams.get("decadeMax")) {
         where["release_date"] = {
             gte: new Date(searchParams.get("decadeMin") as string ?? ""),
-            lte: new Date(searchParams.get("decadeMax") as string ?? "")
+            lte: addYears(new Date(searchParams.get("decadeMax") as string ?? ""), 10)
         }
     }
 

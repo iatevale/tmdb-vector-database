@@ -5,16 +5,18 @@
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["postgresqlExtensions"]
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider   = "postgresql"
+  url        = env("DATABASE_URL")
+  extensions = [vector]
 }
 
 model Movie {
-  id                   Int       @id
+  id                   Int                          @id
   imdb_id              String?
   backdrop_path        String?
   budget               Float?
@@ -36,4 +38,7 @@ model Movie {
   genres               String?
   wikipedia_url_es     String?
   wikipedia_content_es String?
+  ollama_embeddings    Unsupported("vector(1024)")?
+  openai_embeddings    Unsupported("vector(1536)")?
+  vertex_embeddings    Unsupported("vector(1536)")?
 }
