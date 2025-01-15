@@ -1,7 +1,33 @@
 import React from "react";
+import { MultiSelect } from "./ui/multi-select";
 
-const GenreSelector = () => {
-  return <div>GenreSelector</div>;
+interface GenreSelectorProps {
+  setGenres: (genres: string[]) => void;
+}
+
+const GenreSelector: React.FC<GenreSelectorProps & { genres: string[] }> = ({
+  genres,
+  setGenres,
+}) => {
+  const [allGenres, setAllGenres] = React.useState([]);
+
+  React.useEffect(() => {
+    fetch("/api/genres")
+      .then((response) => response.json())
+      .then((data) => setAllGenres(data.genres));
+  }, []);
+
+  return (
+    <MultiSelect
+      options={allGenres}
+      onValueChange={setGenres}
+      defaultValue={genres}
+      placeholder="Selecciona un género"
+      variant="inverted"
+      animation={2}
+      maxCount={3}
+    />
+  );
 };
 
 export default GenreSelector;

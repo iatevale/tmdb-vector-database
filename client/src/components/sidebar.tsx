@@ -34,6 +34,11 @@ const Sidebar = ({ className }: { className?: string }) => {
     form.handleSubmit(onFormSubmit)();
   };
 
+  const handeGenresChange = async (values: string[]) => {
+    form.setValue("genres", values);
+    form.handleSubmit(onFormSubmit)();
+  };
+
   return (
     <aside
       className={cx(
@@ -72,7 +77,10 @@ const Sidebar = ({ className }: { className?: string }) => {
               range={[form.getValues().scoreMin, form.getValues().scoreMax]}
             />
             <Separator />
-            <GenreSelector />
+            <GenreSelector
+              setGenres={handeGenresChange}
+              genres={form.getValues().genres}
+            />
           </div>
           <SemanticSearch handleFormSubmit={handleFormSubmit} form={form} />
           <Toaster />

@@ -21,6 +21,7 @@ export const FiltersSchema = z.object({
   scoreMax: z.string().default("10"),
   decadeMin: z.string().default("1900"),
   decadeMax: z.string().default("2020"),
+  genres: z.array(z.string()).default([]),
   semanticSearch: z
     .string()
     .max(300, {

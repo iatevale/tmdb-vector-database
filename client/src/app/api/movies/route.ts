@@ -1,8 +1,6 @@
 "use server";
 
-import { MovieResponseData } from "@/types";
 import { NextRequest, NextResponse } from 'next/server';
-import type { NextApiRequest, NextApiResponse } from 'next'
 import { prisma } from "@/lib/prisma";
 import { addYears } from "date-fns";
 
@@ -16,13 +14,14 @@ type WhereType = {
         lte: Date;
     },
     genres?: {
-        equals: string;
+        hasEvery?: string[];
     },
     title?: {
         contains: string;
         mode?: "insensitive";
     }
 }
+
 const take = 16;
 // DOC: https://github.com/milvus-io/milvus-sdk-node
 // DOC: https://milvus.io/api-reference/node/v2.5.x/About.md
@@ -31,6 +30,12 @@ export const GET = async (
 ) => {
     const searchParams = req.nextUrl.searchParams;
     const where: WhereType = {}
+
+    if (searchParams.get("genres")) {
+        where["genres"] = {
+            hasEvery: searchParams.get("genres")?.split(",") || [],
+        }
+    }
 
     if (searchParams.get("scoreMin") && searchParams.get("scoreMax")) {
         where["vote_average"] = {
