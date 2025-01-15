@@ -5,10 +5,12 @@ import { MovieProviderContext } from "@/contexts/movie-list-props";
 import { Input } from "./ui/input";
 import { Search } from "lucide-react";
 import { useDebouncedCallback } from "use-debounce";
+import { usePathname } from "next/navigation";
 
 const SearchBar = ({ className }: { className: string }) => {
   const { form, onFormSubmit } = useContext(MovieProviderContext);
   const [search, setSearch] = React.useState<string>("");
+  const pathname = usePathname();
 
   const debounced = useDebouncedCallback(() => {
     form.setValue("search", search);
@@ -19,6 +21,8 @@ const SearchBar = ({ className }: { className: string }) => {
     setSearch(e.target.value);
     debounced();
   };
+
+  if (pathname !== "/") return null;
 
   return (
     <div

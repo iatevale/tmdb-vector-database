@@ -11,6 +11,7 @@ import { MovieProviderContext } from "@/contexts/movie-list-props";
 import SemanticSearch from "./semantic-search";
 import { Toaster } from "./ui/toaster";
 import { Form } from "./ui/form";
+import GenreSelector from "./genre-selector";
 
 const Sidebar = ({ className }: { className?: string }) => {
   const { form, formRef, handleFormSubmit, onFormSubmit } =
@@ -70,6 +71,8 @@ const Sidebar = ({ className }: { className?: string }) => {
               setScore={handleScoreValuesChange}
               range={[form.getValues().scoreMin, form.getValues().scoreMax]}
             />
+            <Separator />
+            <GenreSelector />
           </div>
           <SemanticSearch handleFormSubmit={handleFormSubmit} form={form} />
           <Toaster />

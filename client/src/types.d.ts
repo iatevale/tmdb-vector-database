@@ -6,7 +6,7 @@ export type MovieType = {
     poster_path: string;
     tagline: string;
     revenue: number;
-    genres: string;
+    genres: string[];
     title: string;
     title_slug: string;
     vote_count: number;
@@ -15,10 +15,11 @@ export type MovieType = {
     budget: number;
     backdrop_path: string;
     runtime: number;
-    release_date: string;
+    release_date: Date;
     spoken_languages: string;
     overview: string;
     id: number;
+    related?: MovieType[];
 }
 
 export type MovieResponseData = {

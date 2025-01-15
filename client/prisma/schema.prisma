@@ -35,7 +35,7 @@ model Movie {
   vote_average         Float?
   vote_count           Int?
   spoken_languages     String?
-  genres               String?
+  genres               String[]
   wikipedia_url_es     String?
   wikipedia_content_es String?
   ollama_embeddings    Unsupported("vector(1024)")?

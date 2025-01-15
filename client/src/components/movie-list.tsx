@@ -90,11 +90,6 @@ const MovieList = ({ className }: { className: string }) => {
     );
   };
 
-  console.log(
-    Number(params.get("page") ?? "1" + 1) * 16,
-    movieResults.total,
-    Number(params.get("page") ?? "1" + 1) * 16 < movieResults.total
-  );
   return (
     <div
       className={cx("flex", "flex-col", "pt-4", "w-full", "px-8", className)}

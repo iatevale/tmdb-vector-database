@@ -15,6 +15,9 @@ type WhereType = {
         gte: Date;
         lte: Date;
     },
+    genres?: {
+        equals: string;
+    },
     title?: {
         contains: string;
         mode?: "insensitive";
@@ -29,7 +32,6 @@ export const GET = async (
     const searchParams = req.nextUrl.searchParams;
     const where: WhereType = {}
 
-    console.log("page", searchParams.get("page"));
     if (searchParams.get("scoreMin") && searchParams.get("scoreMax")) {
         where["vote_average"] = {
             gte: parseFloat(searchParams.get("scoreMin") as string ?? "0"),
@@ -68,18 +70,4 @@ export const GET = async (
         movies,
         status: "success"
     });
-
-    /*try {
-        await milvus.init();
-        const result: MovieResponseData = await milvus.query({
-            collection_name: "movies",
-            output_fields: ["id", "title", "runtime", "poster_path", "release_date", "vote_average"],
-            expr: "runtime > 150",
-            limit: 12,
-            offset: (page - 1) * 12,
-        });
-        return NextResponse.json(result.data);
-    } catch (error) {
-        return NextResponse.json(error, { status: 500 });
-    }*/
 }
