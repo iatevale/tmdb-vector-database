@@ -13,7 +13,7 @@ import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import MovieCard from "./movie-card";
 
-const MovieList = ({ className }: { className: string }) => {
+const MovieList = ({ className }: { className?: string }) => {
   const { form, movieResults, setMovieResults } =
     React.useContext(MovieProviderContext);
   const [infiniteScrollPage, setInfiniteScrollPage] = React.useState<number>(1);
@@ -50,7 +50,9 @@ const MovieList = ({ className }: { className: string }) => {
           "rounded-[20px]",
           "border",
           "border-gray-100",
-          "dark:border-gray-600"
+          "dark:border-gray-600",
+          "w-full",
+          "xl:w-3/4"
         )}
       />
     );
@@ -92,19 +94,15 @@ const MovieList = ({ className }: { className: string }) => {
 
   return (
     <div
-      className={cx("flex", "flex-col", "pt-4", "w-full", "px-8", className)}
+      className={cx(
+        "flex",
+        "flex-col",
+        "pt-4",
+        "w-full",
+        "lg:w-3/4",
+        className
+      )}
     >
-      <div className="flex items-center justify-between">
-        <div className="flex-1"></div>
-        <div className="my-1">
-          <PaginationWithLinks
-            page={Number(params.get("page") ?? "1")}
-            pageSize={16}
-            totalCount={movieResults.total}
-          />
-        </div>
-      </div>
-
       <div className="w-full max-[900px]:grid-cols-4 max-[600px]:grid-cols-3 max-[300px]:grid-cols-2 grid mx-auto mb-10 w-3/4 max-w-6xl grid-cols-5 gap-2 pb-10">
         {movieResults.movies.map((movie: MovieType) => (
           <Link key={movie.id} href={`/peli/${movie.title_slug}`}>

@@ -20,6 +20,7 @@ export type MovieType = {
     overview: string;
     id: number;
     related?: MovieType[];
+    proximidad?: number;
 }
 
 export type MovieResponseData = {

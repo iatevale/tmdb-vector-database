@@ -36,7 +36,11 @@ const SearchBar = ({ className }: { className: string }) => {
         className
       )}
     >
-      <Input className="pl-9" placeholder="Buscar..." onChange={handleChange} />
+      <Input
+        className="pl-9 dark:bg-gray-600"
+        placeholder="Buscar..."
+        onChange={handleChange}
+      />
       <Search
         className="absolute left-3 top-2 h-5 w-5 text-gray-500" // Posicionamiento absoluto
       />

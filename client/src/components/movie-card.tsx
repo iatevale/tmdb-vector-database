@@ -1,12 +1,26 @@
+"use client";
 import { MovieType } from "@/types";
 import React from "react";
 import Image from "next/image";
 import { cx } from "class-variance-authority";
 import { format } from "date-fns";
+import { motion } from "framer-motion";
 
 const MovieCard = ({ movie }: { movie: MovieType }) => {
   return (
-    <div className="relative group">
+    <motion.div
+      className="bg-white rounded-2xl overflow-hidden shadow-md cursor-pointer"
+      whileHover={{
+        scale: 1.03,
+        boxShadow: "0px 6px 12px rgba(0, 0, 0, 0.1)", // Sombras más ligeras
+      }}
+      transition={{
+        type: "spring",
+        stiffness: 200, // Transición más fluida
+        damping: 10, // Reduce el rebote
+      }}
+    >
+      {" "}
       <div
         className={cx(
           "absolute",
@@ -19,7 +33,6 @@ const MovieCard = ({ movie }: { movie: MovieType }) => {
           "text-white",
           "font-bold",
           "text-xs",
-          "rounded-lg",
           "border",
           "border-orange-100",
           "dark:border-gray-600"
@@ -33,7 +46,7 @@ const MovieCard = ({ movie }: { movie: MovieType }) => {
         width={200}
         height={300}
         priority
-        className="rounded-[20px] border border-gray-100 dark:border-gray-600"
+        className="border border-gray-100 dark:border-gray-600"
       />
       <div
         className={cx(
@@ -58,7 +71,7 @@ const MovieCard = ({ movie }: { movie: MovieType }) => {
       >
         {movie.title} ({format(movie.release_date, "yyyy")})
       </div>
-    </div>
+    </motion.div>
   );
 };
 

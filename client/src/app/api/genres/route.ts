@@ -11,7 +11,7 @@ type GenreType = {
 export const GET = async (
     req: NextRequest,
 ) => {
-    const genres: GenreType[] = await prisma.$queryRaw`SELECT DISTINCT UNNEST(genres) AS genre FROM "Movie";`;
+    const genres: GenreType[] = await prisma.$queryRaw`SELECT DISTINCT UNNEST(genres) AS genre FROM "Movie" order by UNNESt(genres);`;
 
     return NextResponse.json({
         genres: genres.map((g: { genre: string }) => ({

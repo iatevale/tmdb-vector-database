@@ -26,6 +26,7 @@ const GenreSelector: React.FC<GenreSelectorProps & { genres: string[] }> = ({
       variant="inverted"
       animation={2}
       maxCount={3}
+      className="dark:bg-gray-600"
     />
   );
 };

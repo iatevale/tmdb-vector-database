@@ -23,7 +23,7 @@ const SemanticSearch = ({
   handleFormSubmit: (event: React.KeyboardEvent) => void;
 }) => {
   return (
-    <div className="mt-4 w-full flex-1 px-4 flex flex-col justify-end relative relative">
+    <div className="mt-2 w-full flex-1 flex flex-col justify-end relative relative">
       <FormField
         control={form.control}
         name="semanticSearch"
@@ -32,7 +32,7 @@ const SemanticSearch = ({
             <FormControl>
               <Textarea
                 placeholder="Búsqueda semántica..."
-                className="resize-none min-h-40 flex-1 bg-gray-50 dark:bg-gray-800"
+                className="resize-none min-h-40 flex-1 bg-gray-50 dark:bg-gray-600"
                 onKeyDown={handleFormSubmit}
                 {...field}
               />

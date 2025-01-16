@@ -72,7 +72,7 @@ const MovieSorter = () => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline" className="h-12">
+        <Button variant="outline" className="h-12 dark:bg-gray-600">
           <div className="flex justify-between gap-4 items-center w-full py-2">
             {getSortIcon(form.getValues().orderBy)}
             <div className="flex flex-col items-start">

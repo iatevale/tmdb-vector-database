@@ -28,9 +28,9 @@ const ScoreSlider = ({
   }, [range]);
 
   return (
-    <div className="flex flex-col gap-4 items-center w-full">
-      <p className="self-start mb-4">Nota</p>
-      <div className="px-4 w-full">
+    <div className="flex flex-col gap-4 items-center w-full px-4 mb-2">
+      <p className="mb-0">Nota</p>
+      <div className="w-full">
         <DualRangeSlider
           label={(value) => value}
           value={values}

@@ -6,7 +6,7 @@ const debug = () => {
   const { movieResults, form } = React.useContext(MovieProviderContext);
 
   return (
-    <div className="bg-yellow-100 dark:bg-yellow-900 p-2 flex flex-wrap justify-center items-start text-xs flex gap-4 w-full">
+    <div className="bg-yellow-100 dark:bg-orange-900 rounded-lg p-2 flex flex-wrap justify-center items-start text-xs flex gap-4 w-full">
       {Object.entries(form.getValues()).map(([key, value]) => (
         <div key={key} className="text-center flex flex-col">
           <strong>{key}</strong> {value as React.ReactNode}

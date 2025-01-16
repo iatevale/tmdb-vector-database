@@ -5,6 +5,7 @@ import Link from "next/link";
 import Logo from "./logo";
 import SearchBar from "./search-bar";
 import { GitHubLogoIcon } from "@radix-ui/react-icons";
+import Pagination from "./pagination";
 
 const Header = () => {
   return (
@@ -12,8 +13,6 @@ const Header = () => {
       className={cx(
         "mt-4",
         "w-full",
-        "px-4",
-        "md:px-8",
         "flex",
         "gap-8",
         "mb-2 ",
@@ -22,9 +21,7 @@ const Header = () => {
       )}
     >
       <Logo className="w-1/4" />
-      <div className="w-2/4 flex-1">
-        <SearchBar className="hidden md:flex" />
-      </div>
+      <Pagination />
       <div className="flex justify-end">
         <Link
           href="https://github.com/iatevale/tmdb-vector-database"

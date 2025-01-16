@@ -12,6 +12,7 @@ import SemanticSearch from "./semantic-search";
 import { Toaster } from "./ui/toaster";
 import { Form } from "./ui/form";
 import GenreSelector from "./genre-selector";
+import SearchBar from "./search-bar";
 
 const Sidebar = ({ className }: { className?: string }) => {
   const { form, formRef, handleFormSubmit, onFormSubmit } =
@@ -47,26 +48,21 @@ const Sidebar = ({ className }: { className?: string }) => {
         "justify-start",
         "items-center",
         "rounded-lg",
-        "px-4",
-        "py-2",
-        "dark:bg-gray-900",
-        "min-h-[calc(100vh-9rem)]",
+        "lg:max-w-1/4",
         className
       )}
     >
       <Form {...form} onSubmit={form.handleSubmit(onFormSubmit)}>
         <form ref={formRef}>
-          <div className="flex items-center w-full pt-3 px-4">
-            <h1 className="text-xl flex-1 text-gray-600 dark:text-white">
-              Filtros
-            </h1>
+          <div className="flex items-center justify-end w-full">
             <Paintbrush
               onClick={handleReset}
-              className="h-4 w-4 cursor-pointer hover:text-orange-700"
+              className="h-5 w-5 cursor-pointer hover:text-orange-700"
             />
           </div>
-          <Separator />
-          <div className="mt-2 flex flex-col gap-4 items-center px-4">
+
+          <div className="mt-2 flex flex-col gap-2 items-center w-full">
+            <SearchBar className="md:flex" />
             <MovieSorter />
             <DecadeSlider
               setDecade={handleDecadeValuesChange}
@@ -76,7 +72,6 @@ const Sidebar = ({ className }: { className?: string }) => {
               setScore={handleScoreValuesChange}
               range={[form.getValues().scoreMin, form.getValues().scoreMax]}
             />
-            <Separator />
             <GenreSelector
               setGenres={handeGenresChange}
               genres={form.getValues().genres}

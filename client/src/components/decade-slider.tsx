@@ -29,7 +29,7 @@ const DecadeSlider = ({
 
   return (
     <div className="flex flex-col gap-4 items-center w-full">
-      <p className="self-start mb-4">Década</p>
+      <p className="mb-0">Década</p>
       <div className="px-4 w-full">
         <DualRangeSlider
           label={(value) => value}

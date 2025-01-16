@@ -3,9 +3,9 @@ import Sidebar from "@/components/sidebar";
 
 const Movies = async () => {
   return (
-    <main className="flex-1 flex flex-col items-start md:flex-row">
-      <Sidebar className="w-full md:w-1/4" />
-      <MovieList className="w-full md:w-3/4" />
+    <main className="flex-1 flex flex-col items-start lg:flex-row gap-4">
+      <Sidebar />
+      <MovieList />
     </main>
   );
 };
