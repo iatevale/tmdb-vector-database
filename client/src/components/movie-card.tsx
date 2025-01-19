@@ -9,7 +9,14 @@ import { motion } from "framer-motion";
 const MovieCard = ({ movie }: { movie: MovieType }) => {
   return (
     <motion.div
-      className="bg-white rounded-2xl overflow-hidden shadow-md cursor-pointer"
+      className={cx(
+        "bg-white",
+        "relative",
+        "rounded-2xl",
+        "overflow-hidden",
+        "shadow-md",
+        "cursor-pointer"
+      )}
       whileHover={{
         scale: 1.03,
         boxShadow: "0px 6px 12px rgba(0, 0, 0, 0.1)", // Sombras más ligeras
@@ -46,7 +53,7 @@ const MovieCard = ({ movie }: { movie: MovieType }) => {
         width={200}
         height={300}
         priority
-        className="border border-gray-100 dark:border-gray-600"
+        className="border border-gray-100 dark:border-gray-600 w-full"
       />
       <div
         className={cx(

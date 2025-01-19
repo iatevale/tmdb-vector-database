@@ -25,8 +25,8 @@ const MovieSorter = () => {
 
   const handleSort = (orderBy: string, orderDirection: string) => {
     if (
-      form.getValues().orderBy !== orderBy ||
-      form.getValues().orderDirection !== orderDirection
+      form.getValues("orderBy") !== orderBy ||
+      form.getValues("orderDirection") !== orderDirection
     ) {
       form.setValue("orderBy", orderBy);
       form.setValue("orderDirection", orderDirection);
@@ -74,13 +74,13 @@ const MovieSorter = () => {
       <DropdownMenuTrigger asChild>
         <Button variant="outline" className="h-12 dark:bg-gray-600">
           <div className="flex justify-between gap-4 items-center w-full py-2">
-            {getSortIcon(form.getValues().orderBy)}
+            {getSortIcon(form.getValues("orderBy"))}
             <div className="flex flex-col items-start">
               <h2>Ordenación</h2>
               <p className="text-xs font-light">
                 {getSortDescription(
-                  form.getValues().orderBy,
-                  form.getValues().orderDirection
+                  form.getValues("orderBy"),
+                  form.getValues("orderDirection")
                 )}
               </p>
             </div>

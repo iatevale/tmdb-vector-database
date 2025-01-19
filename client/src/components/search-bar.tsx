@@ -1,28 +1,22 @@
 "use client";
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { cx } from "class-variance-authority";
 import { MovieProviderContext } from "@/contexts/movie-list-props";
 import { Input } from "./ui/input";
 import { Search } from "lucide-react";
 import { useDebouncedCallback } from "use-debounce";
-import { usePathname } from "next/navigation";
+import { FormControl, FormField, FormItem } from "./ui/form";
 
-const SearchBar = ({ className }: { className: string }) => {
+const SearchBar = () => {
   const { form, onFormSubmit } = useContext(MovieProviderContext);
-  const [search, setSearch] = React.useState<string>("");
-  const pathname = usePathname();
 
   const debounced = useDebouncedCallback(() => {
-    form.setValue("search", search);
     form.handleSubmit(onFormSubmit)();
   }, 1000);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearch(e.target.value);
+  useEffect(() => {
     debounced();
-  };
-
-  if (pathname !== "/") return null;
+  }, [form.watch("search")]);
 
   return (
     <div
@@ -32,17 +26,24 @@ const SearchBar = ({ className }: { className: string }) => {
         "justify-start",
         "flex-1",
         "w-full",
-        "relative",
-        className
+        "relative"
       )}
     >
-      <Input
-        className="pl-9 dark:bg-gray-600"
-        placeholder="Buscar..."
-        onChange={handleChange}
-      />
-      <Search
-        className="absolute left-3 top-2 h-5 w-5 text-gray-500" // Posicionamiento absoluto
+      <FormField
+        control={form.control}
+        name="search"
+        render={({ field }) => (
+          <FormItem className="w-full">
+            <FormControl className="border-gray-200">
+              <Input
+                placeholder="Buscar por nombre..."
+                className="pl-10"
+                {...field}
+              />
+            </FormControl>
+            <Search className="absolute left-3 top-0 h-5 w-5 text-gray-500" />
+          </FormItem>
+        )}
       />
     </div>
   );

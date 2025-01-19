@@ -15,12 +15,19 @@ import GenreSelector from "./genre-selector";
 import SearchBar from "./search-bar";
 
 const Sidebar = ({ className }: { className?: string }) => {
+  const [resetGenres, setResetGenres] = React.useState(false);
   const { form, formRef, handleFormSubmit, onFormSubmit } =
     React.useContext(MovieProviderContext);
 
   const handleReset = () => {
     form.reset();
+    form.setValue("search", "");
     form.handleSubmit(onFormSubmit)();
+    localStorage.setItem("formData", JSON.stringify(form.getValues()));
+    setResetGenres(true);
+    setTimeout(() => {
+      setResetGenres(false);
+    }, 500);
   };
 
   const handleDecadeValuesChange = async (values: number[]) => {
@@ -62,22 +69,23 @@ const Sidebar = ({ className }: { className?: string }) => {
           </div>
 
           <div className="mt-2 flex flex-col gap-2 items-center w-full">
-            <SearchBar className="md:flex" />
+            <SearchBar />
             <MovieSorter />
             <DecadeSlider
               setDecade={handleDecadeValuesChange}
-              range={[form.getValues().decadeMin, form.getValues().decadeMax]}
+              range={[form.getValues("decadeMin"), form.getValues("decadeMax")]}
             />
             <ScoreSlider
               setScore={handleScoreValuesChange}
-              range={[form.getValues().scoreMin, form.getValues().scoreMax]}
+              range={[form.getValues("scoreMin"), form.getValues("scoreMax")]}
             />
             <GenreSelector
               setGenres={handeGenresChange}
-              genres={form.getValues().genres}
+              genres={form.getValues("genres")}
+              reset={resetGenres}
             />
           </div>
-          <SemanticSearch handleFormSubmit={handleFormSubmit} form={form} />
+          <SemanticSearch />
           <Toaster />
         </form>
       </Form>

@@ -13,7 +13,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import React from "react";
 import { toast } from "@/hooks/use-toast";
 import { useSearchParams } from "next/navigation";
-import { useDebouncedCallback } from "use-debounce";
 import Spinner from "@/components/spinner";
 
 const initialState = {
@@ -27,6 +26,19 @@ const initialState = {
 
 export const MovieProviderContext =
   createContext<MovieProviderState>(initialState);
+
+const getLocalStorageValues = () => {
+  if (typeof localStorage === "undefined") {
+    return {};
+  }
+
+  const formData = localStorage.getItem("formData");
+  if (!formData) {
+    return {};
+  }
+
+  return JSON.parse(formData);
+};
 
 export function MovieProvider({
   children,
@@ -42,6 +54,7 @@ export function MovieProvider({
     resolver: zodResolver(FiltersSchema),
     defaultValues: {
       ...FiltersSchema.parse({}),
+      ...getLocalStorageValues(),
       ...Object.fromEntries(searchParams),
     },
   });
@@ -49,6 +62,8 @@ export function MovieProvider({
   const formRef = React.useRef<HTMLFormElement>(null!);
 
   const onFormSubmit = async (data: z.infer<typeof FiltersSchema>) => {
+    localStorage.setItem("formData", JSON.stringify(form.getValues()));
+
     toast({
       title: "Actualizando filtros",
       description: (
@@ -73,18 +88,9 @@ export function MovieProvider({
     setMovieResults(m);
   };
 
-  const handleFormSubmit = useDebouncedCallback(
-    (event: React.KeyboardEvent) => {
-      if (event.key === "Enter") {
-        event.preventDefault();
-
-        if (formRef?.current) {
-          form.handleSubmit(onFormSubmit)();
-        }
-      }
-    },
-    1000
-  );
+  const handleFormSubmit = () => {
+    form.handleSubmit(onFormSubmit)();
+  };
 
   return (
     <MovieProviderContext.Provider

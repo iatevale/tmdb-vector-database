@@ -23,6 +23,13 @@ export type MovieType = {
     proximidad?: number;
 }
 
+export type MiniMovieType = {
+    title: string | null;
+    title_slug: string | null;
+    poster_path: string | null;
+    id: number;
+}
+
 export type MovieResponseData = {
     status: {
         extra_info: string;
@@ -51,7 +58,7 @@ export type MovieProviderState = {
     formRef: React.MutableRefObject<HTMLFormElement> | null;
     movieResults: MovieResultsType;
     setMovieResults: (movieResults: MovieResultsType) => void;
-    handleFormSubmit: (event: React.KeyboardEvent) => void;
+    handleFormSubmit: () => void;
     onFormSubmit: (data: z.infer<typeof FiltersSchema>) => void;
 };
 

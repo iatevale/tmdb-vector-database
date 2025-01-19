@@ -103,7 +103,22 @@ const MovieList = ({ className }: { className?: string }) => {
         className
       )}
     >
-      <div className="w-full max-[900px]:grid-cols-4 max-[600px]:grid-cols-3 max-[300px]:grid-cols-2 grid mx-auto mb-10 w-3/4 max-w-6xl grid-cols-5 gap-2 pb-10">
+      <div
+        className={cx(
+          "w-full",
+          "max-[1200px]:grid-cols-4",
+          "max-[600px]:grid-cols-3",
+          "max-[300px]:grid-cols-2",
+          "grid",
+          "mx-auto",
+          "mb-10",
+          "w-3/4",
+          "max-w-6xl",
+          "grid-cols-5",
+          "gap-2",
+          "pb-10"
+        )}
+      >
         {movieResults.movies.map((movie: MovieType) => (
           <Link key={movie.id} href={`/peli/${movie.title_slug}`}>
             <MovieCard movie={movie} />

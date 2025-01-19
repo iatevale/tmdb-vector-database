@@ -3,6 +3,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from "@/lib/prisma";
 import { addYears } from "date-fns";
+import { MiniMovieType, MovieResultsType, MovieType } from '@/types';
 
 type WhereType = {
     vote_average?: {
@@ -19,6 +20,9 @@ type WhereType = {
     title?: {
         contains: string;
         mode?: "insensitive";
+    },
+    id?: {
+        in: number[];
     }
 }
 
@@ -58,7 +62,53 @@ export const GET = async (
         }
     }
 
+    if (searchParams.get("semanticSearch")) {
+        const response = await fetch(
+            `${process.env.NEXT_PUBLIC_OLLAMA_EMBEDDINGS_SERVER}`,
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    model: "mxbai-embed-large",
+                    prompt: searchParams.get("semanticSearch"),
+                }),
+            }
+        );
+        const data = await response.json();
+        const embeddings = `[${data.embedding.join(',')}]`;
+
+        type MovieDistanceType = {
+            id: number;
+            distancia: number;
+        }
+
+        const r: MovieDistanceType[] = await prisma.$queryRawUnsafe(`
+            SELECT id,
+                   (ollama_embeddings <-> '${embeddings}'::vector) AS distancia
+            FROM "Movie"
+            ORDER BY distancia ASC
+            LIMIT 100;
+        `);
+
+        where["id"] = {
+            in: r.map((movie: MovieDistanceType) => movie.id)
+        }
+
+        console.log(r.map((movie: MovieDistanceType) => movie.distancia));
+
+    }
     const query = {
+        select: {
+            id: true,
+            title: true,
+            poster_path: true,
+            title_slug: true,
+            release_date: true,
+            vote_average: true,
+            genres: true,
+        },
         take,
         skip: ((Number(searchParams.get("page") as string) || 1) - 1) * take,
         orderBy: {

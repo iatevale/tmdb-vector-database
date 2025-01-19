@@ -9,7 +9,7 @@ import { Progress } from "./ui/progress";
 
 const RelatedMovieCard = ({ movie }: { movie: MovieType }) => {
   return (
-    <div className="flex flex-col items-center gap-1 text-xs">
+    <div className="flex flex-col items-center justify-end gap-1 text-xs">
       <motion.div
         className="rounded-[12px] overflow-hidden shadow-md cursor-pointer border border-gray-100 dark:border-gray-600"
         whileHover={{

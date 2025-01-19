@@ -14,6 +14,7 @@ export const GET = async (
         }
     });
 
+    // https://ollama.com/blog/embedding-models
     let related: MovieType[] = [];
     if (movie) {
         related = await prisma.$queryRaw`
@@ -32,7 +33,7 @@ export const GET = async (
             FROM Distancias
             )
             SELECT d.id, d.title, d.poster_path, d.title_slug, d.distancia,
-                ROUND(CAST((1 - (d.distancia - 0.15) / NULLIF((r.max_dist - 0.15), 0)) * 100 AS numeric), 2) AS proximidad
+                ROUND(CAST((1 - (d.distancia - r.min_dist) / NULLIF((r.max_dist - r.min_dist), 0)) * 100 AS numeric), 2) AS proximidad
             FROM Distancias d, Rango r
             ORDER BY d.distancia
             LIMIT 10;
