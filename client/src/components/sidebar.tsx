@@ -22,6 +22,7 @@ const Sidebar = ({ className }: { className?: string }) => {
   const handleReset = () => {
     form.reset();
     form.setValue("search", "");
+    form.setValue("semanticSearch", "");
     form.handleSubmit(onFormSubmit)();
     localStorage.setItem("formData", JSON.stringify(form.getValues()));
     setResetGenres(true);
@@ -61,11 +62,12 @@ const Sidebar = ({ className }: { className?: string }) => {
     >
       <Form {...form} onSubmit={form.handleSubmit(onFormSubmit)}>
         <form ref={formRef}>
-          <div className="flex items-center justify-end w-full">
-            <Paintbrush
-              onClick={handleReset}
-              className="h-5 w-5 cursor-pointer hover:text-orange-700"
-            />
+          <div
+            className="flex items-center justify-end w-full gap-2 cursor-pointer hover:text-orange-700"
+            onClick={handleReset}
+          >
+            Resetear filtros
+            <Paintbrush className="h-5 w-5" />
           </div>
 
           <div className="mt-2 flex flex-col gap-2 items-center w-full">

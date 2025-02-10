@@ -95,9 +95,6 @@ export const GET = async (
         where["id"] = {
             in: r.map((movie: MovieDistanceType) => movie.id)
         }
-
-        console.log(r.map((movie: MovieDistanceType) => movie.distancia));
-
     }
     const query = {
         select: {
