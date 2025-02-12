@@ -1,4 +1,4 @@
-import React, { Suspense } from "react";
+import React from "react";
 import ToggleTheme from "./toggle-theme";
 import { cx } from "class-variance-authority";
 import Link from "next/link";
@@ -24,9 +24,7 @@ const Header = () => {
     >
       <Logo className="w-1/4 md:justify-self-start" />
       <div className="flex flex-row items-center justify-between w-full flex-1">
-        <Suspense>
-          <Pagination />
-        </Suspense>
+        <Pagination />
         <div className="flex flex-row justify-start">
           <Link
             href="https://github.com/iatevale/tmdb-vector-database"

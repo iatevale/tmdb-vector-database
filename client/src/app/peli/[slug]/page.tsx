@@ -1,4 +1,4 @@
-import React, { Suspense } from "react";
+import React from "react";
 import Image from "next/image";
 import { format } from "date-fns";
 import AnimatedCircularProgressBar from "@/components/ui/animated-circular-progress-bar";
@@ -22,10 +22,6 @@ const fetchMovie = async (slug: string) => {
 const Movie = async ({ params }: { params: Promise<{ slug: string }> }) => {
   const { slug } = await params;
   const movie: MovieType = await fetchMovie(slug);
-
-  if (!movie.title) {
-    return <Suspense>Movie not found</Suspense>;
-  }
 
   return (
     <div className="flex flex-col">

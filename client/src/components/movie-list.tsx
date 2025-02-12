@@ -15,43 +15,20 @@ const MovieList = ({ className }: { className?: string }) => {
   const { form, movieResults, setMovieResults } =
     React.useContext(MovieProviderContext);
   const [infiniteScrollPage, setInfiniteScrollPage] = React.useState<number>(1);
-
   const params = useSearchParams();
-  const formValues = form.watch();
   const page = Number(params.get("page") ?? "1");
+  const formValues = form.watch();
 
+  console.log(formValues);
   const fetchMoviesData = React.useCallback(async () => {
     const m = await fetchMovies(page, formValues);
-    setMovieResults((prev) => {
-      if (JSON.stringify(prev) !== JSON.stringify(m)) {
-        return m;
-      }
-      return prev;
-    });
-  }, [page, formValues, setMovieResults]);
+    setMovieResults(m);
+    setInfiniteScrollPage(page);
+  }, [page, setMovieResults, setInfiniteScrollPage]);
 
   React.useEffect(() => {
     fetchMoviesData();
-    setInfiniteScrollPage(page);
   }, [fetchMoviesData]);
-
-  if (movieResults.total === 0) {
-    return (
-      <Skeleton
-        className={cx(
-          "block",
-          "w-full",
-          "h-30",
-          "rounded-[20px]",
-          "border",
-          "border-gray-100",
-          "dark:border-gray-600",
-          "w-full",
-          "xl:w-3/4"
-        )}
-      />
-    );
-  }
 
   const next = async () => {
     if (

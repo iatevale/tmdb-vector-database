@@ -29,7 +29,7 @@ export const FiltersSchema = z.object({
     }).default(""),
 });
 
-export const fetchMovies = async (page: number, filters: z.infer<typeof FiltersSchema>) => {
+export const fetchMovies = async (page: number, filters: z.infer<typeof FiltersSchema>): Promise<MovieResultsType> => {
   const stringParams = Object.assign(
     Object.fromEntries(
       Object.entries(filters).map(([key, value]) => [
