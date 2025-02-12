@@ -7,7 +7,7 @@ import {
   XCircle,
   ChevronDown,
   XIcon,
-  WandSparkles,
+  // WandSparkles,
 } from "lucide-react";
 
 import { cn } from "@/lib/utils";
@@ -136,7 +136,7 @@ export const MultiSelect = React.forwardRef<
       animation = 0,
       maxCount = 3,
       modalPopover = false,
-      asChild = false,
+      // asChild = false,
       className,
       ...props
     },
@@ -145,13 +145,18 @@ export const MultiSelect = React.forwardRef<
     const [selectedValues, setSelectedValues] =
       React.useState<string[]>(defaultValue);
     const [isPopoverOpen, setIsPopoverOpen] = React.useState(false);
-    const [isAnimating, setIsAnimating] = React.useState(false);
+    const [isAnimating] = React.useState(false);
+
+    const handleClear = React.useCallback(() => {
+      setSelectedValues([]);
+      onValueChange([]);
+    }, [onValueChange]);
 
     React.useEffect(() => {
       if (reset) {
         handleClear();
       }
-    }, [reset]);
+    }, [reset, handleClear]);
 
     const handleInputKeyDown = (
       event: React.KeyboardEvent<HTMLInputElement>
@@ -174,16 +179,11 @@ export const MultiSelect = React.forwardRef<
       onValueChange(newSelectedValues);
     };
 
-    const handleClear = () => {
-      setSelectedValues([]);
-      onValueChange([]);
-    };
-
-    const toggleReset = (reset: boolean) => {
+    /*const toggleReset = (reset: boolean) => {
       if (reset) {
         handleClear();
       }
-    };
+    };*/
 
     const handleTogglePopover = () => {
       setIsPopoverOpen((prev) => !prev);

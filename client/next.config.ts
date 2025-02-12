@@ -4,9 +4,7 @@ import type { NextConfig } from "next";
 initOpenNextCloudflareForDev();
 
 const nextConfig: NextConfig = {
-  experimental: {
-    serverComponentsExternalPackages: ['@zilliz/milvus2-sdk-node'],
-  },
+  serverExternalPackages: ['@zilliz/milvus2-sdk-node'],
   images: {
     remotePatterns: [
       {

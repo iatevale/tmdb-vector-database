@@ -16,7 +16,7 @@ const SearchBar = () => {
 
   useEffect(() => {
     debounced();
-  }, [form.watch("search")]);
+  }, [form, debounced]);
 
   return (
     <div

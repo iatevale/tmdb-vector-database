@@ -1,10 +1,7 @@
 "use client";
 
-import { useForm } from "react-hook-form";
-import { z } from "zod";
 import React from "react";
 import {
-  Form,
   FormControl,
   FormField,
   FormItem,
@@ -14,54 +11,12 @@ import {
 import { Textarea } from "./ui/textarea";
 import { Button } from "./ui/button";
 import { MovieProviderContext } from "@/contexts/movie-list-props";
-import { toast } from "@/hooks/use-toast";
 import { CircleArrowRight, Loader2 } from "lucide-react";
 import { cx } from "class-variance-authority";
-import { on } from "events";
 
-const SemanticSearch = ({}: {}) => {
+const SemanticSearch = () => {
   const { form, onFormSubmit } = React.useContext(MovieProviderContext);
-  const [loading, setLoading] = React.useState(false);
-
-  const handleSemanticSearch = async () => {
-    setLoading(true);
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_OLLAMA_EMBEDDINGS_SERVER}`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          model: "mxbai-embed-large",
-          prompt: form.getValues("semanticSearch"),
-        }),
-      }
-    );
-    const data = await response.json();
-    toast({
-      title: "Embeddings",
-      description: (
-        <div className="flex items-center space-x-2 color-black">
-          <div>{data.embedding.length}</div>
-        </div>
-      ),
-    });
-
-    const r = await fetch(`/api/movies/search`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        embeddings: data.embedding,
-      }),
-    });
-
-    setTimeout(() => {
-      setLoading(false);
-    }, 500);
-  };
+  const [loading] = React.useState(false);
 
   return (
     <div className="mt-2 w-full flex-1 flex flex-col justify-end relative relative">

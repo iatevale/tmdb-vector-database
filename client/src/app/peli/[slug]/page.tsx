@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Suspense } from "react";
 import Image from "next/image";
 import { format } from "date-fns";
 import AnimatedCircularProgressBar from "@/components/ui/animated-circular-progress-bar";
@@ -7,7 +7,7 @@ import RelatedMovieCard from "@/components/related-movie-card";
 
 const fetchMovie = async (slug: string) => {
   const response = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/api/movies/${slug}`,
+    `${process.env.NEXT_PUBLIC_API_URL}/api/movies/detail/?slug=${slug}`,
     {
       method: "GET",
       headers: {
@@ -22,6 +22,10 @@ const fetchMovie = async (slug: string) => {
 const Movie = async ({ params }: { params: Promise<{ slug: string }> }) => {
   const { slug } = await params;
   const movie: MovieType = await fetchMovie(slug);
+
+  if (!movie.title) {
+    return <Suspense>Movie not found</Suspense>;
+  }
 
   return (
     <div className="flex flex-col">

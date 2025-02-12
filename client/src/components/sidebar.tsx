@@ -2,7 +2,6 @@
 
 import { cx } from "class-variance-authority";
 import React from "react";
-import { Separator } from "./ui/separator";
 import MovieSorter from "./movie-sorter";
 import DecadeSlider from "./decade-slider";
 import ScoreSlider from "./score-slider";
@@ -16,7 +15,7 @@ import SearchBar from "./search-bar";
 
 const Sidebar = ({ className }: { className?: string }) => {
   const [resetGenres, setResetGenres] = React.useState(false);
-  const { form, formRef, handleFormSubmit, onFormSubmit } =
+  const { form, formRef, onFormSubmit } =
     React.useContext(MovieProviderContext);
 
   const handleReset = () => {
@@ -56,14 +55,23 @@ const Sidebar = ({ className }: { className?: string }) => {
         "justify-start",
         "items-center",
         "rounded-lg",
-        "lg:max-w-1/4",
+        "w-full",
+        "lg:w-1/4",
         className
       )}
     >
       <Form {...form} onSubmit={form.handleSubmit(onFormSubmit)}>
-        <form ref={formRef}>
+        <form ref={formRef} className="w-full md:w-auto">
           <div
-            className="flex items-center justify-end w-full gap-2 cursor-pointer hover:text-orange-700"
+            className={cx(
+              "flex",
+              "items-center",
+              "justify-end",
+              "w-full",
+              "gap-2",
+              "cursor-pointer",
+              "hover:text-orange-700"
+            )}
             onClick={handleReset}
           >
             Resetear filtros

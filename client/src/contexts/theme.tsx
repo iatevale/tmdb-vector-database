@@ -32,7 +32,7 @@ export function ThemeProvider({
   useEffect(() => {
     const lsTheme = localStorage.getItem(storageKey) ?? defaultTheme;
     setTheme(lsTheme);
-  }, []);
+  }, [defaultTheme, storageKey]);
 
   useEffect(() => {
     if (theme) {

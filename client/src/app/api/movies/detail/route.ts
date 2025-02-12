@@ -1,18 +1,24 @@
 "use server";
 
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
+
 import { prisma } from "@/lib/prisma";
 import { MovieType } from '@/types';
 
-export const GET = async (
-    req: NextRequest, { params }: { params: { slug: string } }
-) => {
-    const { slug } = await params;
+import { NextRequest } from 'next/server';
+
+export const GET = async (req: NextRequest) => {
+    const { searchParams } = new URL(req.url);
+    const slug = searchParams.get('slug');
     const movie = await prisma.movie.findFirst({
         where: {
             title_slug: slug
         }
     });
+
+    if (!movie) {
+        return NextResponse.json({ status: 404 });
+    }
 
     // https://ollama.com/blog/embedding-models
     let related: MovieType[] = [];

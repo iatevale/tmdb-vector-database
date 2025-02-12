@@ -10,8 +10,11 @@ const logo = ({ className }: { className: string }) => {
         "flex",
         "gap-2",
         "items-center",
+        "justify-center",
+        "md:justify-start",
         "text-gray-900",
         "dark:text-white",
+        "min-w-44",
         "md:mb-0",
         className
       )}

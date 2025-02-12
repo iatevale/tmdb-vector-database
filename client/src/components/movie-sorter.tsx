@@ -72,7 +72,7 @@ const MovieSorter = () => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline" className="h-12 dark:bg-gray-600">
+        <Button variant="outline" className="h-12 dark:bg-gray-600 w-full">
           <div className="flex justify-between gap-4 items-center w-full py-2">
             {getSortIcon(form.getValues("orderBy"))}
             <div className="flex flex-col items-start">
@@ -88,7 +88,7 @@ const MovieSorter = () => {
           </div>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-56" align="start">
+      <DropdownMenuContent className="w-full" align="start">
         <DropdownMenuLabel>Ordenación</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuItem

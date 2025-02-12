@@ -42,7 +42,7 @@ const getLocalStorageValues = () => {
 
 export function MovieProvider({
   children,
-  storageKey = "movies",
+  // storageKey = "movies",
   ...props
 }: MovieProviderProps) {
   const [movieResults, setMovieResults] = useState<MovieResultsType>(

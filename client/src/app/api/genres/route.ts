@@ -1,6 +1,6 @@
 "use server";
 
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { prisma } from "@/lib/prisma";
 
 
@@ -9,7 +9,6 @@ type GenreType = {
 }
 
 export const GET = async (
-    req: NextRequest,
 ) => {
     const genres: GenreType[] = await prisma.$queryRaw`SELECT DISTINCT UNNEST(genres) AS genre FROM "Movie" order by UNNESt(genres);`;
 

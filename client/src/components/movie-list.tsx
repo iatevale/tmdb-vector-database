@@ -2,13 +2,11 @@
 
 import { MovieType, MovieResultsType } from "@/types";
 import React from "react";
-import Image from "next/image";
 import InfiniteScroll from "./ui/infinite-scroll";
 import { Skeleton } from "./ui/skeleton";
 import { cx } from "class-variance-authority";
 import { MovieProviderContext } from "@/contexts/movie-list-props";
-import { PaginationWithLinks } from "./ui/pagination-with-links";
-import { fetchMovies, FiltersSchema } from "@/lib/utils";
+import { fetchMovies } from "@/lib/utils";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import MovieCard from "./movie-card";
@@ -19,26 +17,23 @@ const MovieList = ({ className }: { className?: string }) => {
   const [infiniteScrollPage, setInfiniteScrollPage] = React.useState<number>(1);
 
   const params = useSearchParams();
+  const formValues = form.watch();
+  const page = Number(params.get("page") ?? "1");
+
+  const fetchMoviesData = React.useCallback(async () => {
+    const m = await fetchMovies(page, formValues);
+    setMovieResults((prev) => {
+      if (JSON.stringify(prev) !== JSON.stringify(m)) {
+        return m;
+      }
+      return prev;
+    });
+  }, [page, formValues, setMovieResults]);
 
   React.useEffect(() => {
-    const page = Number(params.get("page") ?? "1");
-    const fetch = async () => {
-      if (movieResults.status === "loading") {
-        return;
-      }
-
-      setMovieResults({
-        ...movieResults,
-        status: "loading",
-      });
-
-      const m = await fetchMovies(page, form.getValues());
-
-      setMovieResults(m);
-    };
-    fetch();
+    fetchMoviesData();
     setInfiniteScrollPage(page);
-  }, [params.get("page")]);
+  }, [fetchMoviesData]);
 
   if (movieResults.total === 0) {
     return (
@@ -67,11 +62,6 @@ const MovieList = ({ className }: { className?: string }) => {
       return;
     }
 
-    setMovieResults({
-      ...movieResults,
-      status: "loading",
-    });
-
     if (infiniteScrollPage) {
       setInfiniteScrollPage((infiniteScrollPage as number) + 1);
     }
@@ -83,6 +73,7 @@ const MovieList = ({ className }: { className?: string }) => {
         [...movieResults.movies, ...m.movies].map((obj) => [obj.id, obj])
       ).values(),
     ];
+
     setMovieResults(
       Object.assign({}, movieResults, {
         movies: unionSinDuplicados,

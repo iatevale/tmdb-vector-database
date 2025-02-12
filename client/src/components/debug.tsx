@@ -2,7 +2,7 @@
 import { MovieProviderContext } from "@/contexts/movie-list-props";
 import React from "react";
 
-const debug = () => {
+const Debug = () => {
   const { movieResults, form } = React.useContext(MovieProviderContext);
 
   return (
@@ -22,4 +22,4 @@ const debug = () => {
   );
 };
 
-export default debug;
+export default Debug;

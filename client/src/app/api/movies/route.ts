@@ -3,7 +3,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from "@/lib/prisma";
 import { addYears } from "date-fns";
-import { MiniMovieType, MovieResultsType, MovieType } from '@/types';
 
 type WhereType = {
     vote_average?: {
