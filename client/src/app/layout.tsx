@@ -23,21 +23,20 @@ export default async function RootLayout({
 }>) {
   return (
     <ThemeProvider>
-      <Suspense>
-        <MovieProvider>
-          <html lang="en">
-            <body
-              className={`${poppins.className} antialiased bg-gray-50 dark:bg-gray-700 p-8`}
-            >
-              <div className="flex flex-col max-w-7xl min-w-[550px] mx-auto bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8">
-                {/*<Debu}g />*/}
+      <html lang="en">
+        <body
+          className={`${poppins.className} antialiased bg-gray-50 dark:bg-gray-700 p-8`}
+        >
+          <div className="flex flex-col max-w-7xl min-w-[550px] mx-auto bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8">
+            <Suspense>
+              <MovieProvider>
                 <Header />
                 <div className="flex flex-col">{children}</div>
-              </div>
-            </body>
-          </html>
-        </MovieProvider>
-      </Suspense>
+              </MovieProvider>
+            </Suspense>
+          </div>
+        </body>
+      </html>
     </ThemeProvider>
   );
 }

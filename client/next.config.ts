@@ -1,7 +1,4 @@
-import { initOpenNextCloudflareForDev } from "@opennextjs/cloudflare";
 import type { NextConfig } from "next";
-
-initOpenNextCloudflareForDev();
 
 const nextConfig: NextConfig = {
   serverExternalPackages: ['@zilliz/milvus2-sdk-node'],

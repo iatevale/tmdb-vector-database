@@ -19,7 +19,6 @@ const MovieList = ({ className }: { className?: string }) => {
   const page = Number(params.get("page") ?? "1");
   const formValues = form.watch();
 
-  console.log(formValues);
   const fetchMoviesData = React.useCallback(async () => {
     const m = await fetchMovies(page, formValues);
     setMovieResults(m);
