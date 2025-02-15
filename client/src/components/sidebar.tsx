@@ -12,39 +12,38 @@ import { Toaster } from "./ui/toaster";
 import { Form } from "./ui/form";
 import GenreSelector from "./genre-selector";
 import SearchBar from "./search-bar";
+import Debug from "./debug";
+import { FiltersSchema, getFormDefaults } from "@/lib/utils";
 
 const Sidebar = ({ className }: { className?: string }) => {
-  const [resetGenres, setResetGenres] = React.useState(false);
-  const { form, formRef, onFormSubmit } =
+  const { form, formRef, handleFormSubmit } =
     React.useContext(MovieProviderContext);
 
   const handleReset = () => {
-    form.reset();
+    const defaults = getFormDefaults(FiltersSchema);
+    form.reset(defaults);
     form.setValue("search", "");
     form.setValue("semanticSearch", "");
-    form.handleSubmit(onFormSubmit)();
-    localStorage.setItem("formData", JSON.stringify(form.getValues()));
-    setResetGenres(true);
-    setTimeout(() => {
-      setResetGenres(false);
-    }, 500);
+    form.setValue("page", 1);
+    handleFormSubmit();
+    localStorage.removeItem("formData");
   };
 
   const handleDecadeValuesChange = async (values: number[]) => {
     form.setValue("decadeMin", values[0].toString());
     form.setValue("decadeMax", values[1].toString());
-    form.handleSubmit(onFormSubmit)();
+    handleFormSubmit();
   };
 
   const handleScoreValuesChange = async (values: number[]) => {
     form.setValue("scoreMin", values[0].toString());
     form.setValue("scoreMax", values[1].toString());
-    form.handleSubmit(onFormSubmit)();
+    handleFormSubmit();
   };
 
   const handeGenresChange = async (values: string[]) => {
     form.setValue("genres", values);
-    form.handleSubmit(onFormSubmit)();
+    handleFormSubmit();
   };
 
   return (
@@ -56,12 +55,12 @@ const Sidebar = ({ className }: { className?: string }) => {
         "items-center",
         "rounded-lg",
         "w-full",
-        "lg:w-1/4",
+        "lg:w-1/3",
         className
       )}
     >
-      <Form {...form} onSubmit={form.handleSubmit(onFormSubmit)}>
-        <form ref={formRef} className="w-full md:w-auto">
+      <Form {...form} onSubmit={handleFormSubmit}>
+        <form ref={formRef} className="w-full">
           <div
             className={cx(
               "flex",
@@ -92,10 +91,10 @@ const Sidebar = ({ className }: { className?: string }) => {
             <GenreSelector
               setGenres={handeGenresChange}
               genres={form.getValues("genres")}
-              reset={resetGenres}
             />
           </div>
           <SemanticSearch />
+          <Debug />
           <Toaster />
         </form>
       </Form>

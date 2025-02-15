@@ -25,7 +25,7 @@ const Header = () => {
       <Logo className="w-1/4 md:justify-self-start" />
       <div className="flex flex-row items-center justify-between w-full flex-1">
         <Pagination />
-        <div className="flex flex-row justify-start">
+        <div className="flex flex-row justify-end w-full">
           <Link
             href="https://github.com/iatevale/tmdb-vector-database"
             className={cx(

@@ -40,7 +40,7 @@ const SemanticSearch = () => {
         type="button"
         onClick={() => form.handleSubmit(onFormSubmit)()}
         disabled={loading}
-        className={cx("absolute", "bottom-2", "right-6")}
+        className={cx("absolute", "bottom-2", "right-2")}
       >
         Enviar
         {loading ? (

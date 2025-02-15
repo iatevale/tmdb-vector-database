@@ -12,7 +12,6 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import React from "react";
 import { toast } from "@/hooks/use-toast";
-import { useSearchParams } from "next/navigation";
 import Spinner from "@/components/spinner";
 
 const initialState = {
@@ -27,19 +26,6 @@ const initialState = {
 export const MovieProviderContext =
   createContext<MovieProviderState>(initialState);
 
-const getLocalStorageValues = () => {
-  if (typeof localStorage === "undefined") {
-    return {};
-  }
-
-  const formData = localStorage.getItem("formData");
-  if (!formData) {
-    return {};
-  }
-
-  return JSON.parse(formData);
-};
-
 export function MovieProvider({
   children,
   // storageKey = "movies",
@@ -49,13 +35,10 @@ export function MovieProvider({
     initialState.movieResults
   );
 
-  const searchParams = useSearchParams();
   const form = useForm<z.infer<typeof FiltersSchema>>({
     resolver: zodResolver(FiltersSchema),
     defaultValues: {
       ...FiltersSchema.parse({}),
-      ...getLocalStorageValues(),
-      ...Object.fromEntries(searchParams),
     },
   });
 
@@ -83,7 +66,7 @@ export function MovieProvider({
       status: "loading",
     });
 
-    const m = await fetchMovies(Number(searchParams.get("page") ?? "1"), data);
+    const m = await fetchMovies(data);
 
     setMovieResults(m);
   };

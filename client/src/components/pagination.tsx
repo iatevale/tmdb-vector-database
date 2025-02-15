@@ -11,6 +11,7 @@ const Pagination = () => {
   const pathname = usePathname();
   if (pathname !== "/") return null;
 
+  if (!movieResults || movieResults.total === 0) return null;
   return (
     <div className={cx("flex", "items-center", "justify-center", "w-full")}>
       <div className="my-1">

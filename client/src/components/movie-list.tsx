@@ -6,57 +6,80 @@ import InfiniteScroll from "./ui/infinite-scroll";
 import { Skeleton } from "./ui/skeleton";
 import { cx } from "class-variance-authority";
 import { MovieProviderContext } from "@/contexts/movie-list-props";
-import { fetchMovies } from "@/lib/utils";
+import {
+  defaultResults,
+  fetchMovies,
+  getFormLocalStorageValues,
+} from "@/lib/utils";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import MovieCard from "./movie-card";
 
 const MovieList = ({ className }: { className?: string }) => {
-  const { form, movieResults, setMovieResults } =
+  const [movieList, setMovieList] =
+    React.useState<MovieResultsType>(defaultResults);
+  const [infiniteScrollLoading, setInfiniteScrollLoading] =
+    React.useState(false);
+
+  const { form, handleFormSubmit, movieResults } =
     React.useContext(MovieProviderContext);
   const [infiniteScrollPage, setInfiniteScrollPage] = React.useState<number>(1);
   const params = useSearchParams();
   const page = Number(params.get("page") ?? "1");
-  const formValues = form.watch();
-
-  const fetchMoviesData = React.useCallback(async () => {
-    const m = await fetchMovies(page, formValues);
-    setMovieResults(m);
-    setInfiniteScrollPage(page);
-  }, [page, setMovieResults, setInfiniteScrollPage]);
 
   React.useEffect(() => {
-    fetchMoviesData();
-  }, [fetchMoviesData]);
+    if (form.getValues().page === page) {
+      return;
+    }
+    form.setValue("page", page);
+    handleFormSubmit();
+  }, [page, form, handleFormSubmit]);
+
+  React.useEffect(() => {
+    setMovieList(movieResults);
+  }, [movieResults]);
+
+  React.useEffect(() => {
+    setInfiniteScrollPage(page);
+  }, [page]);
+
+  React.useEffect(() => {
+    const localStorageFormValues = getFormLocalStorageValues();
+    if (localStorageFormValues) {
+      form.reset(localStorageFormValues);
+      handleFormSubmit();
+    }
+  }, []);
 
   const next = async () => {
     if (
       !infiniteScrollPage ||
-      movieResults.movies.length === 0 ||
-      movieResults.status === "loading"
+      movieList.movies.length === 0 ||
+      movieList.status === "loading"
     ) {
       return;
     }
+    setInfiniteScrollLoading(true);
 
-    if (infiniteScrollPage) {
-      setInfiniteScrollPage((infiniteScrollPage as number) + 1);
-    }
-
-    const m = await fetchMovies(infiniteScrollPage, form.getValues());
+    const m = await fetchMovies(
+      Object.assign(form.getValues(), { page: infiniteScrollPage + 1 })
+    );
 
     const unionSinDuplicados = [
       ...new Map(
-        [...movieResults.movies, ...m.movies].map((obj) => [obj.id, obj])
+        [...movieList.movies, ...m.movies].map((obj) => [obj.id, obj])
       ).values(),
     ];
 
-    setMovieResults(
-      Object.assign({}, movieResults, {
+    setMovieList(
+      Object.assign({}, movieList, {
         movies: unionSinDuplicados,
         total: m.total,
         status: "success",
       }) as MovieResultsType
     );
+    setInfiniteScrollPage(infiniteScrollPage + 1);
+    setInfiniteScrollLoading(false);
   };
 
   return (
@@ -64,6 +87,7 @@ const MovieList = ({ className }: { className?: string }) => {
       className={cx(
         "flex",
         "flex-col",
+        "mt-4",
         "pt-4",
         "w-full",
         "lg:w-3/4",
@@ -73,6 +97,7 @@ const MovieList = ({ className }: { className?: string }) => {
       <div
         className={cx(
           "w-full",
+          "grid-cols-5",
           "max-[1200px]:grid-cols-4",
           "max-[600px]:grid-cols-3",
           "max-[300px]:grid-cols-2",
@@ -81,19 +106,18 @@ const MovieList = ({ className }: { className?: string }) => {
           "mb-10",
           "w-3/4",
           "max-w-6xl",
-          "grid-cols-5",
           "gap-2",
           "pb-10"
         )}
       >
-        {movieResults.movies.map((movie: MovieType) => (
+        {movieList.movies.map((movie: MovieType) => (
           <Link key={movie.id} href={`/peli/${movie.title_slug}`}>
             <MovieCard movie={movie} />
           </Link>
         ))}
         <InfiniteScroll
-          hasMore={infiniteScrollPage * 16 < movieResults.total}
-          isLoading={movieResults.status === "loading"}
+          hasMore={infiniteScrollPage * 16 < movieList.total}
+          isLoading={infiniteScrollLoading}
           next={next}
         >
           <Skeleton

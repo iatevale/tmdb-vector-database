@@ -8,15 +8,16 @@ import { useDebouncedCallback } from "use-debounce";
 import { FormControl, FormField, FormItem } from "./ui/form";
 
 const SearchBar = () => {
-  const { form, onFormSubmit } = useContext(MovieProviderContext);
+  const { form, handleFormSubmit } = useContext(MovieProviderContext);
+  const search = form.watch("search");
 
   const debounced = useDebouncedCallback(() => {
-    form.handleSubmit(onFormSubmit)();
+    handleFormSubmit();
   }, 1000);
 
   useEffect(() => {
     debounced();
-  }, [form, debounced]);
+  }, [search, debounced]);
 
   return (
     <div

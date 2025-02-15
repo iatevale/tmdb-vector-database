@@ -3,13 +3,11 @@ import { MultiSelect } from "./ui/multi-select";
 
 interface GenreSelectorProps {
   setGenres: (genres: string[]) => void;
-  reset: boolean;
 }
 
 const GenreSelector: React.FC<GenreSelectorProps & { genres: string[] }> = ({
   genres,
   setGenres,
-  reset,
 }) => {
   const [allGenres, setAllGenres] = React.useState([]);
 
@@ -28,7 +26,6 @@ const GenreSelector: React.FC<GenreSelectorProps & { genres: string[] }> = ({
       variant="inverted"
       animation={2}
       maxCount={3}
-      reset={reset}
       className="dark:bg-gray-600"
     />
   );

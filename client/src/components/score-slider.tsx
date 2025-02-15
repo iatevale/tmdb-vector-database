@@ -29,7 +29,7 @@ const ScoreSlider = ({
 
   return (
     <div className="flex flex-col gap-4 items-center w-full px-4 mb-2">
-      <p className="mb-0">Nota</p>
+      <p className="mb-2 mt-2">Nota</p>
       <div className="w-full">
         <DualRangeSlider
           label={(value) => value}
