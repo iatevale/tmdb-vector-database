@@ -21,6 +21,7 @@ const MovieList = ({ className }: { className?: string }) => {
   const [infiniteScrollLoading, setInfiniteScrollLoading] =
     React.useState(false);
 
+  const [firstMount, setFirstMount] = React.useState(true);
   const { form, handleFormSubmit, movieResults } =
     React.useContext(MovieProviderContext);
   const [infiniteScrollPage, setInfiniteScrollPage] = React.useState<number>(1);
@@ -44,12 +45,15 @@ const MovieList = ({ className }: { className?: string }) => {
   }, [page]);
 
   React.useEffect(() => {
-    const localStorageFormValues = getFormLocalStorageValues();
-    if (localStorageFormValues) {
-      form.reset(localStorageFormValues);
-      handleFormSubmit();
+    if (firstMount) {
+      const localStorageFormValues = getFormLocalStorageValues();
+      if (localStorageFormValues) {
+        form.reset(localStorageFormValues);
+        handleFormSubmit();
+      }
+      setFirstMount(false);
     }
-  }, []);
+  }, [firstMount, form, handleFormSubmit, setFirstMount]);
 
   const next = async () => {
     if (
