@@ -36,7 +36,7 @@ export const getFormLocalStorageValues = () => {
 };
 
 
-export const FiltersSchema = z.object({
+export const FormFilterSchema = z.object({
   search: z.string().max(300).default(""),
   page: z.number().default(1),
   orderBy: z.string().default("release_date"),
@@ -46,6 +46,7 @@ export const FiltersSchema = z.object({
   decadeMin: z.string().default("1900"),
   decadeMax: z.string().default("2020"),
   genres: z.array(z.string()).default([]),
+  embedding: z.string().default("ollama"),
   semanticSearch: z
     .string()
     .max(300, {
@@ -53,7 +54,7 @@ export const FiltersSchema = z.object({
     }).default(""),
 });
 
-export const fetchMovies = async (filters: z.infer<typeof FiltersSchema>): Promise<MovieResultsType> => {
+export const fetchMovies = async (filters: z.infer<typeof FormFilterSchema>): Promise<MovieResultsType> => {
   const stringParams = Object.assign(
     Object.fromEntries(
       Object.entries(filters).map(([key, value]) => [

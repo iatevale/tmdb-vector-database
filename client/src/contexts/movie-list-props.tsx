@@ -6,12 +6,12 @@ import {
   MovieResultsType,
 } from "@/types";
 import { createContext, useState } from "react";
-import { defaultResults, fetchMovies, FiltersSchema } from "@/lib/utils";
+import { defaultResults, fetchMovies, FormFilterSchema } from "@/lib/utils";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import React from "react";
-import { toast } from "@/hooks/use-toast";
+import { toast, useToast } from "@/hooks/use-toast";
 import Spinner from "@/components/spinner";
 
 const initialState = {
@@ -35,19 +35,25 @@ export function MovieProvider({
     initialState.movieResults
   );
 
-  const form = useForm<z.infer<typeof FiltersSchema>>({
-    resolver: zodResolver(FiltersSchema),
+  const { dismiss } = useToast();
+
+  const form = useForm<z.infer<typeof FormFilterSchema>>({
+    resolver: zodResolver(FormFilterSchema),
     defaultValues: {
-      ...FiltersSchema.parse({}),
+      ...FormFilterSchema.parse({}),
     },
   });
 
   const formRef = React.useRef<HTMLFormElement>(null!);
 
-  const onFormSubmit = async (data: z.infer<typeof FiltersSchema>) => {
+  const onFormSubmit = async (data: z.infer<typeof FormFilterSchema>) => {
     localStorage.setItem("formData", JSON.stringify(form.getValues()));
 
-    toast({
+    if (movieResults.status === "loading") {
+      return;
+    }
+
+    const { id: toastId } = toast({
       title: "Actualizando filtros",
       description: (
         <div className="flex items-center space-x-2 color-black">
@@ -57,10 +63,6 @@ export function MovieProvider({
       ),
     });
 
-    if (movieResults.status === "loading") {
-      return;
-    }
-
     setMovieResults({
       ...movieResults,
       status: "loading",
@@ -69,6 +71,9 @@ export function MovieProvider({
     const m = await fetchMovies(data);
 
     setMovieResults(m);
+    setTimeout(() => {
+      dismiss(toastId);
+    }, 500);
   };
 
   const handleFormSubmit = () => {

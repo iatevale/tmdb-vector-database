@@ -115,7 +115,12 @@ const MovieList = ({ className }: { className?: string }) => {
         )}
       >
         {movieList.movies.map((movie: MovieType) => (
-          <Link key={movie.id} href={`/peli/${movie.title_slug}`}>
+          <Link
+            key={movie.id}
+            href={`/peli/${movie.title_slug}?embedding=${form.getValues(
+              "embedding"
+            )}`}
+          >
             <MovieCard movie={movie} />
           </Link>
         ))}

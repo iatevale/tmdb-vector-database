@@ -54,11 +54,11 @@ export type MovieProviderProps = {
 };
 
 export type MovieProviderState = {
-    form: ReturnType<typeof useForm<z.infer<typeof FiltersSchema>>>;
+    form: ReturnType<typeof useForm<z.infer<typeof FormFilterSchema>>>;
     formRef: React.MutableRefObject<HTMLFormElement> | null;
     movieResults: MovieResultsType;
     setMovieResults: React.Dispatch<React.SetStateAction<MovieResultsType>>;
     handleFormSubmit: () => void;
-    onFormSubmit: (data: z.infer<typeof FiltersSchema>) => void;
+    onFormSubmit: (data: z.infer<typeof FormFilterSchema>) => void;
 };
 

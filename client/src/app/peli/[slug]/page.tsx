@@ -5,9 +5,9 @@ import AnimatedCircularProgressBar from "@/components/ui/animated-circular-progr
 import { MovieType } from "@/types";
 import RelatedMovieCard from "@/components/related-movie-card";
 
-const fetchMovie = async (slug: string) => {
+const fetchMovie = async (slug: string, embedding: string) => {
   const response = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/api/movies/detail/?slug=${slug}`,
+    `${process.env.NEXT_PUBLIC_API_URL}/api/movies/detail/?slug=${slug}&embedding=${embedding}`,
     {
       method: "GET",
       headers: {
@@ -19,9 +19,16 @@ const fetchMovie = async (slug: string) => {
   return data;
 };
 
-const Movie = async ({ params }: { params: Promise<{ slug: string }> }) => {
+const Movie = async ({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ slug: string }>;
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+}) => {
   const { slug } = await params;
-  const movie: MovieType = await fetchMovie(slug);
+  const { embedding } = await searchParams;
+  const movie: MovieType = await fetchMovie(slug, embedding as string);
 
   return (
     <div className="flex flex-col">

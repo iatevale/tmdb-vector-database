@@ -13,14 +13,15 @@ import { Form } from "./ui/form";
 import GenreSelector from "./genre-selector";
 import SearchBar from "./search-bar";
 import Debug from "./debug";
-import { FiltersSchema, getFormDefaults } from "@/lib/utils";
+import { FormFilterSchema, getFormDefaults } from "@/lib/utils";
+import EmbeddingSelector from "./embedding-selector";
 
 const Sidebar = ({ className }: { className?: string }) => {
   const { form, formRef, handleFormSubmit } =
     React.useContext(MovieProviderContext);
 
   const handleReset = () => {
-    const defaults = getFormDefaults(FiltersSchema);
+    const defaults = getFormDefaults(FormFilterSchema);
     form.reset(defaults);
     form.setValue("search", "");
     form.setValue("semanticSearch", "");
@@ -41,8 +42,13 @@ const Sidebar = ({ className }: { className?: string }) => {
     handleFormSubmit();
   };
 
-  const handeGenresChange = async (values: string[]) => {
+  const handleGenresChange = async (values: string[]) => {
     form.setValue("genres", values);
+    handleFormSubmit();
+  };
+
+  const handleSetEmbedding = (value: string) => {
+    form.setValue("embedding", value);
     handleFormSubmit();
   };
 
@@ -89,8 +95,12 @@ const Sidebar = ({ className }: { className?: string }) => {
               range={[form.getValues("scoreMin"), form.getValues("scoreMax")]}
             />
             <GenreSelector
-              setGenres={handeGenresChange}
+              setGenres={handleGenresChange}
               genres={form.getValues("genres")}
+            />
+            <EmbeddingSelector
+              setEmbedding={handleSetEmbedding}
+              embedding={form.getValues("embedding")}
             />
           </div>
           <SemanticSearch />
