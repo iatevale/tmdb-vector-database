@@ -13,7 +13,7 @@ const Pagination = () => {
 
   if (!movieResults || movieResults.total === 0) return null;
   return (
-    <div className={cx("flex", "items-center", "justify-center", "w-full")}>
+    <div className={cx("flex", "items-center", "justify-end", "w-full")}>
       <div className="my-1">
         <PaginationWithLinks
           page={Number(params.get("page") ?? "1")}

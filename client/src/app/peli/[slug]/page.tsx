@@ -4,6 +4,7 @@ import { format } from "date-fns";
 import AnimatedCircularProgressBar from "@/components/ui/animated-circular-progress-bar";
 import { MovieType } from "@/types";
 import RelatedMovieCard from "@/components/related-movie-card";
+import { SiWikipedia } from "react-icons/si";
 
 const fetchMovie = async (slug: string, embedding: string) => {
   const response = await fetch(
@@ -65,6 +66,16 @@ const Movie = async ({
             </div>
           </div>
           <p className="max-w-100 text-justify">{movie.overview}</p>
+          <p className="my-4 border-t border-gray-100 pt-2">
+            <a
+              target="_blank"
+              className="flex items-center gap-2 hover:text-orange-700"
+              href={movie.wikipedia_url_es}
+            >
+              <SiWikipedia size={32} />
+              {decodeURIComponent(movie.wikipedia_url_es)}
+            </a>
+          </p>
         </div>
       </div>
       <div className="flex gap-2 flex-col items-center w-full mt-4">

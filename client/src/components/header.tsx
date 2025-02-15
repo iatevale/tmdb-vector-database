@@ -23,24 +23,22 @@ const Header = () => {
       )}
     >
       <Logo className="w-1/4 md:justify-self-start" />
-      <div className="flex flex-row items-center justify-between w-full flex-1">
+      <div className="flex flex-row justify-end items-center w-full gap-8">
         <Pagination />
-        <div className="flex flex-row justify-end w-full">
-          <Link
-            href="https://github.com/iatevale/tmdb-vector-database"
-            className={cx(
-              "flex",
-              "ml-auto",
-              "items-center",
-              "justify-center",
-              "hover:text-gray-600",
-              "dark:hover:text-gray-300"
-            )}
-          >
-            <GitHubLogoIcon className="w-6 h-6" />
-          </Link>
-          <ToggleTheme />
-        </div>
+        <Link
+          href="https://github.com/iatevale/tmdb-vector-database"
+          className={cx(
+            "flex",
+            "ml-auto",
+            "items-center",
+            "justify-center",
+            "hover:text-gray-600",
+            "dark:hover:text-gray-300"
+          )}
+        >
+          <GitHubLogoIcon className="w-6 h-6" />
+        </Link>
+        <ToggleTheme />
       </div>
     </header>
   );

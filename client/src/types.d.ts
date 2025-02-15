@@ -5,6 +5,7 @@ export type MovieType = {
     popularity: number;
     poster_path: string;
     tagline: string;
+    wikipedia_url_es: string;
     revenue: number;
     genres: string[];
     title: string;

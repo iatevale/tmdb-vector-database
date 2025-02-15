@@ -38,7 +38,7 @@ model Movie {
   genres               String[]
   wikipedia_url_es     String?
   wikipedia_content_es String?
-  ollama_embeddings    Unsupported("vector(1024)")?
+  ollama_embeddings    Unsupported("vector(3072)")?
   openai_embeddings    Unsupported("vector(1536)")?
   vertex_embeddings    Unsupported("vector(1536)")?
   deepseek_embeddings  Unsupported("vector(4096)")?
