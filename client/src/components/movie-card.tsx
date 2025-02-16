@@ -5,10 +5,13 @@ import Image from "next/image";
 import { cx } from "class-variance-authority";
 import { format } from "date-fns";
 import { motion } from "framer-motion";
+import Spinner from "./spinner";
 
 const MovieCard = ({ movie }: { movie: MovieType }) => {
+  const [clicked, setClicked] = React.useState(false);
   return (
     <motion.div
+      onClick={() => setClicked(true)}
       className={cx(
         "bg-white",
         "relative",
@@ -27,7 +30,14 @@ const MovieCard = ({ movie }: { movie: MovieType }) => {
         damping: 10, // Reduce el rebote
       }}
     >
-      {" "}
+      {clicked && (
+        <div
+          className="absolute top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-50 z-10"
+          onClick={() => setClicked(false)}
+        >
+          <Spinner size="big" />
+        </div>
+      )}
       <div
         className={cx(
           "absolute",

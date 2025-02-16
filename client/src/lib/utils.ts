@@ -65,7 +65,20 @@ export const fetchMovies = async (filters: z.infer<typeof FormFilterSchema>): Pr
 
   const params = new URLSearchParams(stringParams);
   const url = new URL(`${process.env.NEXT_PUBLIC_API_URL}/api/movies?${params.toString()}`);
-  url.search = params.toString();
+  const response = await fetch(url.toString(), {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  const data = await response.json();
+
+  return data;
+};
+
+export const searchMovies = async (search: string): Promise<MovieResultsType> => {
+  const params = new URLSearchParams({ search });
+  const url = new URL(`${process.env.NEXT_PUBLIC_API_URL}/api/movies?${params.toString()}`);
   const response = await fetch(url.toString(), {
     method: "GET",
     headers: {

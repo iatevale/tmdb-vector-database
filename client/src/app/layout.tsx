@@ -25,7 +25,7 @@ export default async function RootLayout({
     <ThemeProvider>
       <html lang="en">
         <body
-          className={`${poppins.className} antialiased bg-gray-50 dark:bg-gray-700 p-8`}
+          className={`${poppins.className} antialiased bg-gray-50 dark:bg-gray-700 p-2`}
         >
           <div className="flex flex-col max-w-7xl min-w-[550px] mx-auto bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8">
             <Suspense>
