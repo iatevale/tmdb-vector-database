@@ -6,8 +6,11 @@ import React from "react";
 import Image from "next/image";
 import { MovieType } from "@/types";
 import { Progress } from "./ui/progress";
+import { EmbeddingProviderContext } from "@/contexts/embedding";
 
 const RelatedMovieCard = ({ movie }: { movie: MovieType }) => {
+  const { embedding } = React.useContext(EmbeddingProviderContext);
+
   return (
     <div className="flex flex-col items-center justify-end gap-1 text-xs">
       <motion.div
@@ -18,7 +21,7 @@ const RelatedMovieCard = ({ movie }: { movie: MovieType }) => {
         }}
         transition={{ type: "spring", stiffness: 300 }}
       >
-        <Link href={`/peli/${movie.title_slug}`}>
+        <Link href={`/peli/${movie.title_slug}?embedding=${embedding}`}>
           <Image
             src={`https://image.tmdb.org/t/p/w1280${movie.poster_path}`}
             alt={movie.title}

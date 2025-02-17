@@ -36,7 +36,7 @@ export const GET = async (req: NextRequest) => {
                     ) AS distancia
             FROM "Movie"
             WHERE id != ${movie.id}
-            ) where distancia < 0.3),
+            ) where distancia < 0.5),
             Rango AS (
             SELECT MIN(distancia) AS min_dist, MAX(distancia) AS max_dist
             FROM Distancias
@@ -58,7 +58,7 @@ export const GET = async (req: NextRequest) => {
                     ) AS distancia
             FROM "Movie"
             WHERE id != ${movie.id}
-            ) where distancia < 0.3),
+            ) where distancia < 0.5),
             Rango AS (
             SELECT MIN(distancia) AS min_dist, MAX(distancia) AS max_dist
             FROM Distancias

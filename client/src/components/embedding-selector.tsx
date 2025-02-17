@@ -3,11 +3,22 @@
 import React from "react";
 import { ToggleGroup, ToggleGroupItem } from "./ui/toggle-group";
 import { EmbeddingProviderContext } from "@/contexts/embedding";
+import { useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 const EmbeddingSelector = () => {
   const { embedding, setEmbedding } = React.useContext(
     EmbeddingProviderContext
   );
+  const searchParams = useSearchParams();
+  const router = useRouter();
+
+  React.useEffect(() => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("embedding", embedding);
+    router.replace(`?${params.toString()}`);
+  }, [embedding, router]);
+
   return (
     <div className="flex flex-col w-full gap-2">
       <ToggleGroup onValueChange={setEmbedding} value={embedding} type="single">

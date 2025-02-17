@@ -15,14 +15,12 @@ import { FaRegLaughBeam } from "react-icons/fa";
 import { searchMovies } from "@/lib/utils";
 import { MovieType } from "@/types";
 import { RiMovie2Line } from "react-icons/ri";
-import { MovieProviderContext } from "@/contexts/movie-list-props";
 import Link from "next/link";
 import { EmbeddingProviderContext } from "@/contexts/embedding";
 
 const SemanticSearch = () => {
   const [open, setOpen] = React.useState(false);
   const [results, setResults] = React.useState<MovieType[]>([]);
-  const { form } = React.useContext(MovieProviderContext);
   const { embedding } = React.useContext(EmbeddingProviderContext);
 
   const search = async (value: string) => {
