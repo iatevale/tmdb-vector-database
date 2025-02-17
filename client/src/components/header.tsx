@@ -5,6 +5,8 @@ import Link from "next/link";
 import Logo from "./logo";
 import { GitHubLogoIcon } from "@radix-ui/react-icons";
 import Pagination from "./pagination";
+import SemanticSearch from "./semantic-search";
+import EmbeddingSelector from "./embedding-selector";
 
 const Header = () => {
   return (
@@ -13,7 +15,6 @@ const Header = () => {
         "w-full",
         "flex",
         "flex-col",
-        "lg:flex-row",
         "gap-x-4",
         "gap-y-2",
         "mb-2",
@@ -22,24 +23,30 @@ const Header = () => {
         "md:justify-between"
       )}
     >
-      <Logo className="w-1/4 md:justify-self-start" />
-      <div className="flex flex-row justify-end items-center w-full gap-8">
-        <Pagination />
-        <Link
-          href="https://github.com/iatevale/tmdb-vector-database"
-          className={cx(
-            "flex",
-            "ml-auto",
-            "items-center",
-            "justify-center",
-            "hover:text-gray-600",
-            "dark:hover:text-gray-300"
-          )}
-        >
-          <GitHubLogoIcon className="w-6 h-6" />
-        </Link>
-        <ToggleTheme />
+      <div className="flex flex-row justify-start items-center w-full gap-8">
+        <Logo className="w-1/4 md:justify-self-start" />
+
+        <div className="flex flex-row justify-end items-center w-full gap-8">
+          <SemanticSearch />
+          <EmbeddingSelector />
+
+          <Link
+            href="https://github.com/iatevale/tmdb-vector-database"
+            className={cx(
+              "flex",
+              "ml-auto",
+              "items-center",
+              "justify-center",
+              "hover:text-gray-600",
+              "dark:hover:text-gray-300"
+            )}
+          >
+            <GitHubLogoIcon className="w-6 h-6" />
+          </Link>
+          <ToggleTheme />
+        </div>
       </div>
+      <Pagination />
     </header>
   );
 };

@@ -7,7 +7,7 @@ import {
   XCircle,
   ChevronDown,
   XIcon,
-  // WandSparkles,
+  WandSparkles,
 } from "lucide-react";
 
 import { cn } from "@/lib/utils";
@@ -81,8 +81,6 @@ interface MultiSelectProps
   /** The default selected values when the component mounts. */
   defaultValue?: string[];
 
-  reset?: boolean;
-
   /**
    * Placeholder text to be displayed when no values are selected.
    * Optional, defaults to "Select options".
@@ -129,14 +127,12 @@ export const MultiSelect = React.forwardRef<
     {
       options,
       onValueChange,
-      reset,
       variant,
       defaultValue = [],
       placeholder = "Select options",
       animation = 0,
       maxCount = 3,
       modalPopover = false,
-      // asChild = false,
       className,
       ...props
     },
@@ -145,18 +141,11 @@ export const MultiSelect = React.forwardRef<
     const [selectedValues, setSelectedValues] =
       React.useState<string[]>(defaultValue);
     const [isPopoverOpen, setIsPopoverOpen] = React.useState(false);
-    const [isAnimating] = React.useState(false);
-
-    const handleClear = React.useCallback(() => {
-      setSelectedValues([]);
-      onValueChange([]);
-    }, [onValueChange]);
+    const [isAnimating, setIsAnimating] = React.useState(false);
 
     React.useEffect(() => {
-      if (reset) {
-        handleClear();
-      }
-    }, [reset, handleClear]);
+      setSelectedValues(defaultValue);
+    }, [defaultValue]); // Se ejecuta cada vez que defaultValue cambia
 
     const handleInputKeyDown = (
       event: React.KeyboardEvent<HTMLInputElement>
@@ -179,11 +168,10 @@ export const MultiSelect = React.forwardRef<
       onValueChange(newSelectedValues);
     };
 
-    /*const toggleReset = (reset: boolean) => {
-      if (reset) {
-        handleClear();
-      }
-    };*/
+    const handleClear = () => {
+      setSelectedValues([]);
+      onValueChange([]);
+    };
 
     const handleTogglePopover = () => {
       setIsPopoverOpen((prev) => !prev);
@@ -379,6 +367,15 @@ export const MultiSelect = React.forwardRef<
             </CommandList>
           </Command>
         </PopoverContent>
+        {animation > 0 && selectedValues.length > 0 && (
+          <WandSparkles
+            className={cn(
+              "cursor-pointer my-2 text-foreground bg-background w-3 h-3",
+              isAnimating ? "" : "text-muted-foreground"
+            )}
+            onClick={() => setIsAnimating(!isAnimating)}
+          />
+        )}
       </Popover>
     );
   }

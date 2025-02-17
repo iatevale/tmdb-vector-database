@@ -17,11 +17,13 @@ import { MovieType } from "@/types";
 import { RiMovie2Line } from "react-icons/ri";
 import { MovieProviderContext } from "@/contexts/movie-list-props";
 import Link from "next/link";
+import { EmbeddingProviderContext } from "@/contexts/embedding";
 
 const SemanticSearch = () => {
   const [open, setOpen] = React.useState(false);
   const [results, setResults] = React.useState<MovieType[]>([]);
   const { form } = React.useContext(MovieProviderContext);
+  const { embedding } = React.useContext(EmbeddingProviderContext);
 
   const search = async (value: string) => {
     const m = await searchMovies(value);
@@ -92,9 +94,7 @@ const SemanticSearch = () => {
                 <li key={movie.id}>
                   <Link
                     className="cursor-pointer flex gap-2 items-center py-1 hover:bg-gray-100"
-                    href={`/peli/${movie.title_slug}?embedding=${form.getValues(
-                      "embedding"
-                    )}`}
+                    href={`/peli/${movie.title_slug}?embedding=${embedding}`}
                   >
                     <RiMovie2Line />
                     <span>{movie.title}</span>

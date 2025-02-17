@@ -46,12 +46,6 @@ export const FormFilterSchema = z.object({
   decadeMin: z.string().default("1900"),
   decadeMax: z.string().default("2020"),
   genres: z.array(z.string()).default([]),
-  embedding: z.string().default("ollama"),
-  semanticSearch: z
-    .string()
-    .max(300, {
-      message: "La búsqueda semántica no debe ser superior a 300 caracteres.",
-    }).default(""),
 });
 
 export const fetchMovies = async (filters: z.infer<typeof FormFilterSchema>): Promise<MovieResultsType> => {

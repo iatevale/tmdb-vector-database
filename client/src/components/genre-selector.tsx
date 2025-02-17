@@ -21,7 +21,7 @@ const GenreSelector: React.FC<GenreSelectorProps & { genres: string[] }> = ({
     <MultiSelect
       options={allGenres}
       onValueChange={setGenres}
-      defaultValue={genres}
+      defaultValue={genres.map((genre) => genre)}
       placeholder="Selecciona un género"
       variant="inverted"
       animation={2}

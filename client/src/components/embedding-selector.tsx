@@ -1,16 +1,15 @@
+"use client";
+
 import React from "react";
 import { ToggleGroup, ToggleGroupItem } from "./ui/toggle-group";
+import { EmbeddingProviderContext } from "@/contexts/embedding";
 
-const EmbeddingSelector = ({
-  embedding,
-  setEmbedding,
-}: {
-  embedding: string;
-  setEmbedding: (value: string) => void;
-}) => {
+const EmbeddingSelector = () => {
+  const { embedding, setEmbedding } = React.useContext(
+    EmbeddingProviderContext
+  );
   return (
     <div className="flex flex-col w-full gap-2">
-      <p className="mb-2 mt-2">Embeddings</p>
       <ToggleGroup onValueChange={setEmbedding} value={embedding} type="single">
         <ToggleGroupItem value="ollama" className="py-4">
           Ollama

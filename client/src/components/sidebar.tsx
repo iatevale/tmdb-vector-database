@@ -7,14 +7,12 @@ import DecadeSlider from "./decade-slider";
 import ScoreSlider from "./score-slider";
 import { Paintbrush } from "lucide-react";
 import { MovieProviderContext } from "@/contexts/movie-list-props";
-import SemanticSearch from "./semantic-search";
 import { Toaster } from "./ui/toaster";
 import { Form } from "./ui/form";
 import GenreSelector from "./genre-selector";
 import SearchBar from "./search-bar";
 import Debug from "./debug";
 import { FormFilterSchema, getFormDefaults } from "@/lib/utils";
-import EmbeddingSelector from "./embedding-selector";
 
 const Sidebar = ({ className }: { className?: string }) => {
   const { form, formRef, handleFormSubmit } =
@@ -44,11 +42,6 @@ const Sidebar = ({ className }: { className?: string }) => {
 
   const handleGenresChange = async (values: string[]) => {
     form.setValue("genres", values);
-    handleFormSubmit();
-  };
-
-  const handleSetEmbedding = (value: string) => {
-    form.setValue("embedding", value);
     handleFormSubmit();
   };
 
@@ -98,12 +91,7 @@ const Sidebar = ({ className }: { className?: string }) => {
               setGenres={handleGenresChange}
               genres={form.getValues("genres")}
             />
-            <EmbeddingSelector
-              setEmbedding={handleSetEmbedding}
-              embedding={form.getValues("embedding")}
-            />
           </div>
-          <SemanticSearch />
           <Debug />
           <Toaster />
         </form>

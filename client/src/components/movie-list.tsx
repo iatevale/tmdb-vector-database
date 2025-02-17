@@ -14,6 +14,7 @@ import {
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import MovieCard from "./movie-card";
+import { EmbeddingProviderContext } from "@/contexts/embedding";
 
 const MovieList = ({ className }: { className?: string }) => {
   const [movieList, setMovieList] =
@@ -22,6 +23,7 @@ const MovieList = ({ className }: { className?: string }) => {
     React.useState(false);
 
   const [firstMount, setFirstMount] = React.useState(true);
+  const { embedding } = React.useContext(EmbeddingProviderContext);
   const { form, handleFormSubmit, movieResults } =
     React.useContext(MovieProviderContext);
   const [infiniteScrollPage, setInfiniteScrollPage] = React.useState<number>(1);
@@ -117,9 +119,7 @@ const MovieList = ({ className }: { className?: string }) => {
         {movieList.movies.map((movie: MovieType) => (
           <Link
             key={movie.id}
-            href={`/peli/${movie.title_slug}?embedding=${form.getValues(
-              "embedding"
-            )}`}
+            href={`/peli/${movie.title_slug}?embedding=${embedding}`}
           >
             <MovieCard movie={movie} />
           </Link>
