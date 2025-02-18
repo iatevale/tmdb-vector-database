@@ -40,6 +40,6 @@ model Movie {
   wikipedia_content_es String?
   ollama_embeddings    Unsupported("vector(3072)")?
   openai_embeddings    Unsupported("vector(1536)")?
-  vertex_embeddings    Unsupported("vector(1536)")?
+  vertex_embeddings    Unsupported("vector(256)")?
   deepseek_embeddings  Unsupported("vector(4096)")?
 }

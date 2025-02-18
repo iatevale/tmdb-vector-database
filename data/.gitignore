@@ -173,3 +173,4 @@ movies
 movies7.tgz
 .env
 backups
+credentials.json
