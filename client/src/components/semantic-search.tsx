@@ -17,9 +17,12 @@ import { MovieType } from "@/types";
 import { RiMovie2Line } from "react-icons/ri";
 import Link from "next/link";
 import { EmbeddingProviderContext } from "@/contexts/embedding";
+import { cx } from "class-variance-authority";
+import { set } from "date-fns";
 
 const SemanticSearch = () => {
   const [open, setOpen] = React.useState(false);
+  const [semanticSearch, setSemanticSearch] = React.useState("");
   const [results, setResults] = React.useState<MovieType[]>([]);
   const { embedding } = React.useContext(EmbeddingProviderContext);
 
@@ -40,6 +43,15 @@ const SemanticSearch = () => {
     return () => document.removeEventListener("keydown", down);
   }, []);
 
+  const closeSemanticSearch = () => {
+    setResults([]);
+    setOpen(false);
+  };
+
+  const setSearch = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    setSemanticSearch(e.currentTarget.value);
+  };
+
   return (
     <div className="w-full flex justify-center my-4">
       <Button
@@ -56,10 +68,29 @@ const SemanticSearch = () => {
       <CommandDialog open={open} onOpenChange={setOpen}>
         <DialogTitle className="text-lg font-bold"></DialogTitle>
         <DialogDescription></DialogDescription>
-        <CommandInput
-          onValueChange={search}
-          placeholder="¿Qué película, o qué tipo de película estás buscando?"
-        />
+        <div className="flex justify-between items-center px-4 py-2">
+          <CommandInput
+            onKeyDown={setSearch}
+            onValueChange={search}
+            placeholder="¿Qué película, o qué tipo de película estás buscando?"
+            className="w-full flex-grow"
+          />
+          <button
+            className={cx(
+              semanticSearch.length > 0 ? "opacty-100" : "opacity-0",
+              "m-1",
+              "px-4",
+              "py-1",
+              "bg-blue-600",
+              "text-white",
+              "rounded",
+              "mr-10"
+            )}
+            onClick={closeSemanticSearch}
+          >
+            Busca
+          </button>
+        </div>
         <CommandList></CommandList>
         {results.length === 0 && (
           <div className="px-4 py-2">
@@ -67,17 +98,17 @@ const SemanticSearch = () => {
               Sugerencias de búsqueda
             </h1>
             <ul className="list-none">
-              <li className="cursor-pointer flex gap-2 items-center py-1">
+              <li className="cursor-pointer flex gap-2 items-center py-1 hover:bg-gray-100">
                 <FaGun />
                 <span>&quot;Thriller policial de los años 90&quot;</span>
               </li>
-              <li className="cursor-pointer flex gap-2 items-center py-1">
+              <li className="cursor-pointer flex gap-2 items-center py-1 hover:bg-gray-100">
                 <FaRegLaughBeam />
                 <span>
                   &quot;Comedia romántica similar a Pretty Woman&quot;
                 </span>
               </li>
-              <li className="cursor-pointer flex gap-2 items-center py-1">
+              <li className="cursor-pointer flex gap-2 items-center py-1 hover:bg-gray-100">
                 <FaHatCowboySide />
                 <span>&quot;Una peli clásica de vaqueros&quot;</span>
               </li>
@@ -91,6 +122,7 @@ const SemanticSearch = () => {
               {results.map((movie) => (
                 <li key={movie.id}>
                   <Link
+                    onClick={closeSemanticSearch}
                     className="cursor-pointer flex gap-2 items-center py-1 hover:bg-gray-100"
                     href={`/peli/${movie.title_slug}?embedding=${embedding}`}
                   >

@@ -1,5 +1,6 @@
 import MovieList from "@/components/movie-list";
 import Sidebar from "@/components/sidebar";
+import { Suspense } from "react";
 
 const Movies = async () => {
   return (

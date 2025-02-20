@@ -29,7 +29,7 @@ export default async function RootLayout({
           <body
             className={`${poppins.className} antialiased bg-gray-50 dark:bg-gray-700`}
           >
-            <div className="flex flex-col max-w-7xl min-w-[550px] mx-auto bg-white dark:bg-gray-800 shadow-lg px-8 py-4">
+            <div className="flex flex-col max-w-7xl min-w-[550px] min-h-screen mx-auto bg-white dark:bg-gray-800 shadow-lg px-8 py-4">
               <Suspense>
                 <MovieProvider>
                   <Header />

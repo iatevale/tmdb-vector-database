@@ -100,45 +100,70 @@ const MovieList = ({ className }: { className?: string }) => {
         className
       )}
     >
-      <div
-        className={cx(
-          "w-full",
-          "grid-cols-5",
-          "max-[1200px]:grid-cols-4",
-          "max-[600px]:grid-cols-3",
-          "max-[300px]:grid-cols-2",
-          "grid",
-          "mx-auto",
-          "mb-10",
-          "w-3/4",
-          "max-w-6xl",
-          "gap-2",
-          "pb-10"
-        )}
-      >
-        {movieList.movies.map((movie: MovieType) => (
-          <Link
-            key={movie.id}
-            href={`/peli/${movie.title_slug}?embedding=${embedding}`}
-          >
-            <MovieCard movie={movie} />
-          </Link>
-        ))}
-        <InfiniteScroll
-          hasMore={infiniteScrollPage * 16 < movieList.total}
-          isLoading={infiniteScrollLoading}
-          next={next}
+      {movieList.movies.length === 0 && movieList.status === "success" ? (
+        <div className={cx("text-center", "w-full")}>
+          <p className={cx("text-lg", "text-orange-800")}>
+            No se encontraron resultados
+          </p>
+        </div>
+      ) : (
+        <div
+          className={cx(
+            "w-full",
+            "grid-cols-5",
+            "max-[1200px]:grid-cols-4",
+            "max-[600px]:grid-cols-3",
+            "max-[300px]:grid-cols-2",
+            "grid",
+            "mx-auto",
+            "mb-10",
+            "w-3/4",
+            "max-w-6xl",
+            "gap-2",
+            "pb-10"
+          )}
         >
-          <Skeleton
-            className={cx(
-              "block",
-              "w-full",
-              "bg-white",
-              "h-[160px] md:h-[240px]"
-            )}
-          />
-        </InfiniteScroll>
-      </div>
+          {movieList.status === "loading" && movieList.movies.length === 0 ? (
+            Array.from({ length: 16 }).map((_, i) => (
+              <Skeleton
+                key={i}
+                className={cx(
+                  "block",
+                  "w-full",
+                  "bg-gray-200",
+                  "h-[240px]",
+                  "rounded-xl"
+                )}
+              />
+            ))
+          ) : (
+            <>
+              {movieList.movies.map((movie: MovieType) => (
+                <Link
+                  key={movie.id}
+                  href={`/peli/${movie.title_slug}?embedding=${embedding}`}
+                >
+                  <MovieCard movie={movie} />
+                </Link>
+              ))}
+              <InfiniteScroll
+                hasMore={infiniteScrollPage * 16 < movieList.total}
+                isLoading={infiniteScrollLoading}
+                next={next}
+              >
+                <Skeleton
+                  className={cx(
+                    "block",
+                    "w-full",
+                    "bg-white",
+                    "h-[160px] md:h-[240px]"
+                  )}
+                />
+              </InfiniteScroll>
+            </>
+          )}
+        </div>
+      )}
     </div>
   );
 };
