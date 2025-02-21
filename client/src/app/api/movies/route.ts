@@ -25,10 +25,6 @@ type WhereType = {
     }
 }
 
-const wait = (ms: number) => {
-    return new Promise(resolve => setTimeout(resolve, ms));
-}
-
 const take = 16;
 // DOC: https://github.com/milvus-io/milvus-sdk-node
 // DOC: https://milvus.io/api-reference/node/v2.5.x/About.md
@@ -120,7 +116,13 @@ export const GET = async (
     const total = await prisma.movie.count({ where });
     const movies = await prisma.movie.findMany(query);
 
-    // await wait(5000);
+    /*
+    const wait = (ms: number) => {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
+    
+    await wait(5000);
+*/
 
     return NextResponse.json({
         total,

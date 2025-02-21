@@ -17,7 +17,7 @@ const EmbeddingSelector = () => {
     const params = new URLSearchParams(searchParams.toString());
     params.set("embedding", embedding);
     router.replace(`?${params.toString()}`);
-  }, [embedding, router]);
+  }, [embedding, router, searchParams]);
 
   return (
     <div className="flex flex-col w-full gap-2">

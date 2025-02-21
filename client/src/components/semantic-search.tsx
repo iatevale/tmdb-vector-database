@@ -18,7 +18,6 @@ import { RiMovie2Line } from "react-icons/ri";
 import Link from "next/link";
 import { EmbeddingProviderContext } from "@/contexts/embedding";
 import { cx } from "class-variance-authority";
-import { set } from "date-fns";
 
 const SemanticSearch = () => {
   const [open, setOpen] = React.useState(false);
