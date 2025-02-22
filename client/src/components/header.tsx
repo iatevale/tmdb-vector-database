@@ -24,13 +24,23 @@ const Header = () => {
       )}
     >
       <div className="flex flex-col md:flex-row justify-start items-center w-full md:gap-8">
-        <Logo className="md:w-1/4" />
-
+        <div className="flex items-center justify-between w-full">
+          <Logo className="flex-1 w-full md:w-1/4" />
+          <div className="flex flex-row md:hidden justify-end items-center ">
+            <Link
+              href="https://github.com/iatevale/tmdb-vector-database"
+              className={cx("hover:text-gray-600", "dark:hover:text-gray-300")}
+            >
+              <GitHubLogoIcon className="w-6 h-6" />
+            </Link>
+            <ToggleTheme />
+          </div>
+        </div>
         <div className="flex flex-col md:flex-row justify-end items-center w-full md:gap-8">
           <SemanticSearch />
           <EmbeddingSelector />
         </div>
-        <div className="flex md:flex-row justify-end items-center w-full">
+        <div className="hidden md:flex md:flex-row justify-end items-center w-full">
           <Link
             href="https://github.com/iatevale/tmdb-vector-database"
             className={cx("hover:text-gray-600", "dark:hover:text-gray-300")}

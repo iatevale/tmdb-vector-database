@@ -73,7 +73,7 @@ const Movie = async ({
           <p className="my-4 border-t border-gray-100 pt-2">
             <a
               target="_blank"
-              className="flex items-center gap-2 hover:text-orange-700"
+              className="flex items-center gap-2 text-xs md:text-md hover:text-orange-700"
               href={movie.wikipedia_url_es}
             >
               <SiWikipedia size={32} />
@@ -86,7 +86,7 @@ const Movie = async ({
         <h2 className="text-xl font-bold border-b w-full text-center">
           Relacionadas
         </h2>
-        <div className="grid grid-cols-3 md:grid-cols-10 gap-2 justify-center items-start w-full">
+        <div className="grid grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-10 gap-2 justify-center items-start w-full">
           {movie.related?.map((related) => (
             <RelatedMovieCard key={related.id} movie={related} />
           ))}
