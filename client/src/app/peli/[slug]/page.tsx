@@ -33,7 +33,7 @@ const Movie = async ({
 
   return (
     <div className="flex flex-col">
-      <div className="flex items-start relative w-full">
+      <div className="flex flex-col md:flex-row items-center md:items-start relative w-full">
         <div className="relative z-10 border-lg border-gray-100 dark:border-gray-600 rounded-lg p-4">
           <Image
             src={`https://image.tmdb.org/t/p/w1280${movie.poster_path}`}
@@ -46,7 +46,7 @@ const Movie = async ({
         </div>
 
         <div className="flex flex-col items-start w-3/4 mt-4">
-          <div className="flex items-center gap-2 mb-4">
+          <div className="flex items-center gap-6 mb-4">
             <AnimatedCircularProgressBar
               max={100}
               min={0}
@@ -82,7 +82,7 @@ const Movie = async ({
         <h2 className="text-xl font-bold border-b w-full text-center">
           Relacionadas
         </h2>
-        <div className="flex gap-2 justify-center w-full">
+        <div className="grid grid-cols-3 md:grid-cols-10 gap-2 justify-center items-start w-full">
           {movie.related?.map((related) => (
             <RelatedMovieCard key={related.id} movie={related} />
           ))}

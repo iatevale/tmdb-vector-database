@@ -23,23 +23,17 @@ const Header = () => {
         "md:justify-between"
       )}
     >
-      <div className="flex flex-row justify-start items-center w-full gap-8">
-        <Logo className="w-1/4 md:justify-self-start" />
+      <div className="flex flex-col md:flex-row justify-start items-center w-full md:gap-8">
+        <Logo className="md:w-1/4" />
 
-        <div className="flex flex-row justify-end items-center w-full gap-8">
+        <div className="flex flex-col md:flex-row justify-end items-center w-full md:gap-8">
           <SemanticSearch />
           <EmbeddingSelector />
-
+        </div>
+        <div className="flex md:flex-row justify-end items-center w-full">
           <Link
             href="https://github.com/iatevale/tmdb-vector-database"
-            className={cx(
-              "flex",
-              "ml-auto",
-              "items-center",
-              "justify-center",
-              "hover:text-gray-600",
-              "dark:hover:text-gray-300"
-            )}
+            className={cx("hover:text-gray-600", "dark:hover:text-gray-300")}
           >
             <GitHubLogoIcon className="w-6 h-6" />
           </Link>

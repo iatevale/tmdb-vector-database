@@ -27,13 +27,17 @@ const RelatedMovieCard = ({ movie }: { movie: MovieType }) => {
             alt={movie.title}
             width={100}
             height={150}
+            layout="responsive"
             priority
             className="min-h-24"
           />
         </Link>
       </motion.div>
-      <Progress value={movie.proximidad} />
-      <div className="text-xs">{movie.proximidad}%</div>
+      <div className="text-center w-[100px] text-xs flex flex-col gap-1">
+        <Progress value={movie.proximidad} />
+        <div className="text- xs">{movie.proximidad}%</div>
+        {movie.title}
+      </div>
     </div>
   );
 };

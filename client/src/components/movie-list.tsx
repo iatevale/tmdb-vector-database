@@ -66,7 +66,7 @@ const MovieList = ({ className }: { className?: string }) => {
       return;
     }
     setInfiniteScrollLoading(true);
-
+    console.log(infiniteScrollLoading);
     const m = await fetchMovies(
       Object.assign(form.getValues(), { page: infiniteScrollPage + 1 })
     );
@@ -151,14 +151,17 @@ const MovieList = ({ className }: { className?: string }) => {
                 isLoading={infiniteScrollLoading}
                 next={next}
               >
-                <Skeleton
-                  className={cx(
-                    "block",
-                    "w-full",
-                    "bg-white",
-                    "h-[160px] md:h-[240px]"
-                  )}
-                />
+                {infiniteScrollPage * 16 < movieList.total && (
+                  <Skeleton
+                    className={cx(
+                      "block",
+                      "w-full",
+                      "bg-gray-200",
+                      "h-[240px]",
+                      "rounded-xl"
+                    )}
+                  />
+                )}
               </InfiniteScroll>
             </>
           )}
