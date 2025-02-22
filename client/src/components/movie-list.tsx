@@ -66,7 +66,6 @@ const MovieList = ({ className }: { className?: string }) => {
       return;
     }
     setInfiniteScrollLoading(true);
-    console.log(infiniteScrollLoading);
     const m = await fetchMovies(
       Object.assign(form.getValues(), { page: infiniteScrollPage + 1 })
     );

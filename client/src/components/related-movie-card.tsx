@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import React from "react";
-import Image from "next/legacy/image";
+import Image from "next/image";
 import { MovieType } from "@/types";
 import { Progress } from "./ui/progress";
 import { EmbeddingProviderContext } from "@/contexts/embedding";
@@ -27,9 +27,9 @@ const RelatedMovieCard = ({ movie }: { movie: MovieType }) => {
             alt={movie.title}
             width={100}
             height={150}
-            layout="responsive"
             priority
-            className="min-h-24"
+            className="w-full h-auto"
+            sizes="100vw"
           />
         </Link>
       </motion.div>

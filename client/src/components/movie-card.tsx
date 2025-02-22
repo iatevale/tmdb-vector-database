@@ -1,7 +1,7 @@
 "use client";
 import { MovieType } from "@/types";
 import React from "react";
-import Image from "next/legacy/image";
+import Image from "next/image";
 import { cx } from "class-variance-authority";
 import { format } from "date-fns";
 import { motion } from "framer-motion";
@@ -63,7 +63,8 @@ const MovieCard = ({ movie }: { movie: MovieType }) => {
         width={200}
         height={300}
         priority
-        className="border border-gray-100 dark:border-gray-600 w-full"
+        className="border border-gray-100 dark:border-gray-600 w-full h-auto"
+        sizes="100vw"
       />
       <div
         className={cx(

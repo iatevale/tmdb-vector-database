@@ -1,5 +1,5 @@
 import React from "react";
-import Image from "next/legacy/image";
+import Image from "next/image";
 import { format } from "date-fns";
 import AnimatedCircularProgressBar from "@/components/ui/animated-circular-progress-bar";
 import { MovieType } from "@/types";
@@ -42,6 +42,10 @@ const Movie = async ({
             height={300}
             priority
             className="rounded-[20px] border border-gray-100 dark:border-gray-600"
+            style={{
+              maxWidth: "100%",
+              height: "auto",
+            }}
           />
         </div>
 
