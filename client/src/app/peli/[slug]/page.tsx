@@ -1,5 +1,5 @@
 import React from "react";
-import Image from "next/image";
+import Image from "next/legacy/image";
 import { format } from "date-fns";
 import AnimatedCircularProgressBar from "@/components/ui/animated-circular-progress-bar";
 import { MovieType } from "@/types";

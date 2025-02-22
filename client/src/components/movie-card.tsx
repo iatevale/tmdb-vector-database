@@ -1,7 +1,7 @@
 "use client";
 import { MovieType } from "@/types";
 import React from "react";
-import Image from "next/image";
+import Image from "next/legacy/image";
 import { cx } from "class-variance-authority";
 import { format } from "date-fns";
 import { motion } from "framer-motion";

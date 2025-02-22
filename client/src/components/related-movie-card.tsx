@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import React from "react";
-import Image from "next/image";
+import Image from "next/legacy/image";
 import { MovieType } from "@/types";
 import { Progress } from "./ui/progress";
 import { EmbeddingProviderContext } from "@/contexts/embedding";
