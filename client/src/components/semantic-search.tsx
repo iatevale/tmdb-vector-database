@@ -21,12 +21,19 @@ import { EmbeddingProviderContext } from "@/contexts/embedding";
 import { cx } from "class-variance-authority";
 import { Search } from "lucide-react";
 import { useRouter } from "next/navigation";
+import LoadingOverlay from "./loading-overlay";
+import { useDebouncedCallback } from "use-debounce";
 
 const SemanticSearch = () => {
   const [open, setOpen] = React.useState(false);
+  const [loading, setLoading] = React.useState(false);
   const [semanticSearch, setSemanticSearch] = React.useState("");
   const [results, setResults] = React.useState<MovieType[]>([]);
   const { embedding } = React.useContext(EmbeddingProviderContext);
+  const debounced = useDebouncedCallback((values) => {
+    search(values);
+  }, 1000);
+
   const router = useRouter();
 
   const search = async (value: string) => {
@@ -51,10 +58,14 @@ const SemanticSearch = () => {
   }, []);
 
   const submitSemanticSearch = async (semanticSearch: string) => {
+    setOpen(false);
+    setLoading(true);
     if (semanticSearch) {
       setSemanticSearch(semanticSearch);
     }
 
+    console.log(semanticSearch);
+    return;
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/api/movies/search`,
       {
@@ -70,12 +81,21 @@ const SemanticSearch = () => {
     setSemanticSearch("");
     setResults([]);
     closeSemanticSearch();
+    setLoading(false);
+    setTimeout(() => {
+      setLoading(false);
+    }, 500);
+
     router.push(`/peli/${movie.title_slug}?embedding=${embedding}`);
   };
 
   const closeSemanticSearch = () => {
+    setLoading(true);
     setResults([]);
     setOpen(false);
+    setTimeout(() => {
+      setLoading(false);
+    }, 500);
   };
 
   const setSearch = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -84,6 +104,7 @@ const SemanticSearch = () => {
 
   return (
     <div className="w-full flex justify-center my-4">
+      {loading && <LoadingOverlay />}
       <Button
         variant="outline"
         type="button"
@@ -101,7 +122,7 @@ const SemanticSearch = () => {
         <div className="flex justify-between items-center px-4 gap-4">
           <CommandInput
             onKeyUp={setSearch}
-            onValueChange={search}
+            onValueChange={debounced}
             placeholder="¿Qué tipo de película buscas?"
             className="w-full"
           />
@@ -120,7 +141,7 @@ const SemanticSearch = () => {
               "rounded",
               "mr-10"
             )}
-            onClick={closeSemanticSearch}
+            onClick={() => submitSemanticSearch(semanticSearch)}
           >
             <Search />
             Busca

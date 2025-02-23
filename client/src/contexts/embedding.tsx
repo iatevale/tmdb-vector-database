@@ -14,7 +14,7 @@ export type EmbeddingProviderState = {
 };
 
 const initialState = {
-  embedding: "light",
+  embedding: "openai",
   setEmbedding: () => null,
 };
 
