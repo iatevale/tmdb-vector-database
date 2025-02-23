@@ -64,8 +64,6 @@ const SemanticSearch = () => {
       setSemanticSearch(semanticSearch);
     }
 
-    console.log(semanticSearch);
-    return;
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/api/movies/search`,
       {
