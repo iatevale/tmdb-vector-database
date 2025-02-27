@@ -7,6 +7,7 @@ import { GitHubLogoIcon } from "@radix-ui/react-icons";
 import Pagination from "./pagination";
 import SemanticSearch from "./semantic-search";
 import EmbeddingSelector from "./embedding-selector";
+import Google from "./google";
 
 const Header = () => {
   return (
@@ -26,7 +27,8 @@ const Header = () => {
       <div className="flex flex-col md:flex-row justify-start items-center w-full md:gap-8">
         <div className="flex items-center justify-between w-full">
           <Logo className="flex-1 w-full md:w-1/4" />
-          <div className="flex flex-row md:hidden justify-end items-center ">
+          <div className="flex flex-row md:hidden justify-end gap-2 items-center ">
+            <Google />
             <Link
               href="https://github.com/iatevale/tmdb-vector-database"
               className={cx("hover:text-gray-600", "dark:hover:text-gray-300")}
@@ -40,7 +42,8 @@ const Header = () => {
           <SemanticSearch />
           <EmbeddingSelector />
         </div>
-        <div className="hidden md:flex md:flex-row justify-end items-center w-full">
+        <div className="hidden md:flex md:flex-row gap-2 justify-end items-center w-full">
+          <Google />
           <Link
             href="https://github.com/iatevale/tmdb-vector-database"
             className={cx("hover:text-gray-600", "dark:hover:text-gray-300")}

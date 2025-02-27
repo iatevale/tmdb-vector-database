@@ -5,6 +5,7 @@ import AnimatedCircularProgressBar from "@/components/ui/animated-circular-progr
 import { MovieType } from "@/types";
 import RelatedMovieCard from "@/components/related-movie-card";
 import { SiWikipedia } from "react-icons/si";
+import PageManagement from "@/components/page-management";
 
 const fetchMovie = async (slug: string, embedding: string) => {
   const response = await fetch(
@@ -92,6 +93,7 @@ const Movie = async ({
           ))}
         </div>
       </div>
+      <PageManagement slug={slug} />
     </div>
   );
 };

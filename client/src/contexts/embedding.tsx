@@ -23,11 +23,11 @@ export const EmbeddingProviderContext =
 
 export function EmbeddingProvider({
   children,
-  defaultEmbedding = "ollama",
+  defaultEmbedding = "openai",
   storageKey = "shadcn-ui-embedding",
   ...props
 }: EmbeddingProviderProps) {
-  const [embedding, setEmbedding] = useState<string>("ollama");
+  const [embedding, setEmbedding] = useState<string>(defaultEmbedding);
 
   useEffect(() => {
     const lsEmbedding = localStorage.getItem(storageKey) ?? defaultEmbedding;
